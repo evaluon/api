@@ -1,0 +1,13 @@
+{
+    "info": {
+        "db": "info",
+        "user": "hackaton",
+        "password": "Somosb00l.",
+        "options": {
+            "dialect": "mysql",
+            "host": "db.boolinc.co"
+        }
+    },
+
+    "preferred": "info"
+}

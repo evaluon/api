@@ -1,0 +1,38 @@
+{
+  "name": "info-api",
+  "version": "1.0.0",
+  "description": "Info APP API",
+  "private": true,
+  "author": {
+    "name": "Bool Inc",
+    "email": "pandres95@boolinc.co",
+    "url": "http://pandres95.boolinc.co"
+  },
+  "main": "app.js",
+  "scripts": {
+    "start": "forever start info-api.js",
+    "stop": "forever stop info-api.js"
+  },
+  "dependencies": {
+    "express": "~4.6.1",
+    "body-parser": "~1.4.3",
+    "route-pattern": "~0.0.6",
+    "nodemailer": "~1.2.1",
+    "jsonfile": "~2.0.0",
+    "tracer": "~0.7.1",
+    "sequelize": "~1.7.8",
+    "mysql": "~2.3.2",
+    "sqlite3": "~2.2.3",
+    "oauth2orize": "~1.0.1",
+    "passport": "~0.2.0",
+    "passport-http": "~0.2.2",
+    "passport-http-bearer": "~1.0.1",
+    "passport-oauth2-client-password": "~0.1.1",
+    "passport-facebook": "~1.0.3",
+    "simple-recaptcha": "0.0.3",
+    "underscore": "~1.6.0",
+    "handlebars": "~2.0.0",
+    "request": "~2.44.0",
+    "request-promise": "~0.1.3"
+  }
+}
