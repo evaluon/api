@@ -40,55 +40,181 @@ function recreate(){
     }).then(function(){
         return db.UserToken.sync();
     }).then(function(){
+        return db.Student.sync();
+    }).then(function(){
+        return db.Test.sync();
+    }).then(function(){
+        return db.AnswerOption.sync();
+    }).then(function(){
+        return db.Question.sync();
+    }).then(function(){
+        return db.SelfTest.sync();
+    }).then(function(){
+        return db.TestResponse.sync();
+    }).then(function(){
+        return db.TestQuestion.sync();
+    }).then(function(){
+        return db.Answer.sync();
+    }).then(function(){
 
         var results = {};
 
-        var Zone = db.Zone,
-            Utils = db.Sequelize.Utils,
+        var Utils = db.Sequelize.Utils,
 
             Role = dao.role,
             Token = dao.token,
             Client = dao.client,
             Permission = dao.permission,
-            ClientToken = dao.clienttoken;
+            ClientToken = dao.clienttoken
 
+            Question = dao.question,
+            AnswerOption = dao.answeroption,
+            Answer = dao.answer;
 
-        var q = new Utils.QueryChainer;
+        question1 = "En la extracción minera de oro se emplea cianuro de " +
+        "sodio, zinc y ácidos fuertes durante el proceso de purificación " +
+        "Los ácidos fuertes que pueden emplearse son ácido sulfúrico (H2SO4) " +
+        "de una concentración volumen-volumen del 78% o ácido nítrico (HNO3) " +
+        "que contenga 112 mL de ácido por cada 200 mL de solución.<br />"  +
+        "Si en la extraccción del oro se requiere usar el ácido de mayor" +
+        "concentración, ¿cual ácido debería emplearse?";
 
-        var defaultPermissions = [
-        {
-            id: 1,
-            name: 'anon'
-        },
-        {
-            id: 2,
-            name: 'user'
-        },
-        {
-            id: 4,
-            name: 'admin'
-        },
-        ],
-        defaultRoles = [
-        {
-            name: 'anon',
-            permissions: [1]
-        },
-        {
-            name: 'user',
-            permissions: [1, 2]
-        },
-        {
-            name: 'admin',
-            permissions: [1, 2, 4]
-        }
+        question2 = "La función de la membrana celular es";
+
+        answers1 = [
+        "El HNO3, porque como su volumen es mayor que el de la solucion " +
+        "de H2SO4 tiene una mayor concentración.",
+        "El H2SO4, porque la concentración volumen-volumen de HNO3 es " +
+        "del 56%. ",
+        "El HNO3, porque su concentración volumen-volumen es del 112%.",
+        "El H2SO4, porque como su volumen es menor que el de la solución " +
+        "de HNO3 se encuentra más concentrado."
         ];
 
-        for(p in defaultPermissions){
-            q.add(Permission.createPermission(defaultPermissions[p]));
-        }
+        answers2 = [
+        "Encargarse del control de las actividades celulares.",
+        "Sintetizar las proteínas estructurales y funcionales.",
+        "Ser responsable del tráfico de pequeños segmentos de ARN.",
+        "Permitir la comunicación e intercambiar materiales con su medio " +
+        "ambiente.",
+        "Todas las anteriores."
+        ];
 
-        return q.run().then(function(permissions){
+        good1 = 1, good2 = 3;
+
+        var defaultPermissions = [
+            {
+                id: 1,
+                name: 'anon'
+            },
+            {
+                id: 2,
+                name: 'user'
+            },
+            {
+                id: 4,
+                name: 'admin'
+            },
+            ],
+
+            defaultRoles = [
+            {
+                name: 'anon',
+                permissions: [1]
+            },
+            {
+                name: 'user',
+                permissions: [1, 2]
+            },
+            {
+                name: 'admin',
+                permissions: [1, 2, 4]
+            }
+            ];
+
+        Question.createQuestion({
+            text: question1
+        }).then(function(question1){
+
+            results.question1 = question1;
+
+            var q = new Utils.QueryChainer;
+
+            for(a in answers1){
+                q.add(AnswerOption.create({ text: answers1[a] }));
+            }
+
+            return q.run();
+
+        }).then(function(newAnswers1){
+
+            var q = new Utils.QueryChainer, question = results.question1;
+
+            for(a in newAnswers1){
+
+                answer = newAnswers1[a];
+
+                q.add(
+                    Answer.associate({
+                        AnswerOptionId: answer.id,
+                        QuestionId: question.id,
+                        right: a == good1
+                    })
+                );
+
+            }
+
+            return q.run();
+
+        }).then(function(){
+
+            return Question.createQuestion({
+                text: question2
+            });
+
+        }).then(function(question2){
+
+            results.question2 = question2;
+
+            var q = new Utils.QueryChainer;
+
+            for(a in answers2){
+                q.add(AnswerOption.create({ text: answers2[a] }));
+            }
+
+            return q.run();
+
+        }).then(function(newAnswers2){
+
+            var q = new Utils.QueryChainer, question = results.question2;
+
+            for(a in newAnswers2){
+
+                answer = newAnswers2[a];
+
+                q.add(
+                    Answer.associate({
+                        AnswerOptionId: answer.id,
+                        QuestionId: question.id,
+                        right: a == good2
+                    })
+                );
+
+            }
+
+            return q.run();
+
+        }).then(function(){
+
+            var q = new Utils.QueryChainer;
+
+            for(p in defaultPermissions){
+                q.add(Permission.createPermission(defaultPermissions[p]));
+            }
+
+            return q.run();
+
+        }).then(function(permissions){
 
             var q = new Utils.QueryChainer;
 

@@ -10,7 +10,7 @@ module.exports = function(app){
         next();
     });
     srv.set('host', process.env.HOSTNAME || '0.0.0.0');
-    srv.set('port', process.env.PORT || 3003);
+    srv.set('port', process.env.PORT || 3004);
     srv.use(bodyParser.urlencoded({extended: true}));
     srv.use(bodyParser.json());
 

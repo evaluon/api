@@ -33,6 +33,7 @@ module.exports = function(sequelize, DataTypes){
             associate: function(models){
 
                 models.User
+                    .hasOne(models.Student)
                     .belongsTo(models.Role, { foreignKeyConstriant: true });
 
             }

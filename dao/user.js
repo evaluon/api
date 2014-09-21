@@ -2,6 +2,7 @@ module.exports = function(app){
 
     var log = app.utils.log,
         User = app.db.User,
+        Student = app.db.Student,
         OtherZone = app.db.OtherZone;
 
     return {
@@ -24,15 +25,9 @@ module.exports = function(app){
             return User.create(options).then(function(user){
                 return user.updateAttributes({ RoleId: 'user' });
             }).then(function(user){
-                if(options.other){
-                    var otherZone = { description: options.other };
-                    otherZone.UserId = user.id;
-                    return OtherZone.create(otherZone).then(function(other){
-                        return user.setOtherZone(other);
-                    });
-                } else {
-                    return user;
-                }
+                return Student.create({ UserId: user.id });
+            }).then(function(student){
+                return Student.user;
             });
         },
 
