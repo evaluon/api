@@ -10,8 +10,8 @@
   },
   "main": "app.js",
   "scripts": {
-    "start": "forever start info-api.js",
-    "stop": "forever stop info-api.js"
+    "start": "forever start evaluon-api.js",
+    "stop": "forever stop evaluon-api.js"
   },
   "dependencies": {
     "express": "~4.6.1",
