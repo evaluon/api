@@ -1,6 +1,6 @@
 {
-    "info": {
-        "db": "info",
+    "evaluon": {
+        "db": "evaluon",
         "user": "hackaton",
         "password": "Somosb00l.",
         "options": {
@@ -9,5 +9,5 @@
         }
     },
 
-    "preferred": "info"
+    "preferred": "evaluon"
 }
