@@ -46,9 +46,15 @@ module.exports = function(app){
                     StudentId: student.id,
                     TestId: test.id
                 }).then(function(){
-                    return test;
+                    return {
+                        student: student,
+                        test: test
+                    };
                 });
-            }).then(function(test){
+            }).then(function(d){
+
+                student = d.student;
+                test = d.test;
                 return Dao.addResponse(user, test);
             }).then(function(test){
 
@@ -102,11 +108,11 @@ module.exports = function(app){
 
         },
 
-        addResponse: function(user, test){
+        addResponse: function(student, test){
 
             return Test.find(test).then(function(test){
                 return TestResponse.create({
-                    UserId: user.id,
+                    StudentId: student.id,
                     TestId: test.id
                 }).then(function(){
                     return test;
@@ -117,7 +123,8 @@ module.exports = function(app){
 
         listSelfTest: function(user){
 
-            var query = "SELECT t.* FROM Students s, SelfTests st, Tests t " +
+            var query = "SELECT t.*, st.id AS `responseId` FROM Students s, " +
+                "TestResponses st, Tests t " +
                 "WHERE st.StudentId = s.id AND st.TestId = t.id AND " +
                 "s.UserId = '" + user.id + "'";
 

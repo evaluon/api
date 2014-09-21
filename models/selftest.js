@@ -1,6 +1,13 @@
 module.exports = function(sequelize, DataTypes){
 
     return sequelize.define('SelfTest', {
+
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+        }
+
     }, {
 
         updatedAt: false,

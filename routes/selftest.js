@@ -10,11 +10,23 @@ module.exports = function(app){
         cors: true
     },
     {
+        method: 'get',
+        url: '/test/:id',
+        action: SelfTest.testDetail,
+        cors: true
+    },
+    {
         method: 'post',
         url: '/test',
         action: SelfTest.addSelfTest,
         cors: true
-    }
+    },
+    {
+        method: 'post',
+        url: '/question',
+        action: SelfTest.answerQuestion,
+        cors: true
+    },
     ];
 
 
