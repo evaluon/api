@@ -14,13 +14,15 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
 
 // Load of nodejs modules
-var http = require('http');
+var http        = require('http');
 
 // Generate server
-var app = require('./core/loader');
-var srv = require('./core/server')(app);
+var app         = require('./core/loader');
+var srv         = require('./core/server')(app);
 
-var sequelize = app.db.sequelize, db = app.db, dao = app.dao;
+var sequelize   = app.db.sequelize,
+    db          = app.db,
+    dao         = app.dao;
 
 function recreate(){
     return sequelize.drop().then(function(){
@@ -71,38 +73,8 @@ function recreate(){
             AnswerOption = dao.answeroption,
             Answer = dao.answer;
 
-        question1 = "En la extracción minera de oro se emplea cianuro de " +
-        "sodio, zinc y ácidos fuertes durante el proceso de purificación " +
-        "Los ácidos fuertes que pueden emplearse son ácido sulfúrico (H2SO4) " +
-        "de una concentración volumen-volumen del 78% o ácido nítrico (HNO3) " +
-        "que contenga 112 mL de ácido por cada 200 mL de solución.<br />"  +
-        "Si en la extraccción del oro se requiere usar el ácido de mayor" +
-        "concentración, ¿cual ácido debería emplearse?";
-
-        question2 = "La función de la membrana celular es";
-
-        answers1 = [
-        "El HNO3, porque como su volumen es mayor que el de la solucion " +
-        "de H2SO4 tiene una mayor concentración.",
-        "El H2SO4, porque la concentración volumen-volumen de HNO3 es " +
-        "del 56%. ",
-        "El HNO3, porque su concentración volumen-volumen es del 112%.",
-        "El H2SO4, porque como su volumen es menor que el de la solución " +
-        "de HNO3 se encuentra más concentrado."
-        ];
-
-        answers2 = [
-        "Encargarse del control de las actividades celulares.",
-        "Sintetizar las proteínas estructurales y funcionales.",
-        "Ser responsable del tráfico de pequeños segmentos de ARN.",
-        "Permitir la comunicación e intercambiar materiales con su medio " +
-        "ambiente.",
-        "Todas las anteriores."
-        ];
-
-        good1 = 1, good2 = 3;
-
         var defaultPermissions = [
+
             {
                 id: 1,
                 name: 'anon'
@@ -130,7 +102,8 @@ function recreate(){
                 name: 'admin',
                 permissions: [1, 2, 4]
             }
-            ];
+
+        ];
 
         Question.createQuestion({
             text: question1

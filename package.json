@@ -1,18 +1,22 @@
 {
+
   "name": "info-api",
   "version": "1.0.0",
   "description": "Info APP API",
+
   "private": true,
   "author": {
-    "name": "Bool Inc",
-    "email": "pandres95@boolinc.co",
-    "url": "http://pandres95.boolinc.co"
+    "name": "Bool",
+    "email": "root@boolinc.co",
+    "url": "http://www.boolinc.co"
   },
+
   "main": "app.js",
   "scripts": {
     "start": "forever start evaluon-api.js",
     "stop": "forever stop evaluon-api.js"
   },
+  
   "dependencies": {
     "express": "~4.6.1",
     "body-parser": "~1.4.3",

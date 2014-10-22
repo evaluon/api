@@ -27,6 +27,12 @@ module.exports = function(app){
         action: SelfTest.answerQuestion,
         cors: true
     },
+    {
+        method: 'get',
+        url: '/result/:id',
+        action: SelfTest.testResult,
+        cors: true
+    }
     ];
 
 
