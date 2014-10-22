@@ -1,7 +1,7 @@
 module.exports = function(app){
 
     var log = app.utils.log,
-    responseView = require('../views/jsonSuccessResponse');
+        responseView = require('../views/jsonSuccessResponse');
 
     return {
 
@@ -87,47 +87,17 @@ module.exports = function(app){
 
             responseView(
                 {
-                    knowledgeAreas: [
+                    id: 1,
+                    areaName: "Matemáticas",
+                    institutions: [
                     {
-                        id: 1,
-                        areaName: "Matemáticas",
-                        institutions: [
-                        {
-                            id: 2,
-                            name: "Universidad Nacional de Colombia",
-                            address: "Calle 45 # 30, Bogotá, Colombia",
-                            average: 3.94
-                        }
-                        ],
+                        id: 2,
+                        name: "Universidad Nacional de Colombia",
+                        address: "Calle 45 # 30, Bogotá, Colombia",
                         average: 3.94
-                    },
-                    {
-                        id: 4,
-                        areaName: "Ciencias Naturales",
-                        institutions: [
-                        {
-                            id: 2,
-                            name: "Universidad Nacional de Colombia",
-                            address: "Calle 45 # 30, Bogotá, Colombia",
-                            average: 4.60
-                        }
-                        ],
-                        average: 4.60
-                    },
-                    {
-                        id: 6,
-                        areaName: "Ciencias Sociales",
-                        institutions: [
-                        {
-                            id: 2,
-                            name: "Universidad Nacional de Colombia",
-                            address: "Calle 45 # 30, Bogotá, Colombia",
-                            average: 3.80
-                        }
-                        ],
-                        average: 3.80
                     }
-                    ]
+                    ],
+                    average: 3.94
                 },
                 res
             );
