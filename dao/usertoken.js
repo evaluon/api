@@ -28,9 +28,13 @@ module.exports = function(app){
 
         retrieveUser: function(accessToken){
             return Token.retrieveToken(accessToken).then(function(token){
-                return UserToken.find({ token_id: token.id }) || false;
+                return token ? (
+                    UserToken.find({ token_id: token.id })
+                ) : false;
             }).then(function(userToken){
-                return User.find({ id: userToken.user_id }) || false;
+                return userToken ? (
+                    User.find({ id: userToken.user_id })
+                ) : false;
             });
         },
 

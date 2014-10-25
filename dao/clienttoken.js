@@ -24,7 +24,9 @@ module.exports = function(app){
 
         retrieveClient: function(accessToken){
             return Token.retrieveToken(accessToken).then(function(token){
-                return ClientToken.find({ token_id: token.id }) || false;
+                return token ? (
+                    ClientToken.find({ token_id: token.id })
+                ) : false;
             }).then(function(clientToken){
                 return clientToken ? (
                     Client.find({ id: clientToken.client_id })
