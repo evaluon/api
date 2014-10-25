@@ -3,7 +3,7 @@ module.exports = function(app, sql){
     var log = app.utils.log,
         _ = app.utils._;
 
-    var Dao = {
+    self = {
 
         find: function(values){
             return sql.selectOne('client', values);
@@ -15,7 +15,7 @@ module.exports = function(app, sql){
 
         create: function(client){
             return sql.insert('client', client).then(function(){
-                return Dao.find({id: client.id});
+                return self.find({id: client.id});
             });
         },
 
@@ -29,6 +29,6 @@ module.exports = function(app, sql){
 
     };
 
-    return Dao;
+    return self;
 
 }

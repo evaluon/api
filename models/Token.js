@@ -13,9 +13,9 @@ module.exports = function(app, sql){
             return sql.select('token', values);
         },
 
-        create: function(client){
-            return sql.insert('token', token).then(function(){
-                return Dao.find({id: token.id});
+        create: function(token){
+            return sql.insert('token', token).then(function(res){
+                return Dao.find({id: res.insertId});
             });
         },
 

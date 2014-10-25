@@ -1,13 +1,13 @@
 module.exports = function(err, data, res){
 
     var obj = {
-        success: (err == null)
+        success: !err
     }
 
     if(err){
         obj.error = err;
     } else {
-        obj.data = data;
+        if(data) obj.data = data;
     }
 
     res.json(obj);

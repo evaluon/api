@@ -17,7 +17,7 @@ module.exports = function(app){
     server.exchange(oauth2orize.exchange.clientCredentials(
         function(client, scope, done) {
 
-            ClientToken.retrieveToken(client).then(function(token){
+            ClientToken.retrieveToken(client, true).then(function(token){
                 if(token){
                     done(null, token.access_token, token.refresh_token);
                 } else {
@@ -36,17 +36,9 @@ module.exports = function(app){
                 mail: username,
                 password: password
             }).then(function(user){
-                if(user){
-                    return UserToken.retrieveToken(user)
-                } else {
-                    return false;
-                }
+                return UserToken.retrieveToken(user) || false;
             }).then(function(token){
-                if(token){
-                    done(null, token.access_token, token.refresh_token);
-                } else {
-                    done(null, false);
-                }
+                done(null, token.access_token || false, token.refresh_token);
             }).catch(done);
 
         }
@@ -57,8 +49,7 @@ module.exports = function(app){
         function(client, refreshToken, scope, done) {
 
             RefreshToken.refreshToken(refreshToken).then(function(token){
-                if(token) done(null, token.access_token, token.refresh_token);
-                else done(null, false);
+                done(null, token.access_token || false, token.refresh_token);
             }).catch(done);
 
         }
