@@ -1,8 +1,7 @@
 module.exports = function(app){
 
     var log = app.utils.log,
-        Role = app.db.Role,
-        Permission = require('./permission')(app);
+        Role = app.db.Role;
 
     return {
 
@@ -20,7 +19,7 @@ module.exports = function(app){
                 return role.addPermission(permission);
             });
         }
-        
+
     };
 
 }

@@ -1,40 +1,24 @@
 module.exports = function(app){
 
     var log = app.utils.log,
-        User = app.db.User,
-        Student = app.db.Student,
-        OtherZone = app.db.OtherZone;
+        User = app.db.User;
 
     return {
 
         retrieveUser: function(user){
-            return User.find({
-                where: user
-            });
+            return User.find(user);
         },
 
         findByMail: function(mail){
-            return User.find({
-                where: {
-                    mail: mail
-                }
-            })
+            return User.find({ mail: mail });
         },
 
         createUser: function(options){
-            return User.create(options).then(function(user){
-                return user.updateAttributes({ RoleId: 'user' });
-            }).then(function(user){
-                return Student.create({ UserId: user.id });
-            }).then(function(student){
-                return Student.user;
-            });
+            return User.create(options);
         },
 
         updateUser: function(options){
-            return User.find(options.user.id).then(function(user){
-                return user.updateAttributes(options.body);
-            });
+            return User.update(options.user.id, options.user);
         }
 
     };

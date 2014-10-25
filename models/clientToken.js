@@ -1,27 +1,43 @@
-module.exports = function(sequelize, DataTypes){
+module.exports = function(app, sql){
 
-    return sequelize.define('ClientToken', {}, {
+    var log = app.utils.log,
+    _ = app.utils._;
 
-        timestamps: false,
+    var Dao = {
 
-        classMethods : {
+        find: function(values){
+            return sql.selectOne('client_token', values);
+        },
 
-            associate: function(models){
+        findAll: function(values){
+            return sql.select('client_token', values);
+        },
 
-                models.Client
-                    .hasMany(models.Token, { through: models.ClientToken });
+        findActive: function(id){
+            return sql.one(
+                "SELECT t.* FROM token t, client_token ct WHERE " +
+                "ct.token_id = t.id " +
+                "AND ct.client_id = ? " +
+                "AND expired IS NULL", [id]
+            );
+        },
 
-                models.Token
-                    .hasMany(models.Client, { through: models.ClientToken });
+        create: function(client_token){
+            return sql.insert('client_token', client_token).then(function(){
+                return Dao.find(client_token);
+            });
+        },
 
-                models.ClientToken
-                    .belongsTo(models.Token, { foreignKeyConstraint: true })
-                    .belongsTo(models.Client, { foreignKeyConstraint: true });
+        update: function(old_client_token, client_token){
+            return sql.update('client_token', client_token, old_client_token);
+        },
 
-            }
-
+        destroy: function(client_token){
+            return sql.delete('client_token', client_token);
         }
 
-    });
+    };
 
-};
+    return Dao;
+
+}

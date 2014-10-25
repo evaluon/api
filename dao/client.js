@@ -8,7 +8,7 @@ module.exports = function(app){
     return {
 
         retrieveClient: function(id, secret){
-            return Client.find({ where: { id: id, secret: secret } });
+            return Client.find({ pk_id: id, secret: secret });
         },
 
         createClient: function(client){
@@ -24,9 +24,9 @@ module.exports = function(app){
 
         updateClient: function(id, options){
 
-            return Client.find(id).then(function(client){
+            return Client.find({pk_id: id}).then(function(client){
                 if(client){
-                    return client.updateAttributes(options);
+                    return Client.update(id, options);
                 } else {
                     throw ({"message": "Client not found"});
                 }
@@ -37,7 +37,7 @@ module.exports = function(app){
         deleteClient: function(id) {
 
             return Client.find(id).then(function(client){
-                return client.destroy();
+                return Client.destroy(id);
             });
 
         }

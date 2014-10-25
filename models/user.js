@@ -1,44 +1,34 @@
-module.exports = function(sequelize, DataTypes){
+module.exports = function(app, sql){
 
-    return sequelize.define('User', {
+    var log = app.utils.log,
+        _ = app.utils._;
 
-        firstName : {
-            type: DataTypes.STRING(96),
-            allowNull: false
+    var Dao = {
+
+        find: function(values){
+            return sql.selectOne('user', values);
         },
-        lastName: {
-            type: DataTypes.STRING(96),
-            allowNull: false
+
+        findAll: function(values){
+            return sql.select('user', values);
         },
-        phoneNumber: {
-            type: DataTypes.STRING(10),
-            unique: true,
-            allowNull: false
+
+        create: function(user){
+            return sql.insert('user', user).then(function(res){
+                return Dao.find({id: res.insertId });
+            });
         },
-        mail: {
-            type: DataTypes.STRING(128),
-            unique: true,
-            allowNull: false
+
+        update: function(id, user){
+            return sql.update('user', user, { id: id });
         },
-        password: {
-            type: DataTypes.STRING(40),
-            allowNull: false
+
+        destroy: function(id){
+            return sql.delete('user', { id: id });
         }
 
-    }, {
+    };
 
-        timestamps: false,
-        classMethods : {
+    return Dao;
 
-            associate: function(models){
-
-                models.User
-                    .hasOne(models.Student)
-                    .belongsTo(models.Role, { foreignKeyConstriant: true });
-
-            }
-
-        }
-    });
-
-};
+}

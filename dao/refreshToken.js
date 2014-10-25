@@ -21,8 +21,7 @@ module.exports = function(app){
 
                         if(!userToken) return false;
 
-                        userId = userToken.UserId;
-                        clientId = userToken.ClientId;
+                        userId = userToken.user_id;
 
                         return Token.refreshToken(
                             refreshToken
@@ -31,9 +30,8 @@ module.exports = function(app){
                             tokenId = token.id;
 
                             return UserToken.associateToken({
-                                TokenId: tokenId,
-                                UserId: userId,
-                                ClientId: clientId
+                                token_id: tokenId,
+                                user_id: userId
                             }).then(function(){
                                 return token;
                             });
@@ -42,24 +40,25 @@ module.exports = function(app){
 
                     });
 
-                }
+                } else {
+                        clientId = clientToken.client_id;
 
-                clientId = clientToken.ClientId;
+                    // Expira el token existente y crea uno nuevo
+                    return Token.refreshToken(
+                        refreshToken
+                    ).then(function(token){
+                        tokenId = token.id;
 
-                // Expira el token existente y crea uno nuevo
-                return Token.refreshToken(
-                    refreshToken
-                ).then(function(token){
-                    tokenId = token.id;
+                        return ClientToken.associateToken({
+                            client_id: clientId,
+                            token_id: tokenId
+                        }).then(function(){
+                            return token;
+                        });
 
-                    return ClientToken.associateToken({
-                        ClientId: clientId,
-                        TokenId: tokenId
-                    }).then(function(){
-                        return token;
                     });
 
-                });
+                }
 
 
             });

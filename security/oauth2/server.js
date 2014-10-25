@@ -19,11 +19,11 @@ module.exports = function(app){
 
             ClientToken.retrieveToken(client).then(function(token){
                 if(token){
-                    done(null, token.accessToken, token.refreshToken);
+                    done(null, token.access_token, token.refresh_token);
                 } else {
                     done(null, false);
                 }
-            }).catch(done).error(done);
+            }).catch(done);
 
         }
     ));
@@ -33,23 +33,21 @@ module.exports = function(app){
         function(client, username, password, scope, done) {
 
             User.find({
-                where: {
-                    mail: username,
-                    password: password
-                }
+                mail: username,
+                password: password
             }).then(function(user){
                 if(user){
-                    return UserToken.retrieveToken(user, client)
+                    return UserToken.retrieveToken(user)
                 } else {
                     return false;
                 }
             }).then(function(token){
                 if(token){
-                    done(null, token.accessToken, token.refreshToken);
+                    done(null, token.access_token, token.refresh_token);
                 } else {
                     done(null, false);
                 }
-            }).catch(done).error(done);
+            }).catch(done);
 
         }
     ));
@@ -59,9 +57,9 @@ module.exports = function(app){
         function(client, refreshToken, scope, done) {
 
             RefreshToken.refreshToken(refreshToken).then(function(token){
-                if(token) done(null, token.accessToken, token.refreshToken);
+                if(token) done(null, token.access_token, token.refresh_token);
                 else done(null, false);
-            }).catch(done).error(done);
+            }).catch(done);
 
         }
     ));

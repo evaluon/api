@@ -1,41 +1,34 @@
-module.exports = function(sequelize, DataTypes){
+module.exports = function(app, sql){
 
-    return sequelize.define('Client', {
+    var log = app.utils.log,
+        _ = app.utils._;
 
-        id: {
-            type: DataTypes.STRING,
-            primaryKey: true
+    var Dao = {
+
+        find: function(values){
+            return sql.selectOne('client', values);
         },
-        secret: {
-            type: DataTypes.STRING,
-            unique: true,
-            allowNull: false
+
+        findAll: function(values){
+            return sql.select('client', values);
         },
-        name: {
-            type: DataTypes.STRING(255),
-            unique: true,
-            allowNull: false
+
+        create: function(client){
+            return sql.insert('client', client).then(function(){
+                return Dao.find({id: client.id});
+            });
         },
-        description: {
-            type: DataTypes.STRING
+
+        update: function(id, client){
+            return sql.update('client', client, { id: id });
+        },
+
+        destroy: function(id){
+            return sql.delete('client', { id: id });
         }
 
-    }, {
+    };
 
-        timestamps: false,
+    return Dao;
 
-        classMethods: {
-
-            associate: function(models){
-
-                models.Client
-                    .hasMany(models.Token, { through: models.ClientToken })
-                    .belongsTo(models.Role, { foreignKeyConstraint: true });
-
-            }
-
-        }
-
-    });
-
-};
+}

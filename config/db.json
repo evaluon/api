@@ -1,13 +1,12 @@
 {
     "evaluon": {
-        "db": "evaluon",
-        "user": "hackaton",
+        "debug": "true",
+        "host": "db.boolinc.co",
+        "user": "remote",
         "password": "Somosb00l.",
-        "options": {
-            "dialect": "mysql",
-            "host": "db.boolinc.co"
-        }
+        "database": "evaluon"
     },
 
     "preferred": "evaluon"
+
 }

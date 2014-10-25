@@ -6,8 +6,8 @@ module.exports = function(app){
     return {
 
         /**
-        * Retrieves an average for an specific period of time (identified by
-        * id) for all knowledge areas institution has evaluated, for all
+        * Retrieves a results list for an specific period of time (identified
+        * by id) for all knowledge areas institution has evaluated, for all
         * institutions where evaluee is active.
         **/
         retrieveByPeriod: function(req, res, next){
@@ -23,12 +23,22 @@ module.exports = function(app){
                         {
                             id: 1,
                             areaName: "Matemáticas",
-                            average: 3.94
+                            results: [
+                            4.02,
+                            3.06,
+                            5.00
+                            ],
+                            average: 4.03
                         },
                         {
                             id: 4,
                             areaName: "Ciencias Naturales",
-                            average: 4.60
+                            results: [
+                            4.60,
+                            5.00,
+                            5.00
+                            ],
+                            average: 4.70
                         },
                         {
                             id: 6,
@@ -45,7 +55,7 @@ module.exports = function(app){
         },
 
         /**
-        * Retrieves an average for an specific institution (identified by
+        * Retrieves a results list for an specific institution (identified by
         * id) in active period for all knowledge areas institution has
         * evaluated.
         **/
@@ -80,8 +90,8 @@ module.exports = function(app){
         },
 
         /**
-        * Retrieves an average for an specific knowledge area (identified by
-        * id) in active period for all institutions where evaluee is active.
+        * Retrieves a results list for an specific knowledge area (identified
+        * by id) in active period for all institutions where evaluee is active.
         **/
         retrieveByKnowledgeArea: function(req, res, next){
 

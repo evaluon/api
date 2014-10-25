@@ -20,245 +20,48 @@ var http        = require('http');
 var app         = require('./core/loader');
 var srv         = require('./core/server')(app);
 
-var sequelize   = app.db.sequelize,
-    db          = app.db,
-    dao         = app.dao;
+var dao         = app.dao,
+    log         = app.utils.log;
 
 function recreate(){
-    return sequelize.drop().then(function(){
-        return db.Token.sync();
-    }).then(function(){
-        return db.Permission.sync();
-    }).then(function(){
-        return db.RolePermission.sync();
-    }).then(function(){
-        return db.Role.sync();
-    }).then(function(){
-        return db.User.sync();
-    }).then(function(){
-        return db.Client.sync();
-    }).then(function(){
-        return db.ClientToken.sync();
-    }).then(function(){
-        return db.UserToken.sync();
-    }).then(function(){
-        return db.Student.sync();
-    }).then(function(){
-        return db.Test.sync();
-    }).then(function(){
-        return db.AnswerOption.sync();
-    }).then(function(){
-        return db.Question.sync();
-    }).then(function(){
-        return db.SelfTest.sync();
-    }).then(function(){
-        return db.TestResponse.sync();
-    }).then(function(){
-        return db.TestQuestion.sync();
-    }).then(function(){
-        return db.Answer.sync();
-    }).then(function(){
 
-        var results = {};
+    var results = {};
 
-        var Utils = db.Sequelize.Utils,
+    var Token = dao.token,
+        Client = dao.client,
+        ClientToken = dao.clienttoken;
 
-            Role = dao.role,
-            Token = dao.token,
-            Client = dao.client,
-            Permission = dao.permission,
-            ClientToken = dao.clienttoken
+    return Client.createClient({
+        id: 'administrator',
+        name: 'Unit Administrator',
+        secret: require('crypto').randomBytes(32).toString('base64'),
+        role_id: 'admin'
+    }).then(function(client){
+        results.client = client;
+        return Token.createToken();
+    }).then(function(token){
 
-            Question = dao.question,
-            AnswerOption = dao.answeroption,
-            Answer = dao.answer;
+        results.token = token;
 
-        var defaultPermissions = [
-
-            {
-                id: 1,
-                name: 'anon'
-            },
-            {
-                id: 2,
-                name: 'user'
-            },
-            {
-                id: 4,
-                name: 'admin'
-            },
-            ],
-
-            defaultRoles = [
-            {
-                name: 'anon',
-                permissions: [1]
-            },
-            {
-                name: 'user',
-                permissions: [1, 2]
-            },
-            {
-                name: 'admin',
-                permissions: [1, 2, 4]
-            }
-
-        ];
-
-        Question.createQuestion({
-            text: question1
-        }).then(function(question1){
-
-            results.question1 = question1;
-
-            var q = new Utils.QueryChainer;
-
-            for(a in answers1){
-                q.add(AnswerOption.create({ text: answers1[a] }));
-            }
-
-            return q.run();
-
-        }).then(function(newAnswers1){
-
-            var q = new Utils.QueryChainer, question = results.question1;
-
-            for(a in newAnswers1){
-
-                answer = newAnswers1[a];
-
-                q.add(
-                    Answer.associate({
-                        AnswerOptionId: answer.id,
-                        QuestionId: question.id,
-                        right: a == good1
-                    })
-                );
-
-            }
-
-            return q.run();
-
-        }).then(function(){
-
-            return Question.createQuestion({
-                text: question2
-            });
-
-        }).then(function(question2){
-
-            results.question2 = question2;
-
-            var q = new Utils.QueryChainer;
-
-            for(a in answers2){
-                q.add(AnswerOption.create({ text: answers2[a] }));
-            }
-
-            return q.run();
-
-        }).then(function(newAnswers2){
-
-            var q = new Utils.QueryChainer, question = results.question2;
-
-            for(a in newAnswers2){
-
-                answer = newAnswers2[a];
-
-                q.add(
-                    Answer.associate({
-                        AnswerOptionId: answer.id,
-                        QuestionId: question.id,
-                        right: a == good2
-                    })
-                );
-
-            }
-
-            return q.run();
-
-        }).then(function(){
-
-            var q = new Utils.QueryChainer;
-
-            for(p in defaultPermissions){
-                q.add(Permission.createPermission(defaultPermissions[p]));
-            }
-
-            return q.run();
-
-        }).then(function(permissions){
-
-            var q = new Utils.QueryChainer;
-
-            for(r in defaultRoles){
-                q.add(Role.createRole(defaultRoles[r]));
-            }
-
-            return q.run();
-
-        }).then(function(roles){
-
-            for(r in roles){
-
-                var role = roles[r];
-                permissions = [];
-
-                for(sRole in defaultRoles){
-                    if(defaultRoles[sRole].name == role.name){
-                        permissions = defaultRoles[sRole].permissions;
-                    }
-                }
-
-                for(p in permissions){
-                    (function(role, p){
-                        return Role.addPermission(role, p);
-                    })(role, permissions[p]);
-                }
-
-            }
-
-        }).then(function(){
-
-            return Client.createClient({
-                id: 'administrator',
-                name: 'Unit Administrator',
-                secret: require('crypto').randomBytes(32).toString('base64'),
-                RoleId: 'admin'
-            });
-
-        }).then(function(client){
-
-            results.client = client.dataValues;
-
-            return Token.createToken();
-
-        }).then(function(token){
-
-            results.token = token.dataValues;
-
-            return ClientToken.associateToken({
-                ClientId: results.client.id,
-                TokenId: token.id
-            });
-
-        }).then(function(){
-
-            console.log(
-                "New configuration:\n" +
-                "Client\n\tId: %s\n\tName: %s\n\tSecret: %s\n" +
-                "Token\n\tAccess Token: %s\n\tRefresh Token: %s",
-                results.client.id, results.client.name, results.client.secret,
-                results.token.accessToken, results.token.refreshToken
-            );
-
+        return ClientToken.associateToken({
+            client_id: results.client.id,
+            token_id: token.id
         });
 
-    });
-}
+    }).then(function(){
 
-function start(){
-    return sequelize.authenticate();
+        console.log(
+            "New configuration:\n" +
+            "Client\n\tId: %s\n\tName: %s\n\tSecret: %s\n" +
+            "Token\n\tAccess Token: %s\n\tRefresh Token: %s",
+            results.client.id, results.client.name, results.client.secret,
+            results.token.access_token, results.token.refresh_token
+        );
+
+    }).catch(function(error){
+        log.debug(error);
+    });
+
 }
 
 var startServer = function(){
@@ -278,5 +81,5 @@ var startServer = function(){
 if(process.env.INSTALL){
     recreate().then(startServer);
 } else {
-    start().then(startServer);
+    startServer();
 }

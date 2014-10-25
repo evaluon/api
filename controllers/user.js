@@ -2,7 +2,8 @@ module.exports = function(app){
 
     var responseView = require('../views/jsonSuccessResponse'),
         Dao = app.dao.user,
-        log = app.utils.log;
+        log = app.utils.log,
+        _ = app.utils._;
 
     return {
 
@@ -11,10 +12,19 @@ module.exports = function(app){
         },
 
         createUser: function(req, res, next){
-            if(req.user.RoleId == 'admin'){
-                Dao.createUser(req.body).then(function(user){
+            if(req.user.role_id == 'admin'){
+
+                var user = _.extend(
+                    {
+                        role_id: 'user',
+                        register_date: new Date()
+                    },
+                    req.body
+                );
+
+                Dao.createUser(user).then(function(user){
                     responseView(user, res);
-                }).catch(next).error(next);
+                }).catch(next);
             } else {
                 throw new Error("Forbidden");
             }
@@ -24,13 +34,13 @@ module.exports = function(app){
         updateUser: function(req, res, next){
             Dao.updateUser(req.body).then(function(user){
                 responseView(user, res);
-            }).catch(next).error(next);
+            }).catch(next);
         },
 
         deleteUser: function(req, res, next){
             Dao.updateUser(req.body).then(function(user){
                 responseView(user, res);
-            }).catch(next).error(next);
+            }).catch(next);
         }
 
     };

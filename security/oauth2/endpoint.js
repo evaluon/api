@@ -24,17 +24,11 @@ module.exports = function(app){
         function(clientId, clientSecret, done) {
 
             Client.find({
-                where: {
-                    id: clientId,
-                    secret: clientSecret
-                }
+                id: clientId,
+                secret: clientSecret
             }).then(function(client){
-                if(client){
-                    done(null, client);
-                } else {
-                    done(null, false);
-                }
-            }).error(done).catch(done);
+                done(null, client || false);
+            }).catch(done);
 
         }
     ));
@@ -42,19 +36,13 @@ module.exports = function(app){
     passport.use(new BearerStrategy(
         function(accessToken, done) {
 
-            ClientToken.retrieveClient(accessToken).then(function(client){
-                if(client){
-                    return client;
-                } else {
-                    return UserToken.retrieveUser(accessToken);
-                }
+            ClientToken.retrieveClient(
+                accessToken
+            ).then(function(client){
+                return client || UserToken.retrieveUser(accessToken);
             }).then(function(user){
-                if(user){
-                    done(null, user);
-                } else {
-                    done(null, false);
-                }
-            }).catch(done).error(done);
+                done(null, user || false);
+            }).catch(done);
 
         }
     ));

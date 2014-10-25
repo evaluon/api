@@ -1,38 +1,27 @@
 module.exports = function(app){
 
     var crypto = app.utils.crypto,
-    log = app.utils.log,
-    _ = app.utils._,
+        log = app.utils.log,
+        _ = app.utils._,
 
-    Token = app.db.Token,
-    User = app.db.User,
-    UserToken = app.db.UserToken,
-    Client = app.db.Client,
-    ClientToken = app.db.ClientToken;
+        Token = app.db.Token;
 
     var Dao = {
 
         retrieveToken: function(accessToken){
-
-            return Token.find({
-                where: { accessToken: accessToken }
-            });
-
+            return Token.find({ access_token: accessToken });
         },
 
         retrieveRefreshToken: function(refreshToken){
-
-            return Token.find({
-                where: { refreshToken: refreshToken }
-            });
-
+            return Token.find({ refresh_token: refreshToken });
         },
 
         createToken: function(){
 
             var newToken = {
-                accessToken: crypto.randomBytes(64).toString('base64'),
-                refreshToken: crypto.randomBytes(64).toString('base64')
+                access_token: crypto.randomBytes(64).toString('base64'),
+                refresh_token: crypto.randomBytes(64).toString('base64'),
+                issued: new Date()
             }
 
             return Token.create(newToken);
@@ -41,8 +30,8 @@ module.exports = function(app){
 
         expireToken: function(id) {
 
-            return Token.find(id).then(function(token){
-                return token.destroy();
+            return Token.find(id).then(function(){
+                return Token.update(id, { expired: new Date() });
             });
 
         },
@@ -50,7 +39,7 @@ module.exports = function(app){
         refreshToken: function(refreshToken){
 
             return Token.find({
-                where: { refreshToken: refreshToken }
+                refresh_token: refreshToken
             }).then(function(token){
                 return Dao.expireToken(token.id);
             }).then(function(){

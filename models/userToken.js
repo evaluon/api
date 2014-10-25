@@ -1,32 +1,43 @@
-module.exports = function(sequelize, DataTypes){
+module.exports = function(app, sql){
 
-    return sequelize.define('UserToken', {}, {
+    var log = app.utils.log,
+    _ = app.utils._;
 
-        timestamps: false,
+    var Dao = {
 
-        classMethods : {
+        find: function(values){
+            return sql.selectOne('user_token', values);
+        },
 
-            associate: function(models){
+        findAll: function(values){
+            return sql.select('user_token', values);
+        },
 
-                models.Token
-                    .hasMany(models.User, { through: models.UserToken });
+        findActive: function(id){
+            return sql.one(
+                "SELECT t.* FROM token t, user_token ut WHERE " +
+                "ut.token_id = t.id " +
+                "AND ut.user_id = ? " +
+                "AND expired IS NULL", [id]
+            );
+        },
 
-                models.Client
-                    .hasMany(models.User, { through: models.UserToken });
+        create: function(user_token){
+            return sql.insert('user_token', user_token).then(function(){
+                return Dao.find(user_token);
+            });
+        },
 
-                models.User
-                    .hasMany(models.Token, { through: models.UserToken })
-                    .hasMany(models.Client, { through: models.UserToken });
+        update: function(old_user_token, user_token){
+            return sql.update('user_token', user_token, old_user_token);
+        },
 
-                models.UserToken
-                    .belongsTo(models.User, { foreignKeyConstraint: true })
-                    .belongsTo(models.Token, { foreignKeyConstraint: true })
-                    .belongsTo(models.Client, { foreignKeyConstraint: true });
-
-            }
-
+        destroy: function(user_token){
+            return sql.delete('user_token', user_token);
         }
 
-    });
+    };
 
-};
+    return Dao;
+
+}

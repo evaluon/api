@@ -11,7 +11,11 @@ module.exports = function(app){
         findUserToken: function(rToken){
             return Token.retrieveRefreshToken(rToken).then(function(token){
                 if(token){
-                    return token;
+                    return UserToken.find({
+                        token_id: token.id
+                    }).then(function(token){
+                        return token || false;
+                    });
                 } else {
                     return false;
                 }
@@ -27,61 +31,30 @@ module.exports = function(app){
                 if(!token){
                     return null;
                 }
-                return UserToken.find({
-                    where: {
-                        TokenId: token.id
-                    }
-                });
+                return UserToken.find({ token_id: token.id });
             }).then(function(userToken){
                 if(!userToken){
                     return null;
                 }
-                return User.find(userToken.UserId);
+                return User.find({ id: userToken.user_id });
             });
         },
 
-        retrieveToken: function(user, client){
+        retrieveToken: function(user){
 
-            return UserToken.findAll({
-                include: [
-                {
-                    model: app.db.Token
-                }
-                ],
-                where: {
-                    ClientId: client.id,
-                    UserId: user.id
-                }
-            }).then(function(userTokens){
-                var availableTokens = _.filter(userTokens, function(uToken){
-                    return uToken.token.expired == null;
-                });
-
-                if(availableTokens.length > 0){
-                    return availableTokens[0].token;
-                } else {
-                    return false;
-                }
-            }).then(function(token){
-                if(token){
-                    if(token.expired){
-                        return false;
-                    } else {
-                        return token;
-                    }
-                } else {
-                    return false;
-                }
+            return UserToken.findActive(
+                client.id
+            ).then(function(token){
+                return token || false;
             }).then(function(token){
                 if(token){
                     return token;
                 } else {
                     return Token.createToken().then(function(token){
                         return Dao.associateToken({
-                            TokenId: token.id,
-                            ClientId: client.id,
-                            UserId: user.id
-                        }).then(function(userToken){
+                            token_id: token.id,
+                            user_id: user.id
+                        }).then(function(){
                             return token;
                         });
                     });

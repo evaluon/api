@@ -1,6 +1,7 @@
 module.exports = function(app){
 
     var _ = app.utils._,
+        log = app.utils.log,
         ClientToken = app.db.ClientToken,
         Token = require('./token')(app),
         Client = app.db.Client;
@@ -9,11 +10,12 @@ module.exports = function(app){
 
         findClientToken: function(rToken){
             return Token.retrieveRefreshToken(rToken).then(function(token){
-                if(token){
+                return ClientToken.find({
+                    token_id: token.id
+                }).then(function(token){
+                    if(!token) return false;
                     return token;
-                } else {
-                    return false;
-                }
+                }) || false;
             });
         },
 
@@ -23,64 +25,27 @@ module.exports = function(app){
 
         retrieveClient: function(accessToken){
             return Token.retrieveToken(accessToken).then(function(token){
-                if(!token){
-                    return null;
-                }
-                return ClientToken.find({
-                    where: {
-                        TokenId: token.id
-                    }
-                });
+                return ClientToken.find({ token_id: token.id }) || false;
             }).then(function(clientToken){
-                if(!clientToken){
-                    return null;
-                }
-                return Client.find(clientToken.ClientId);
+                return Client.find({ id: clientToken.client_id }) || false;
             });
         },
 
         retrieveToken: function(client){
 
-            return ClientToken.findAll({
-                include: [
-                {
-                    model: app.db.Token
-                }
-                ],
-                where: {
-                    ClientId: client.id
-                }
-            }).then(function(clientToken){
-                var availableTokens = _.filter(clientToken, function(cToken){
-                    return cToken.token.expired == null;
-                });
-
-                if(availableTokens.length > 0){
-                    return availableTokens[0].token;
-                } else {
-                    return false;
-                }
+            return ClientToken.findActive(
+                client.id
+            ).then(function(token){
+                return token || false;
             }).then(function(token){
-                if(token){
-                    if(token.expired){
-                        return false;
-                    } else {
+                return token || Token.createToken().then(function(token){
+                    return Dao.associateToken({
+                        token_id: token.id,
+                        client_id: client.id
+                    }).then(function(){
                         return token;
-                    }
-                } else {
-                    return false;
-                }
-            }).then(function(token){
-                if(token){
-                    return token;
-                } else {
-                    return Token.createToken().then(function(token){
-                        return Dao.associateToken({
-                            TokenId: token.id,
-                            ClientId: client.id
-                        });
                     });
-                }
+                });
             });
 
         }
