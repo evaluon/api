@@ -1,0 +1,11 @@
+{
+    "evaluon": {
+        "host": "db.boolinc.co",
+        "user": "remote",
+        "password": "Somosb00l.",
+        "database": "evaluon"
+    },
+
+    "preferred": "evaluon"
+
+}
