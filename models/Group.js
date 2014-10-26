@@ -22,6 +22,43 @@ module.exports = function(app, sql){
 
         destroy: function(id){
             return sql.delete('group', { id: id });
+        },
+
+        groupPeriods: function(id){
+            return sql.one(
+                'SELECT p.* ' +
+                'FROM periods_in_group pg, period p ' +
+                'WHERE pg.group_id = ? AND ' +
+                '   p.id = pg.period_id AND ' +
+                '   NOW() BETWEEN start_date AND stop_date'
+                , [id]
+            ).then(function(gP){
+                if(!gP) throw { message: "No active periods" };
+                return gP;
+            });
+        },
+
+        setPeriod: function(id){
+            return sql.one(
+                'SELECT ' +
+                '   p.* ' +
+                'FROM ' +
+                '   period p, institution i, `group` g ' +
+                'WHERE ' +
+                '   g.id = ? AND ' +
+                '   i.id = g.institution_id AND ' +
+                '   p.institution_id = i.id AND ' +
+                '   NOW() BETWEEN p.start_date AND p.stop_date '
+                , [id]
+            ).then(function(period){
+                return sql.insert(
+                    'periods_in_group',
+                    {
+                        period_id: period.id,
+                        group_id: id
+                    }
+                );
+            });
         }
 
     };

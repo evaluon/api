@@ -38,9 +38,7 @@ module.exports = function(app){
 
             return ClientToken.findActive(
                 client.id
-            ).then(function(clientToken){
-                return Token.find({ id: clientToken.client_id }) || false;
-            }).then(function(token){
+            ).then(function(token){
                 return token || createToken ? (
                     Token.createToken().then(function(token){
                         return Dao.associateToken({

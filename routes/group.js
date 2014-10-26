@@ -10,6 +10,18 @@ module.exports = function(app){
         cors: true
     },
     {
+        method: 'get',
+        url: '/group/:id/period',
+        action: group.groupPeriods,
+        cors: true
+    },
+    {
+        method: 'put',
+        url: '/group/:id/period',
+        action: group.setPeriod,
+        cors: true
+    },
+    {
         method: 'post',
         url: '/group',
         action: group.createGroup,

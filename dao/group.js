@@ -1,9 +1,9 @@
 module.exports = function(app){
 
     var log = app.utils.log,
-        _ = app.utils._,
-        Group = app.db.Group,
-        Actors = app.db.Actors;
+    _ = app.utils._,
+    Group = app.db.Group,
+    Actors = app.db.Actors;
 
     var self = {
 
@@ -39,7 +39,7 @@ module.exports = function(app){
             } else {
                 throw {
                     message: "Specify which institution and evaluator manages " +
-                        "this group",
+                    "this group",
                     missingFields: ["institution_id", "evaluator_id"]
                 }
             }
@@ -54,6 +54,20 @@ module.exports = function(app){
                     missingFields: ["id"]
                 }
             }
+        },
+
+        groupPeriods: function(id){
+            if(!id) throw {
+                message: "Group id missing", missingFields: [":id"]
+            }
+            return Group.groupPeriods(id);
+        },
+
+        setPeriod: function(id){
+            if(!id) throw {
+                message: "Group id missing", missingFields: [":id"]
+            }
+            return Group.setPeriod(id);
         }
 
     }

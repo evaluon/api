@@ -18,11 +18,11 @@ module.exports = function(app){
         function(client, scope, done) {
 
             ClientToken.retrieveToken(client, true).then(function(token){
-                if(token){
-                    done(null, token.access_token, token.refresh_token);
-                } else {
-                    done(null, false);
-                }
+                done(
+                    null,
+                    token.access_token || false,
+                    token.refresh_token || false
+                );
             }).catch(done);
 
         }

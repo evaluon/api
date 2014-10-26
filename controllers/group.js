@@ -30,6 +30,18 @@ module.exports = function(app){
             Dao.updateGroup(req.params.id, req.body).then(function(group){
                 responseView(group, res);
             }).catch(next);
+        },
+
+        groupPeriods: function(req, res, next){
+            Dao.groupPeriods(req.params.id).then(function(period){
+                responseView(period, res);
+            }).catch(next);
+        },
+
+        setPeriod: function(req, res, next){
+            Dao.setPeriod(req.params.id).then(function(){
+                responseView(null, res);
+            }).catch(next);
         }
 
 
