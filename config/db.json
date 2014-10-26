@@ -1,5 +1,6 @@
 {
     "evaluon": {
+        "debug": "true",
         "host": "db.boolinc.co",
         "user": "remote",
         "password": "Somosb00l.",

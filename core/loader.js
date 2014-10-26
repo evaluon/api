@@ -2,6 +2,7 @@ var fs = require('fs'),
     util = require('util'),
     _ = require('underscore'),
     crypto = require('crypto'),
+    q = require('q'),
 
     log = require("../utils/log"),
     cors = require("../utils/cors"),
@@ -23,6 +24,7 @@ var utils = {
     _: _,
     util: util,
     crypto: crypto,
+    q: q,
 
     oauth2orize: oauth2orize,
     passport: passport,

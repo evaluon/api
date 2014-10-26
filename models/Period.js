@@ -1,13 +1,19 @@
 module.exports = function(app, sql){
 
-    self = {
+    var log = app.utils.log;
+
+    var self = {
 
         find: function(values){
             return sql.selectOne('period', values);
         },
 
-        findAll: function(values){
-            return sql.select('period', values);
+        findAll: function(institution_id){
+            return sql.query(
+                'SELECT * FROM period WHERE institution_id = ? '
+                + 'AND stop_date >= ?'
+                , [institution_id, new Date()]
+            );
         },
 
         create: function(object){

@@ -18,13 +18,13 @@ module.exports = function(app){
     },
     {
         method: 'post',
-        url: '/institution/',
+        url: '/institution',
         action: institution.createInstitution,
         cors: true
     },
     {
         method: 'put',
-        url: '/institution/',
+        url: '/institution',
         action: institution.updateInstitution,
         cors: true
     }

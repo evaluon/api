@@ -12,6 +12,10 @@ module.exports = function(app, sql){
 
         },
 
+        evaluatorGroups: function(user){
+            return sql.select('group', { evaluator_id: user.id });
+        },
+
         setEvaluee: function(user, isDisabled){
             return sql.selectOne(
                 'evaluator', { id: user.id }
@@ -19,7 +23,7 @@ module.exports = function(app, sql){
                 if(u) throw { "message": "Current user is evaluator"};
                 if(isDisabled != null){
                     return sql.insert(
-                        'evaluee', { id: user.id, v_is_disabled: isDisabled}
+                        'evaluee', { id: user.id, disabled: isDisabled}
                     );
                 } else {
                     throw {
@@ -29,6 +33,10 @@ module.exports = function(app, sql){
                     };
                 }
             })
+        },
+
+        evalueeGroups: function(user){
+            return sql.select('group_evaluees', { user_id: user.id });
         }
 
     }

@@ -3,7 +3,7 @@ module.exports = function(app, sql){
     var log = app.utils.log,
         _ = app.utils._;
 
-    self = {
+    var self = {
 
         find: function(values){
             return sql.selectOne('institution', values);
