@@ -39,16 +39,18 @@ module.exports = function(app){
             return ClientToken.findActive(
                 client.id
             ).then(function(token){
-                return token || createToken ? (
-                    Token.createToken().then(function(token){
-                        return Dao.associateToken({
-                            token_id: token.id,
-                            client_id: client.id
-                        }).then(function(){
-                            return token;
-                        });
-                    })
-                ) : false;
+                return token || (
+                    createToken ? (
+                        Token.createToken().then(function(token){
+                            return Dao.associateToken({
+                                token_id: token.id,
+                                client_id: client.id
+                            }).then(function(){
+                                return token;
+                            });
+                        })
+                    ) : false
+                );
             });
 
         }
