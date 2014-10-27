@@ -36,7 +36,7 @@ module.exports = function(app){
                 mail: username,
                 password: password
             }).then(function(user){
-                return UserToken.retrieveToken(user) || false;
+                return user ? UserToken.retrieveToken(user) : false;
             }).then(function(token){
                 done(null, token.access_token || false, token.refresh_token);
             }).catch(done);
