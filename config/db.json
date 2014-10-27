@@ -6,6 +6,13 @@
         "database": "evaluon"
     },
 
-    "preferred": "evaluon"
+    "evaluon_local": {
+        "host": "localhost",
+        "user": "root",
+        "password": "",
+        "database": "evaluon"
+    },
+
+    "preferred": "evaluon_local"
 
 }

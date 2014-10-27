@@ -2,7 +2,7 @@ module.exports = function(app){
 
     var SelfTest = app.controllers.selftest;
 
-    return [
+    return [/*
     {
         method: 'get',
         url: '/test',
@@ -33,7 +33,7 @@ module.exports = function(app){
         action: SelfTest.testResult,
         cors: true
     }
-    ];
+    */];
 
 
 };
