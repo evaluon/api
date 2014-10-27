@@ -20,7 +20,9 @@ module.exports = function(app, sql){
         },
 
         update: function(id, user){
-            return sql.update('user', user, { id: id });
+            return sql.update('user', user, { id: id }).then(function(res){
+                return sql.selectOne('user', { id: id });
+            });
         },
 
         destroy: function(id){

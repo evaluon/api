@@ -17,8 +17,8 @@ module.exports = function(app){
             return User.create(options);
         },
 
-        updateUser: function(options){
-            return User.update(options.user.id, options.user);
+        updateUser: function(oUser, user){
+            return User.update(oUser.id, user);
         }
 
     };

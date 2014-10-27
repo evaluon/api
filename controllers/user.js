@@ -32,7 +32,7 @@ module.exports = function(app){
         },
 
         updateUser: function(req, res, next){
-            Dao.updateUser(req.body).then(function(user){
+            Dao.updateUser(req.user, req.body).then(function(user){
                 responseView(user, res);
             }).catch(next);
         },
