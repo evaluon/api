@@ -11,7 +11,7 @@ module.exports = function(err, data, res){
     if(err){
         obj.error = _.omit(err, 'statusCode');
     } else {
-        if(data) obj.data = _.omit(data, 'statusCode');
+        if(data) obj.data = _.isArray(data) ? data : _.omit(data, 'statusCode');
     }
 
     res.json(statusCode, obj);
