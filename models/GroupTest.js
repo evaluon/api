@@ -37,15 +37,20 @@ module.exports = function(app, sql){
         },
 
         findAll: function(group_id){
-            return sql.select('group_test', { group_id: group_id });
+            return sql.query(
+                "SELECT " +
+                "	t.* " +
+                "FROM " +
+                "	test t, group_test gt " +
+                "WHERE group_id = ? AND " +
+                "	t.id = gt.test_id"
+                , [group_id]
+            );
         },
 
         create: function(object){
-            return sql.insert(
-                'group_test',
-                _.extend({ create_date: new Date() }, object)
-            ).then(function(result){
-                return self.find({ id: result.insertId });
+            return sql.insert('group_test', object).then(function(result){
+                return self.findActive({ id: result.insertId });
             });
         }
 

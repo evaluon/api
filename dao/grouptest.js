@@ -33,7 +33,7 @@ module.exports = function(app){
                     period_id: object.period_id
                 }
             ).then(function(){
-                return sql.create(object);
+                return GroupTest.create(object);
             });
 
 

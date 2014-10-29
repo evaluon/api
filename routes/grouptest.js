@@ -17,7 +17,7 @@ module.exports = function(app){
     },
     {
         method: 'post',
-        url: '/test/group/:id',
+        url: '/test/group',
         action: GroupTest.create,
         cors: true
     }
