@@ -5,22 +5,22 @@ module.exports = function(app){
     return [
     {
         method: 'get',
-        url: '/knowledge_area',
+        url: '/knowledgeArea',
         action: KnowledgeArea.findAll
     },
     {
         method: 'get',
-        url: '/knowledge_area/:id',
+        url: '/knowledgeArea/:id',
         action: KnowledgeArea.find
     },
     {
         method: 'post',
-        url: '/knowledge_area',
+        url: '/knowledgeArea',
         action: KnowledgeArea.create
     },
     {
         method: 'put',
-        url: '/knowledge_area/:id',
+        url: '/knowledgeArea/:id',
         action: KnowledgeArea.update
     }
     ]
