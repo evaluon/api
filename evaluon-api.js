@@ -65,17 +65,22 @@ function recreate(){
 }
 
 var startServer = function(){
-    http.createServer(srv).listen(
-        srv.get('port'),
-        srv.get('host'),
-        function(){
-            console.log(
-                'Express server listening on http://%s:%d',
-                srv.get('host'),
-                srv.get('port')
-            );
-        }
-    );
+
+    app.connection.connect(function(err){
+        if(err) throw err;
+        http.createServer(srv).listen(
+            srv.get('port'),
+            srv.get('host'),
+            function(){
+                console.log(
+                    'Express server listening on http://%s:%d',
+                    srv.get('host'),
+                    srv.get('port')
+                );
+            }
+        );
+    })
+
 };
 
 if(process.env.INSTALL){

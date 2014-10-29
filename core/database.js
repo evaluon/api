@@ -47,7 +47,7 @@ module.exports = function(app){
 
     db = loadModels(app, sql);
 
-    app = _.extend({db: db}, app);
+    app = _.extend({ connection: connection, db: db}, app);
 
     return app;
 
