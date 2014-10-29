@@ -5,7 +5,7 @@ module.exports = function(app, sql){
 
     var self = {
 
-        findActive: function(group_id){
+        findActive: function(group_id, evaluee_id){
             return sql.one(
                 "SELECT id FROM active_period WHERE gid = ?", [group_id]
             ).then(function(period){
@@ -18,12 +18,20 @@ module.exports = function(app, sql){
                     "SELECT " +
                     "	t.* " +
                     "FROM " +
-                    "	test t, group_test gt " +
+                    "	test t, group_test gt, response r " +
                     "WHERE period_id = ? AND group_id = ? AND " +
+                    "	t.id = r.test_id AND" +
                     "	t.id = gt.test_id AND" +
                     "	t.stop_date IS NOT NULL AND " +
-                    "	NOW() BETWEEN start_date AND stop_date"
-                    , [period.id, group_id]
+                    "	t.id NOT IN (" +
+                    "       SELECT test_id AS id " +
+                    "       FROM opened_test " +
+                    "       WHERE evaluee_id = ? " +
+                    "   ) AND " +
+                    "	NOW() BETWEEN start_date AND stop_date" +
+                    "ORDER BY " +
+                    "   start_date ASC"
+                    , [period.id, group_id, evaluee_id]
                 );
             })
         },

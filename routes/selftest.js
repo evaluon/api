@@ -2,38 +2,26 @@ module.exports = function(app){
 
     var SelfTest = app.controllers.selftest;
 
-    return [/*
+    return [
     {
         method: 'get',
-        url: '/test',
-        action: SelfTest.listSelfTest,
+        url: '/test/self/all',
+        action: SelfTest.findAll,
         cors: true
     },
     {
         method: 'get',
-        url: '/test/:id',
-        action: SelfTest.testDetail,
+        url: '/test/self',
+        action: SelfTest.find,
         cors: true
     },
     {
         method: 'post',
-        url: '/test',
-        action: SelfTest.addSelfTest,
-        cors: true
-    },
-    {
-        method: 'post',
-        url: '/question',
-        action: SelfTest.answerQuestion,
-        cors: true
-    },
-    {
-        method: 'get',
-        url: '/result/:id',
-        action: SelfTest.testResult,
+        url: '/test/self',
+        action: SelfTest.setSelfTest,
         cors: true
     }
-    */];
+    ];
 
 
 };

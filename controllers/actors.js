@@ -12,10 +12,22 @@ module.exports = function(app){
             }).catch(next);
         },
 
+        evaluatorGroups: function(req, res, next){
+            Dao.evaluatorGroups(req.user).then(function(groups){
+                responseView(groups, res);
+            }).catch(next);
+        },
+
         setEvaluee: function(req, res, next){
             Dao.setEvaluee(req.user, req.body).then(function(){
                 responseView(false, res);
             }).catch(next);
+        },
+
+        evalueeGroups: function(req, res, next){
+            Dao.evalueeGroups(req.user).then(function(groups){
+                responseView(groups, res);
+            }).catch(next)
         }
 
     }

@@ -23,7 +23,7 @@ module.exports = function(app, sql){
                 if(u) throw { "message": "Current user is evaluator"};
                 if(isDisabled != null){
                     return sql.insert(
-                        'evaluee', { id: user.id, disabled: isDisabled}
+                        'evaluee', { id: user.id, disabled: isDisabled }
                     );
                 } else {
                     throw {

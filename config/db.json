@@ -13,6 +13,14 @@
         "database": "evaluon"
     },
 
-    "preferred": "evaluon"
+    "evaluon_ud": {
+        "host": "db.boolinc.co",
+        "user": "remote",
+        "port": 143,
+        "password": "Somosb00l.",
+        "database": "evaluon"
+    },
+
+    "preferred": "evaluon_ud"
 
 }

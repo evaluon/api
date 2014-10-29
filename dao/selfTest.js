@@ -1,6 +1,7 @@
 module.exports = function(app){
 
-    var Actors = app.db.Actors;
+    var _ = app.utils._,
+        SelfTest = app.db.SelfTest;
 
     function checkFields(required, object){
 
@@ -29,26 +30,34 @@ module.exports = function(app){
 
     return {
 
-        setEvaluator: function(user){
-            return checkFields(['user'], { user: user }).then(function(){
-                return Actors.setEvaluator(user);
+        findAll: function(evaluee){
+
+            return checkFields(
+                [ 'user' ], { user: evaluee }
+            ).then(function(){
+                return SelfTest.findAll()
             });
+
         },
 
-        evaluatorGroups: function(user){
-            return checkFields(['user'], { user: user }).then(function(){
-                return Actors.evaluatorGroups(user);
+        find: function(evaluee){
+
+            return checkFields(
+                [ 'user' ], { user: evaluee }
+            ).then(function(){
+                return SelfTest.find(evaluee);
             });
+
         },
 
-        setEvaluee: function(user, options){
-            return Actors.setEvaluee(user, options.disabled);
-        },
+        create: function(evaluee){
 
-        evalueeGroups: function(user){
-            return checkFields(['user'], { user: user }).then(function(){
-                return Actors.evalueeGroups(user);
+            return checkFields(
+                [ 'user' ], { user: evaluee }
+            ).then(function(){
+                return SelfTest.create(evaluee);
             });
+
         }
 
     }

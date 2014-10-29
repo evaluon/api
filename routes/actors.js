@@ -11,9 +11,21 @@ module.exports = function(app){
         cors: true
     },
     {
+        method: 'get',
+        url: '/evaluator/group',
+        action: actors.evaluatorGroups,
+        cors: true
+    },
+    {
         method: 'post',
         url: '/evaluee',
         action: actors.setEvaluee,
+        cors: true
+    },
+    {
+        method: 'get',
+        url: '/evaluee/group',
+        action: actors.evalueeGroups,
         cors: true
     }
 
