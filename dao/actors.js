@@ -1,31 +1,8 @@
 module.exports = function(app){
 
-    var Actors = app.db.Actors;
-
-    function checkFields(required, object){
-
-        missingFields = [];
-        for(field in required){
-
-            rField = required[field];
-            if(!(_.contains(object, rField) && object[rField])) {
-                missingFields.push(rField);
-            }
-
-        }
-        if(missingFields.length > 0){
-
-            throw {
-                message: "There are some missing fields",
-                missingFields: missingFields,
-                statusCode: 400
-            }
-            return false;
-
-        }
-        return true;
-
-    }
+    var checkFields = app.utils.checkFields,
+        log = app.utils.log,
+        Actors = app.db.Actors;
 
     return {
 

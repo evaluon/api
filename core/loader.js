@@ -7,6 +7,7 @@ var fs = require('fs'),
     log = require("../utils/log"),
     cors = require("../utils/cors"),
     nodemailer = require('../utils/nodemailer'),
+    checkFields = require("../utils/checkFields"),
 
     express = require('express'),
     passport = require('passport'),
@@ -21,10 +22,11 @@ var utils = {
     log: log,
     cors: cors,
 
+    q: q,
     _: _,
     util: util,
     crypto: crypto,
-    q: q,
+    checkFields: checkFields,
 
     oauth2orize: oauth2orize,
     passport: passport,
