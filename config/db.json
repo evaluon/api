@@ -14,6 +14,7 @@
     },
 
     "evaluon_ud": {
+        "debug": true,
         "host": "db.boolinc.co",
         "user": "remote",
         "port": 143,
@@ -21,6 +22,6 @@
         "database": "evaluon"
     },
 
-    "preferred": "evaluon"
+    "preferred": "evaluon_ud"
 
 }

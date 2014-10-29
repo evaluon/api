@@ -13,7 +13,13 @@ module.exports = function(app, sql){
         },
 
         evaluatorGroups: function(user){
-            return sql.select('group', { evaluator_id: user.id });
+            return sql.selectOne('evaluator', { id: user.id }).then(function(e){
+                if(!e) throw {
+                    message: "User is not an evaluator",
+                    statusCode: 403
+                }
+                return sql.select('group', { evaluator_id: user.id });
+            });
         },
 
         setEvaluee: function(user, isDisabled){
@@ -36,7 +42,13 @@ module.exports = function(app, sql){
         },
 
         evalueeGroups: function(user){
-            return sql.select('group_evaluees', { user_id: user.id });
+            return sql.selectOne('evaluee', { id: user.id }).then(function(e){
+                if(!e) throw {
+                    message: "User is not an evaluee",
+                    statusCode: 403
+                }
+                return sql.select('group_evaluees', { evaluee_id: user.id });
+            });
         }
 
     }
