@@ -1,3 +1,6 @@
+var q = require('q'),
+    _ = require('underscore');
+
 module.exports = function(required, object){
 
     return q.fcall(function(){
@@ -14,8 +17,6 @@ module.exports = function(required, object){
         }
         if(missingFields.length > 0){
 
-            log.debug(false);
-
             throw {
                 message: "There are some missing fields",
                 missingFields: missingFields,
@@ -23,8 +24,6 @@ module.exports = function(required, object){
             };
 
         }
-
-        log.debug(true);
 
     });
 
