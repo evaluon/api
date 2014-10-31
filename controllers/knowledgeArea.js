@@ -1,14 +1,14 @@
 module.exports = function(app){
 
     var log = app.utils.log,
-        Dao = app.dao.actors,
+        Dao = app.dao.knowledgeArea,
         responseView = require('../views/jsonSuccessResponse');
 
     return {
 
         create: function(req, res, next){
             Dao.create(req.body.id).then(function(knowledge_area){
-                responseView(null, res);
+                responseView(knowledge_area, res);
             }).catch(next);
         },
 

@@ -1,9 +1,14 @@
 module.exports = function(app, sql){
 
+    var log = app.utils.log;
+
     var self = {
 
         findAll: function(){
-            return sql.select('knowledge_area');
+            return sql.select('knowledge_area').then(function(ka){
+                log.debug(ka);
+                return ka;
+            });
         },
 
         find: function(knowledge_area){
@@ -12,7 +17,7 @@ module.exports = function(app, sql){
 
         create: function(knowledge_area){
             return sql.insert(
-                'knowledge_area', {id: knowledge_area }
+                'knowledge_area', { id: knowledge_area }
             ).then(function(){
                 return self.find(knowledge_area);
             });
