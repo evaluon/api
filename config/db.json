@@ -1,7 +1,7 @@
 {
     "evaluon": {
         "host": "db.boolinc.co",
-        "user": "remote",
+        "user": "hackaton",
         "password": "Somosb00l.",
         "database": "evaluon"
     },
