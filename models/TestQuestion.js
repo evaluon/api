@@ -1,5 +1,9 @@
 module.exports = function(app, sql){
 
+    var _ = app.utils._,
+        log = app.utils.log,
+        Q = app.utils.q;
+
     return {
 
         findAll: function(test){
@@ -12,11 +16,36 @@ module.exports = function(app, sql){
 
         findByKnowledgeArea: function(test, knowledgeArea){
             return sql.query(
-                "SELECT q.* FROM question q, test_questions tq " +
-                "WHERE tq.test_id = ? AND q.id = tq.question_id " +
+                "SELECT q.* " +
+                "FROM " +
+                "   question q, test_questions tq " +
+                "WHERE" +
+                "   tq.test_id = ? AND q.id = tq.question_id " +
                 "AND q.knowledge_area_id = ?",
                 [test, knowledgeArea]
-            );
+            ).then(function(questions){
+
+                qs = [];
+
+                for(question in questions){
+                    question = questions[question];
+
+                    qs.push(
+                        sql.query(
+                            "SELECT a.* FROM answer a, answer_options qa " +
+                            "WHERE a.id = qa.answer_id AND qa.question_id = ?",
+                            [question.id]
+                        ).then(function(answers){
+                            question.answers = answers;
+                            return question;
+                        })
+                    );
+
+                }
+
+                return Q.all(qs);
+
+            });
         },
 
         add: function(test, question){
