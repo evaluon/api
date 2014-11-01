@@ -27,7 +27,7 @@ module.exports = function(app){
             return checkFields([':id'], { ':id': test}).then(function(){
                 return KnowledgeArea.findByTest(test);
             })
-        }
+        },
 
         findAll: function(){
             return KnowledgeArea.findAll();

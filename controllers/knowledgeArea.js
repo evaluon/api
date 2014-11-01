@@ -28,7 +28,7 @@ module.exports = function(app){
             Dao.findByTest(req.params.id).then(function(kas){
                 responseView(kas, res);
             }).catch(next);
-        }
+        },
 
         update: function(req, res, next){
             Dao.update(req.params.id, req.body.id).then(function(answer){
