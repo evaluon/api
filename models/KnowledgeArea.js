@@ -11,18 +11,6 @@ module.exports = function(app, sql){
             });
         },
 
-        findByTest: function(test){
-            return sql.selectOne(
-                "SELECT ka.* " +
-                "FROM " +
-                "   knowledge_area ka, test_knowledge_areas tka " +
-                "WHERE " +
-                "   ka.id = tka.knowledge_area_id AND " +
-                "   tka.test_id = ?"
-                ,[test]
-            );
-        },
-
         find: function(knowledge_area){
             return sql.selectOne('knowledge_area', { id: knowledge_area });
         },

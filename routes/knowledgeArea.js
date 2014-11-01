@@ -16,12 +16,6 @@ module.exports = function(app){
         cors: true
     },
     {
-        method: 'get',
-        url: '/test/:id/knowledgeArea',
-        action: KnowledgeArea.findByTest,
-        cors: true
-    },
-    {
         method: 'post',
         url: '/knowledgeArea',
         action: KnowledgeArea.create,

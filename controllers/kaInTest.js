@@ -10,7 +10,7 @@ module.exports = function(app){
             Dao.addKAtoTest(
                 req.params.id, req.body.knowledge_area
             ).then(function(){
-                responseView(null, res);
+                responseView(false, res);
             }).catch(next);
         },
 
