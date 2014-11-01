@@ -23,6 +23,12 @@ module.exports = function(app){
             });
         },
 
+        findByTest: function(test){
+            return checkFields([':id'], { ':id': test}).then(function(){
+                return KnowledgeArea.findByTest(test);
+            })
+        }
+
         findAll: function(){
             return KnowledgeArea.findAll();
         },

@@ -6,22 +6,32 @@ module.exports = function(app){
     {
         method: 'get',
         url: '/knowledgeArea',
-        action: KnowledgeArea.findAll
+        action: KnowledgeArea.findAll,
+        cors: true
     },
     {
         method: 'get',
         url: '/knowledgeArea/:id',
-        action: KnowledgeArea.find
+        action: KnowledgeArea.find,
+        cors: true
+    },
+    {
+        method: 'get',
+        url: '/test/:id/knowledgeArea',
+        action: KnowledgeArea.findByTest,
+        cors: true
     },
     {
         method: 'post',
         url: '/knowledgeArea',
-        action: KnowledgeArea.create
+        action: KnowledgeArea.create,
+        cors: true
     },
     {
         method: 'put',
         url: '/knowledgeArea/:id',
-        action: KnowledgeArea.update
+        action: KnowledgeArea.update,
+        cors: true
     }
     ]
 
