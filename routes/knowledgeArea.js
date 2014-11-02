@@ -5,25 +5,25 @@ module.exports = function(app){
     return [
     {
         method: 'get',
-        url: '/knowledgeArea',
+        url: '/knowledgearea',
         action: KnowledgeArea.findAll,
         cors: true
     },
     {
         method: 'get',
-        url: '/knowledgeArea/:id',
+        url: '/knowledgearea/:id',
         action: KnowledgeArea.find,
         cors: true
     },
     {
         method: 'post',
-        url: '/knowledgeArea',
+        url: '/knowledgearea',
         action: KnowledgeArea.create,
         cors: true
     },
     {
         method: 'put',
-        url: '/knowledgeArea/:id',
+        url: '/knowledgearea/:id',
         action: KnowledgeArea.update,
         cors: true
     }

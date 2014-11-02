@@ -2,14 +2,17 @@ module.exports = function(app, sql){
 
     self = {
 
+        isEvaluator: function(user){
+            return sql.selectOne('evaluator', { id: user.id });
+        },
+
         setEvaluator: function(user){
             return sql.selectOne(
                 'evaluee', { id: user.id }
             ).then(function(u){
                 if(u) throw { "message": "Current user is evaluee"};
                 return sql.insert('evaluator', { id: user.id });
-            })
-
+            });
         },
 
         evaluatorGroups: function(user){
@@ -20,6 +23,10 @@ module.exports = function(app, sql){
                 }
                 return sql.select('group', { evaluator_id: user.id });
             });
+        },
+
+        isEvaluee: function(user){
+            return sql.selectOne('evaluee',  { id: user.id });
         },
 
         setEvaluee: function(user, isDisabled){

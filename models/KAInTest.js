@@ -12,11 +12,31 @@ module.exports = function(app, sql){
             );
         },
 
-        findKAinTest: function(test_id){
+        findKAinTest_evaluator: function(test_id){
             return sql.query(
-                "SELECT knowledge_area_id AS id " +
-                "FROM test_knowledge_areas " +
-                "WHERE test_id = ?", [test_id]
+                "SELECT " +
+                "   DISTINCT knowledge_area_id AS id " +
+                "FROM " +
+                "   test_questions tq, question q " +
+                "WHERE" +
+                "   tq.test_id = ? AND" +
+                "   q.id = tq.question_id"
+                , [test_id]
+            );
+        },
+
+        findKAinTest_evaluee: function(evaluee_id, test_id){
+            return sql.query(
+                "SELECT DISTINCT knowledge_area_id AS id " +
+                "FROM test_questions tq, question q " +
+                "WHERE" +
+                "   q.id = tq.question_id AND" +
+                "   tq.question_id NOT IN (" +
+                "      SELECT question_id FROM response " +
+                "      WHERE test_id = ? AND evaluee_id = ? " +
+                "   ) AND" +
+                "   tq.test_id = ?"
+                , [test_id, evaluee_id, test_id]
             );
         }
 

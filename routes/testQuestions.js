@@ -11,7 +11,7 @@ module.exports = function(app){
     },
     {
         method: 'get',
-        url: '/test/:id/question/:knowledgeArea',
+        url: '/test/:id/question/:knowledgearea',
         action: TestQuestions.testQuestionsByKnowledgeArea,
         cors: true
     },

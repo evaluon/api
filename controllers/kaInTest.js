@@ -15,7 +15,7 @@ module.exports = function(app){
         },
 
         findKAinTest: function(req, res, next){
-            Dao.findKAinTest(req.params.id).then(function(KAs){
+            Dao.findKAinTest(req.user, req.params.id).then(function(KAs){
                 responseView(KAs, res);
             }).catch(next);
         }

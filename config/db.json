@@ -1,5 +1,6 @@
 {
     "evaluon": {
+        "debug": true,
         "host": "db.boolinc.co",
         "user": "hackaton",
         "password": "Somosb00l.",
