@@ -68,8 +68,7 @@ var startServer = function(){
 
     app.connection.getConnection(function(err, client){
         if(err) throw err;
-        app.sql = require('mysql-wrap')(client);
-
+        
         http.createServer(srv).listen(
             srv.get('port'),
             srv.get('host'),
