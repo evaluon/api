@@ -5,13 +5,13 @@ module.exports = function(app){
     return [
     {
         method: 'get',
-        url: '/test/:id/knowledgeArea',
+        url: '/test/:id/knowledgearea',
         action: KAinTest.findKAinTest,
         cors: true
     },
     {
         method: 'post',
-        url: '/test/:id/knowledgeArea',
+        url: '/test/:id/knowledgearea',
         action: KAinTest.addKAtoTest,
         cors: true
     }
