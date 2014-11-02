@@ -27,8 +27,9 @@ module.exports = (function() {
             for(route in corsEnabled){
                 var rt = corsEnabled[route];
                 if(
-                    pattern.fromString(rt.url).matches(req.path) &&
-                    req.method == rt.method.toUpperCase()
+                    pattern.fromString(rt.url.toLowerCase())
+                        .matches(req.path.toLowerCase()) 
+                    && req.method == rt.method.toUpperCase()
                 ){
                     allowCrossDomain(res);
                 }
