@@ -9,7 +9,7 @@
     "evaluon_local": {
         "host": "localhost",
         "user": "root",
-        "password": "",
+        "password": "Somosb00l.",
         "database": "evaluon"
     },
 
@@ -21,6 +21,6 @@
         "database": "evaluon"
     },
 
-    "preferred": "evaluon"
+    "preferred": "evaluon_local"
 
 }
