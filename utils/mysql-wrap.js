@@ -83,16 +83,22 @@ var createMySQLWrap = function (connection) {
             def = Q.defer();
 
 
-        connection.getConnection(function(err, conn){
-            if(err){
-                respond(def, callback, err, null);
-            }
-            conn.query(
+        if(connection.getConnection){
+            connection.getConnection(function(err, conn){
+                if(err){
+                    respond(def, callback, err, null);
+                }
+                conn.query(
+                    statement, values, _.partial(respond, def, callback)
+                );
+
+                conn.release();
+            });
+        } else {
+            connection.query(
                 statement, values, _.partial(respond, def, callback)
             );
-
-            conn.release();
-        });
+        }
 
         return def.promise;
     };
@@ -248,6 +254,8 @@ var createMySQLWrap = function (connection) {
                 conn.beginTransaction(_.partial(
                     respond, def, callback || function () {}
                 ));
+
+                self.transactionConn = conn;
             })
         } else {
             connection.beginTransaction(_.partial(
@@ -261,11 +269,15 @@ var createMySQLWrap = function (connection) {
     self.rollback = function (callback) {
         var def = Q.defer();
         if(connection.getConnection){
-            connection.getConnection(function(err, conn){
-                conn.rollback(_.partial(
-                    respond, def, callback || function () {}
-                ));
-            })
+            var conn = self.transactionConn;
+
+            conn.rollback(_.partial(
+                respond, def, callback || function () {}
+            ));
+
+            conn.release();
+
+            self.transactionConn = null;
         } else {
             connection.rollback(_.partial(
                 respond, def, callback || function () {}
@@ -277,11 +289,15 @@ var createMySQLWrap = function (connection) {
     self.commit = function (callback) {
         var def = Q.defer();
         if(connection.getConnection){
-            connection.getConnection(function(err, conn){
-                conn.commit(_.partial(
-                    respond, def, callback || function () {}
-                ));
-            })
+            var conn = self.transactionConn;
+
+            conn.commit(_.partial(
+                respond, def, callback || function () {}
+            ));
+
+            conn.release();
+
+            self.transactionConn = null;
         } else {
             connection.commit(_.partial(
                 respond, def, callback || function () {}
