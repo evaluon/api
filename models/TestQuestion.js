@@ -1,8 +1,8 @@
 module.exports = function(app, sql){
 
     var _ = app.utils._,
-        log = app.utils.log,
-        Q = app.utils.q;
+    log = app.utils.log,
+    Q = app.utils.q;
 
     return {
 
@@ -29,27 +29,21 @@ module.exports = function(app, sql){
 
                 for(question in questions){
 
-                    index = question;
-                    question = questions[question];
-
                     qs.push(
-                        sql.query(
-                            "SELECT a.*, ? AS `index` " +
-                            "FROM answer a, answer_options qa " +
-                            "WHERE a.id = qa.answer_id AND qa.question_id = ?",
-                            [index, question.id]
-                        ).then(function(answers){
-                            return _.extend(
-                                {
-                                    answers: _.map(answers, function(answer){
-                                        return _.omit(answer, 'index');
-                                    })
-                                },
-                                questions[answers[0].index]
-                            );
-                        }).then(function(q){
-                            return q;
-                        })
+                        (function(question) {
+                            return sql.query(
+                                "SELECT a.* " +
+                                "FROM answer a, answer_options qa " +
+                                "WHERE a.id = qa.answer_id AND qa.question_id = ?",
+                                [question.id]
+                            ).then(function(answers){
+                                return _.extend(
+                                    { answers: answers }, question
+                                );
+                            }).then(function(q){
+                                return q;
+                            });
+                        })(questions[question])
                     );
 
                 }

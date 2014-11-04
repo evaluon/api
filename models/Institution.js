@@ -1,8 +1,8 @@
 module.exports = function(app, sql){
 
     var log = app.utils.log,
-        _ = app.utils._,
-        Q = app.utils.q;
+    _ = app.utils._,
+    Q = app.utils.q;
 
     var self = {
 
@@ -28,17 +28,18 @@ module.exports = function(app, sql){
                 var qs = [];
 
                 for(institution in institutions){
-                    institution = institutions[institution];
 
                     qs.push(
-                        sql.selectOne(
-                            'image', {id: institution.image_id}
-                        ).then(function(image){
-                            return _.extend(
-                                { image: image },
-                                _.omit(institution, 'image_id')
-                            )
-                        })
+                        (function(institution) {
+                            return sql.selectOne(
+                                'image', {id: institution.image_id}
+                            ).then(function(image){
+                                return _.extend(
+                                    { image: image },
+                                    _.omit(institution, 'image_id')
+                                )
+                            })
+                        })(institutions[institution])
                     );
                 }
 
