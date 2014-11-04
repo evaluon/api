@@ -28,16 +28,27 @@ module.exports = function(app, sql){
                 qs = [];
 
                 for(question in questions){
+
+                    index = question;
                     question = questions[question];
 
                     qs.push(
                         sql.query(
-                            "SELECT a.* FROM answer a, answer_options qa " +
+                            "SELECT a.*, ? AS `index` " +
+                            "FROM answer a, answer_options qa " +
                             "WHERE a.id = qa.answer_id AND qa.question_id = ?",
-                            [question.id]
+                            [index, question.id]
                         ).then(function(answers){
-                            question.answers = answers;
-                            return question;
+                            return _.extend(
+                                {
+                                    answers: _.map(answers, function(answer){
+                                        return _.omit(answer, 'index');
+                                    })
+                                },
+                                questions[answers[0].index]
+                            );
+                        }).then(function(q){
+                            return q;
                         })
                     );
 

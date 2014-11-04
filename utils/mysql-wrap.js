@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var Q = require('q');
+var log = require('./log');
 
 /**
 * Setup a client to automatically replace itself if it is disconnected.

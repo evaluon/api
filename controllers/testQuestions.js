@@ -16,7 +16,6 @@ module.exports = function(app){
             Dao.testQuestionsByKnowledgeArea(
                 req.params.id, req.params.knowledgearea
             ).then(function(tests){
-                log.debug(tests);
                 responseView(tests, res);
             }).catch(next);
         },
