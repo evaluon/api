@@ -122,9 +122,11 @@ var createMySQLWrap = function (connection) {
             if(err){
                 respond(def, callback, err, null);
             }
-            connection.query(
+            conn.query(
                 statement, values, _.partial(respond, def, callback)
             );
+
+            conn.release();
         });
 
         return def.promise;
