@@ -1,7 +1,8 @@
 module.exports = function(app, sql){
 
-    var q = app.utils.q,
-    _ = app.utils._;
+    var Q = app.utils.q,
+    _ = app.utils._,
+    log = app.utils.log;
 
     var self = {
 
@@ -24,30 +25,40 @@ module.exports = function(app, sql){
 
         addEvaluees: function(users, group_id){
 
-            return sql.beginTransaction(
+            qs = [];
 
-            ).then(function(){
-                return q.all(
-                    _.map(users, function(user){
-                        return sql.select(
-                            'evaluee', {id: user }
-                        ).then(function(evaluee){
-                            if(!evaluee) return {
-                                error: true, message: "User is not an evaluee"
-                            };
+            for(user in users){
+                user = users[user];
+
+                qs.push(
+                    sql.selectOne('evaluee', {id: user}).then(function(u){
+                        return !u ? { id: user } : null;
+                    })
+                );
+            }
+
+            return Q.all(qs).then(function(evaluees){
+                var filtered = _.filter(
+                    evaluees, function(e){ return e != null }
+                );
+                if(filtered.length > 0){
+                    throw {
+                        message: "Some users are not evaluees",
+                        userList: filtered,
+                        statusCode: 403
+                    }
+                } else {
+
+                    return Q.all(
+                        _.map(users, function(user){
                             return sql.insert(
                                 'group_evaluees',
                                 { evaluee_id: user, group_id: group_id }
                             );
-                        });
-                    })
-                );
-            }).then(function(results){
-                sql.commit();
-            }).catch(function(error){
-                return sql.rollback(function(err){
-                    throw err;
-                });
+                        })
+                    );
+
+                }
             });
 
 

@@ -1,14 +1,16 @@
 module.exports = function(app){
 
-    var checkFields = app.utils.checkFields,
+    var _ = app.utils._,
         log = app.utils.log,
+        checkFields = app.utils.checkFields,
         Actors = app.db.Actors;
 
     return {
 
-        setEvaluator: function(user){
-            return checkFields(['user'], { user: user }).then(function(){
-                return Actors.setEvaluator(user);
+        setEvaluator: function(user, options){
+            var fields = _.extend({ id: user.id }, options);
+            return checkFields(['id', 'area'], fields).then(function(){
+                return Actors.setEvaluator(fields);
             });
         },
 
@@ -19,7 +21,12 @@ module.exports = function(app){
         },
 
         setEvaluee: function(user, options){
-            return Actors.setEvaluee(user, options.disabled);
+            var fields = _.extend({ id: user.id }, options);
+            return checkFields(
+                ['id', 'disability_id', 'evaluee_type', 'level_id'], fields
+            ).then(function(){
+                return Actors.setEvaluee(fields);
+            });
         },
 
         evalueeGroups: function(user){

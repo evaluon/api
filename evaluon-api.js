@@ -66,21 +66,17 @@ function recreate(){
 
 var startServer = function(){
 
-    app.connection.getConnection(function(err, client){
-        if(err) throw err;
-        
-        http.createServer(srv).listen(
-            srv.get('port'),
-            srv.get('host'),
-            function(){
-                console.log(
-                    'Express server listening on http://%s:%d',
-                    srv.get('host'),
-                    srv.get('port')
-                );
-            }
-        );
-    })
+    http.createServer(srv).listen(
+        srv.get('port'),
+        srv.get('host'),
+        function(){
+            console.log(
+                'Express server listening on http://%s:%d',
+                srv.get('host'),
+                srv.get('port')
+            );
+        }
+    );
 
 };
 

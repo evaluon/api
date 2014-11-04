@@ -7,7 +7,7 @@ module.exports = function(app){
     return {
 
         setEvaluator: function(req, res, next){
-            Dao.setEvaluator(req.user).then(function(){
+            Dao.setEvaluator(req.user, req.body).then(function(){
                 responseView(false, res);
             }).catch(next);
         },

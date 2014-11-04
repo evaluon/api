@@ -7,13 +7,18 @@ module.exports = function(app){
 
     return {
 
-        create: function(question){
+        create: function(user, question){
 
             return checkFields(
-                ['knowledge_area_id', 'open', 'public', 'description_text'],
-                question
+                [
+                'knowledge_area_id', 'open',
+                'public', 'description_text',
+                'institution_id', 'user_id',
+                'difficulty'
+                ],
+                _.extend({ user_id: user }, question)
             ).then(function(){
-                return Question.create(question);
+                return Question.create(user, question);
             });
 
         },

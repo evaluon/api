@@ -1,6 +1,7 @@
 module.exports = function(app){
 
-    var log = app.utils.log,
+    var checkFields = app.utils.checkFields,
+        log = app.utils.log,
         User = app.db.User;
 
     return {
@@ -13,8 +14,17 @@ module.exports = function(app){
             return User.find({ mail: mail });
         },
 
-        createUser: function(options){
-            return User.create(options);
+        createUser: function(user){
+            return checkFields(
+                [
+                'id', 'first_name',
+                'last_name', 'birth_date',
+                'mail', 'password'
+                ],
+                user
+            ).then(function(){
+                return User.create(user);
+            });
         },
 
         updateUser: function(oUser, user){

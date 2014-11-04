@@ -22,8 +22,10 @@ module.exports = function(app){
         },
 
         addQuestion: function(req, res, next){
-            Dao.addQuestion(req.params.id, req.body.question_id).then(function(q){
-                responseView(q, res);
+            Dao.addQuestion(
+                req.user.id, req.params.id, req.body.question_id
+            ).then(function(){
+                responseView(false, res);
             }).catch(next);
         }
 

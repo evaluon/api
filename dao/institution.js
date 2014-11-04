@@ -1,7 +1,9 @@
 module.exports = function(app){
 
-    var log = app.utils.log,
-        _ = app.utils._,
+    var _ = app.utils._,
+        log = app.utils.log,
+        checkFields = app.utils.checkFields,
+        Image = app.db.Image,
         Institution = app.db.Institution;
 
     self = {
@@ -14,8 +16,33 @@ module.exports = function(app){
             return Institution.find({ id: id });
         },
 
-        createInstitution: function(institution){
-            return Institution.create(institution);
+        createInstitution: function(options){
+            return checkFields(
+                [
+                'id', 'name', 'address', 'mail', 'phone_number',
+                'image.location', 'image.description',
+                ],
+                {
+                    id: options.id,
+                    name: options.name,
+                    address: options.address,
+                    mail: options.mail,
+                    phone_number: options.phone_number,
+
+                    'image.location': options.image.location,
+                    'image.description': options.image.description
+                }
+            ).then(function(){
+                return Image.create(options.image);
+            }).then(function(image_id){
+                return Institution.create(
+                    _.extend(
+                        { image_id: image_id },
+                        _.omit(options, 'image')
+                    )
+                );
+            })
+
         },
 
         updateInstitution: function(id, values){

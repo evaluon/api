@@ -17,8 +17,8 @@ module.exports = function(app, sql){
         },
 
         create: function(object){
-            return sql.insert('period', object).then(function(){
-                return self.find({id: object.id});
+            return sql.insert('period', object).then(function(result){
+                return sql.selectOne('period', { id: result.insertId });
             });
         },
 

@@ -15,7 +15,7 @@ module.exports = function(app, sql){
 
         create: function(user){
             return sql.insert('user', user).then(function(res){
-                return Dao.find({id: res.insertId });
+                return Dao.find({id: user.id });
             });
         },
 

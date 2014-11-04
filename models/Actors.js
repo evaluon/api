@@ -6,12 +6,15 @@ module.exports = function(app, sql){
             return sql.selectOne('evaluator', { id: user.id });
         },
 
-        setEvaluator: function(user){
+        setEvaluator: function(options){
             return sql.selectOne(
-                'evaluee', { id: user.id }
+                'evaluee', { id: options.user_id }
             ).then(function(u){
-                if(u) throw { "message": "Current user is evaluee"};
-                return sql.insert('evaluator', { id: user.id });
+                if(u) if(u) throw {
+                    message: "Current user is evaluee",
+                    statusCode: 403
+                };
+                return sql.insert('evaluator', options);
             });
         },
 
@@ -29,22 +32,15 @@ module.exports = function(app, sql){
             return sql.selectOne('evaluee',  { id: user.id });
         },
 
-        setEvaluee: function(user, isDisabled){
+        setEvaluee: function(options){
             return sql.selectOne(
-                'evaluator', { id: user.id }
+                'evaluator', { id: options.user_id }
             ).then(function(u){
-                if(u) throw { "message": "Current user is evaluator"};
-                if(isDisabled != null){
-                    return sql.insert(
-                        'evaluee', { id: user.id, disabled: isDisabled }
-                    );
-                } else {
-                    throw {
-                        "message": "Must include 'disabled' field to " +
-                            "indicate if user is visually disabled",
-                        "missingFields": ["disabled"]
-                    };
-                }
+                if(u) throw {
+                    message: "Current user is evaluator",
+                    statusCode: 403
+                };
+                return sql.insert('evaluee', options);
             })
         },
 

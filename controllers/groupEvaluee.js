@@ -21,7 +21,7 @@ module.exports = function(app){
         addEvaluees: function(req, res, next){
 
             Dao.addEvaluees(req.body.users, req.params.id).then(function(){
-                responseView(null, res);
+                responseView(false, res);
             }).catch(next);
 
         }

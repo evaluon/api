@@ -29,6 +29,15 @@ module.exports = function(app){
             }).then(function(answer_id){
                 return Answer.update(answer_id, { image_id: image_id });
             });
+        },
+
+        addImage: function(image){
+            return checkFields(
+                [':id', 'location', 'description'],
+                _.extends({ ':id': institution_id }, image)
+            ).then(function(){
+                return Image.create(image);
+            });
         }
 
     }

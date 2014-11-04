@@ -1,6 +1,6 @@
 module.exports = function(app, sql){
 
-    self = {
+    var self = {
 
         find: function(values){
             return sql.selectOne('client', values);

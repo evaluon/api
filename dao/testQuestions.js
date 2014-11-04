@@ -22,12 +22,13 @@ module.exports = function(app){
             })
         },
 
-        addQuestion: function(test, question){
+        addQuestion: function(user, test, question){
 
             return checkFields(
-                [':id', 'question_id'], { ':id': test, question_id: question }
+                ['user_id', ':id', 'question_id'],
+                { user_id: user, ':id': test, question_id: question }
             ).then(function(){
-                return TestQuestion.add(test, question);
+                return TestQuestion.add(user, test, question);
             })
         }
 

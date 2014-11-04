@@ -40,7 +40,7 @@ module.exports = function(app){
 
         setPeriod: function(req, res, next){
             Dao.setPeriod(req.params.id).then(function(){
-                responseView(null, res);
+                responseView(false, res);
             }).catch(next);
         }
 

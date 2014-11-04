@@ -48,10 +48,33 @@ module.exports = function(app, sql){
             });
         },
 
-        add: function(test, question){
-            return sql.insert(
-                'test_questions', { test_id: test, question_id: question }
-            );
+        add: function(user, test, question){
+            return sql.selectOne('evaluator', { id: user }).then(function(u){
+                if(!u) throw {
+                    message: "User is not an evaluee",
+                    statusCode: 403
+                }
+                return sql.selectOne('question', { id: question });
+            }).then(function(q){
+                if(!q.public) {
+                    return sql.selectOne(
+                        'group',
+                        { institution_id: q.institution_id, evaluator_id: user }
+                    ).then(function(g){
+                        if(!g) throw {
+                            message: "Question not found",
+                            statusCode: 404
+                        }
+                    });
+                }
+            }).then(function(){
+                return sql.insert(
+                    'test_questions',
+                    { test_id: test, question_id: question }
+                );
+            });
+
+
         }
 
     }
