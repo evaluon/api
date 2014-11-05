@@ -13,9 +13,6 @@
     "start": "forever start evaluon-api.js",
     "stop": "forever stop evaluon-api.js"
   },
-  "devDependencies": {
-     "fast-csv": "~0.5.3" 
-  },
   "dependencies": {
     "body-parser": "~1.4.3",
     "express": "~4.6.1",
