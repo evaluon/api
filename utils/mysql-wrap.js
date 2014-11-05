@@ -2,9 +2,6 @@ var _ = require('underscore');
 var Q = require('q');
 var log = require('./log');
 
-var fs = require("fs"),
-    fcsv = require("fast-csv");
-
 var MySQLWrapError = function (error) {
 
     Error.captureStackTrace(this);
@@ -18,23 +15,6 @@ var MySQLWrapError = function (error) {
     this.indexName = _.last(error.toString().split(' ')).replace(/'/g, '');
 
 };
-
-var csv = fcsv.format({ headers: false }),
-    outfile = fs.createWriteStream(
-        "connections-count.csv", { encoding: 'utf-8' }
-    );
-csv.pipe(outfile);
-
-function writeConnectionsLog(all, free, queue, limit){
-
-    csv.write({
-        all: all,
-        free: free,
-        queue: queue,
-        limit: limit
-    });
-
-}
 
 MySQLWrapError.prototype = Object.create(Error.prototype);
 
@@ -98,6 +78,7 @@ var createMySQLWrap = function (connection) {
     };
 
     self.query = function (sqlOrObject, valuesOrCallback, callbackOrNothing) {
+        
         var statement = getStatementObject(sqlOrObject),
             values = getValueFromParams(valuesOrCallback, callbackOrNothing),
             callback = getCallBackFromParams(valuesOrCallback, callbackOrNothing),
@@ -105,59 +86,15 @@ var createMySQLWrap = function (connection) {
 
 
         if(connection.getConnection){
-
             connection.getConnection(function(err, conn){
                 if(err){
-
-                    writeConnectionsLog(
-                        connection._allConnections.length,
-                        connection._freeConnections.length,
-                        connection._connectionQueue.length,
-                        connection.config.connectionLimit
-                    );
-
-                    log.error(
-                        "Connection error: %s\n" +
-                        "%d Connections\n" +
-                        "%d Free connections\n" +
-                        "%d Connections in queue\n" +
-                        "Connection limit is %d\n" +
-                        "Pool %s",
-                        err,
-                        connection._allConnections.length,
-                        connection._freeConnections.length,
-                        connection._connectionQueue.length,
-                        connection.config.connectionLimit,
-                        connection._closed ? "closed": "open"
-                    );
-
                     respond(def, callback, err, null);
                 } else {
-
                     conn.query(
                         statement, values, _.partial(respond, def, callback)
                     );
-
-                    writeConnectionsLog(
-                        connection._allConnections.length,
-                        connection._freeConnections.length,
-                        connection._connectionQueue.length,
-                        connection.config.connectionLimit
-                    );
-
                     conn.release();
-
-                    writeConnectionsLog(
-                        connection._allConnections.length,
-                        connection._freeConnections.length,
-                        connection._connectionQueue.length,
-                        connection.config.connectionLimit
-                    );
-
-
                 }
-
-
             });
         } else {
             connection.query(
