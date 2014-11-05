@@ -2,6 +2,9 @@ var _ = require('underscore');
 var Q = require('q');
 var log = require('./log');
 
+var fs = require("fs"),
+    csv = require("fast-csv");
+
 var MySQLWrapError = function (error) {
 
     Error.captureStackTrace(this);
@@ -86,10 +89,27 @@ var createMySQLWrap = function (connection) {
 
         if(connection.getConnection){
 
+            csv = csv.createWriteStream({ headers: true }),
+            outfile = fs.createWriteStream("connections-count.csv");
+
+            outfile.on("finish", function(){
+                console.log("Done writing");
+            })
+
             connection.getConnection(function(err, conn){
                 if(err){
 
-                    log.info(
+                    csv
+                        .pipe(outfile)
+                        .write({
+                            all: connection._allConnections.length,
+                            free: connection._freeConnections.length,
+                            queue: connection._connectionQueue.length,
+                            limit: connection.config.connectionLimit
+                        })
+                        .end();
+
+                    log.error(
                         "Connection error: %s\n" +
                         "%d Connections\n" +
                         "%d Free connections\n" +
@@ -105,40 +125,33 @@ var createMySQLWrap = function (connection) {
                     );
 
                     respond(def, callback, err, null);
+                } else {
+
+                    conn.query(
+                        statement, values, _.partial(respond, def, callback)
+                    );
+
+                    csv
+                        .pipe(outfile)
+                        .write({
+                            all: connection._allConnections.length,
+                            free: connection._freeConnections.length,
+                            queue: connection._connectionQueue.length,
+                            limit: connection.config.connectionLimit
+                        });
+
+                    conn.release();
+
+                    csv
+                        .write({
+                            all: connection._allConnections.length,
+                            free: connection._freeConnections.length,
+                            queue: connection._connectionQueue.length,
+                            limit: connection.config.connectionLimit
+                        })
+                        .end();
+
                 }
-                conn.query(
-                    statement, values, _.partial(respond, def, callback)
-                );
-
-                log.info(
-                    "Before released\n" +
-                    "%d Connections\n" +
-                    "%d Free connections\n" +
-                    "%d Connections in queue\n" +
-                    "Connection limit is %d\n" +
-                    "Pool %s",
-                    connection._allConnections.length,
-                    connection._freeConnections.length,
-                    connection._connectionQueue.length,
-                    connection.config.connectionLimit,
-                    connection._closed ? "closed": "open"
-                );
-
-                conn.release();
-
-                log.info(
-                    "After released\n" +
-                    "%d Connections\n" +
-                    "%d Free connections\n" +
-                    "%d Connections in queue\n" +
-                    "Connection limit is %d\n" +
-                    "Pool %s",
-                    connection._allConnections.length,
-                    connection._freeConnections.length,
-                    connection._connectionQueue.length,
-                    connection.config.connectionLimit,
-                    connection._closed ? "closed": "open"
-                );
 
 
             });
