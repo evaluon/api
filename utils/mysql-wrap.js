@@ -85,16 +85,62 @@ var createMySQLWrap = function (connection) {
 
 
         if(connection.getConnection){
+
             connection.getConnection(function(err, conn){
                 if(err){
-                    log.error(err);
+
+                    log.info(
+                        "Connection error: %s\n" +
+                        "%d Connections\n" +
+                        "%d Free connections\n" +
+                        "%d Connections in queue\n" +
+                        "Connection limit is %d\n" +
+                        "Pool %s",
+                        err,
+                        connection._allConnections.length,
+                        connection._freeConnections.length,
+                        connection._connectionQueue.length,
+                        connection.config.connectionLimit,
+                        connection._closed ? "closed": "open"
+                    );
+
                     respond(def, callback, err, null);
                 }
                 conn.query(
                     statement, values, _.partial(respond, def, callback)
                 );
 
+                log.info(
+                    "Before released\n" +
+                    "%d Connections\n" +
+                    "%d Free connections\n" +
+                    "%d Connections in queue\n" +
+                    "Connection limit is %d\n" +
+                    "Pool %s",
+                    connection._allConnections.length,
+                    connection._freeConnections.length,
+                    connection._connectionQueue.length,
+                    connection.config.connectionLimit,
+                    connection._closed ? "closed": "open"
+                );
+
                 conn.release();
+
+                log.info(
+                    "After released\n" +
+                    "%d Connections\n" +
+                    "%d Free connections\n" +
+                    "%d Connections in queue\n" +
+                    "Connection limit is %d\n" +
+                    "Pool %s",
+                    connection._allConnections.length,
+                    connection._freeConnections.length,
+                    connection._connectionQueue.length,
+                    connection.config.connectionLimit,
+                    connection._closed ? "closed": "open"
+                );
+
+
             });
         } else {
             connection.query(

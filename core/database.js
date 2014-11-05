@@ -43,7 +43,10 @@ module.exports = function(app){
     log = app.utils.log;
 
     var connection = mysql.createPool(
-            _.extend({ connectionLimit: 1000 }, preferredConfig)
+            _.extend(
+                { connectionLimit: 1000, waitForConnections: true },
+                preferredConfig
+            )
         ),
         sql = mysql_wrap(connection);
 

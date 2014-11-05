@@ -13,10 +13,7 @@ module.exports = function(err, data, res){
     } else {
         if(data) obj.data = _.isArray(data) ? data : _.omit(data, 'statusCode');
     }
-
-    if(!err){
-        log.debug(obj);
-    }
+    
     res.json(statusCode, obj);
 
 };
