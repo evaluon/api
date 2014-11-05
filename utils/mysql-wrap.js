@@ -19,6 +19,23 @@ var MySQLWrapError = function (error) {
 
 };
 
+var csv = fcsv.format({ headers: false }),
+    outfile = fs.createWriteStream(
+        "connections-count.csv", { encoding: 'utf-8' }
+    );
+csv.pipe(outfile);
+
+function writeConnectionsLog(all, free, queue, limit){
+
+    csv.write({
+        all: all,
+        free: free,
+        queue: queue,
+        limit: limit
+    });
+
+}
+
 MySQLWrapError.prototype = Object.create(Error.prototype);
 
 var createMySQLWrap = function (connection) {
@@ -89,27 +106,15 @@ var createMySQLWrap = function (connection) {
 
         if(connection.getConnection){
 
-            var csv = fcsv.format({ headers: false }),
-                outfile = fs.createWriteStream(
-                    "connections-count.csv", { flags: 'a'}
-                );
-
-            outfile.on("finish", function(){
-                console.log("Done writing");
-            })
-
             connection.getConnection(function(err, conn){
                 if(err){
 
-                    csv
-                        .pipe(outfile)
-                        .write([
-                            connection._allConnections.length,
-                            connection._freeConnections.length,
-                            connection._connectionQueue.length,
-                            connection.config.connectionLimit
-                        ])
-                        .end();
+                    writeConnectionsLog(
+                        connection._allConnections.length,
+                        connection._freeConnections.length,
+                        connection._connectionQueue.length,
+                        connection.config.connectionLimit
+                    );
 
                     log.error(
                         "Connection error: %s\n" +
@@ -133,23 +138,22 @@ var createMySQLWrap = function (connection) {
                         statement, values, _.partial(respond, def, callback)
                     );
 
-                    csv.pipe(outfile);
-                    csv.write({
-                        all: connection._allConnections.length,
-                        free: connection._freeConnections.length,
-                        queue: connection._connectionQueue.length,
-                        limit: connection.config.connectionLimit
-                    });
+                    writeConnectionsLog(
+                        connection._allConnections.length,
+                        connection._freeConnections.length,
+                        connection._connectionQueue.length,
+                        connection.config.connectionLimit
+                    );
 
                     conn.release();
 
-                    csv.write({
-                        all: connection._allConnections.length,
-                        free: connection._freeConnections.length,
-                        queue: connection._connectionQueue.length,
-                        limit: connection.config.connectionLimit
-                    });
-                    csv.end();
+                    writeConnectionsLog(
+                        connection._allConnections.length,
+                        connection._freeConnections.length,
+                        connection._connectionQueue.length,
+                        connection.config.connectionLimit
+                    );
+
 
                 }
 
