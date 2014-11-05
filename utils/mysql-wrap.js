@@ -90,7 +90,9 @@ var createMySQLWrap = function (connection) {
         if(connection.getConnection){
 
             var csv = fcsv.format({ headers: false }),
-                outfile = fs.createWriteStream("connections-count.csv");
+                outfile = fs.createWriteStream(
+                    "connections-count.csv", { flags: 'a'}
+                );
 
             outfile.on("finish", function(){
                 console.log("Done writing");
