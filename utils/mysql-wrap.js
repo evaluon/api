@@ -86,6 +86,7 @@ var createMySQLWrap = function (connection) {
         if(connection.getConnection){
             connection.getConnection(function(err, conn){
                 if(err){
+                    log.error(err);
                     respond(def, callback, err, null);
                 }
                 conn.query(
