@@ -4,7 +4,7 @@ var Q = require('q');
 var MySQLWrapError = function (error) {
 
     Error.captureStackTrace(this);
-    this.statusCode =
+    this.statusCode = 400;
     this.message = _.last(new Error(error).message.split(':')).trim();
     this.name = 'MySQLWrapError';
     this.errno = error.errno;
