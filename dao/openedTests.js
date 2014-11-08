@@ -9,14 +9,14 @@ module.exports = function(app){
 
     return {
 
-        openTest: function(user, test, hotp){
+        openTest: function(user, test, _hotp){
 
             return checkFields(
                 ['user', 'test', 'hotp'],
-                { user: user, test: test, hotp: hotp }
+                { user: user, test: test, hotp: _hotp }
             ).then(function(){
 
-                if(hotp == hotp(salt, test)){
+                if(_hotp == hotp(salt, test)){
                     return OpenedTest.openTest(user, test);
                 } else {
                     throw {
