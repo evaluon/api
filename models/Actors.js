@@ -29,7 +29,7 @@ module.exports = function(app, sql){
         },
 
         isEvaluee: function(user){
-            return sql.selectOne('evaluee',  { id: user.id });
+            return sql.selectOne('evaluee', { id: user });
         },
 
         setEvaluee: function(options){

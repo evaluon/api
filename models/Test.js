@@ -1,12 +1,20 @@
 module.exports = function(app, sql){
 
     var _ = app.utils._,
-        log = app.utils.log;
+        log = app.utils.log
+        hotp = app.utils.hotp,
+        salt = app.config.security.salt;
 
     var self = {
 
-        find: function(values){
-            return sql.selectOne('test', values);
+        find_evaluee: function(id){
+            return sql.selectOne('test', { id: id });
+        },
+
+        find_evaluator: function(id){
+            return self.find_evaluee(id).then(function(test){
+                return _.extend({ hotp: hotp(salt, test.id) }, test);
+            });
         },
 
         findAll: function(values){
