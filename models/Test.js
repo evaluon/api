@@ -20,7 +20,7 @@ module.exports = function(app, sql){
         findAll: function(values){
             return sql.query(
                 'SELECT t.* FROM test t, group_test gt ' +
-                'WHERE t.id = gt.id'
+                'WHERE t.id = gt.test_id'
             );
         },
 
