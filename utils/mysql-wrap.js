@@ -12,7 +12,7 @@ var MySQLWrapError = function (error) {
     this.code = error.code;
     this.sqlState = error.sqlState;
     this.index = error.index;
-    this.indexName = _.last(error.toString().split(' ')).replace(/'/g, '');
+    this.indexName = _.last(this.message.split(' ')).replace(/'/g, '');
 
 };
 
@@ -84,18 +84,27 @@ var createMySQLWrap = function (connection) {
             callback = getCallBackFromParams(valuesOrCallback, callbackOrNothing),
             def = Q.defer();
 
-
         if(connection.getConnection){
-            connection.getConnection(function(err, conn){
-                if(err){
-                    respond(def, callback, err, null);
-                } else {
-                    conn.query(statement, values, function(err, rows){
+
+            if (!this.transactionConn){
+                this.transactionConn.query(
+                    statement, values, function(err, rows){
                         respond(def, callback, err, rows);
-                        conn.release();
-                    });
-                }
-            });
+                    }
+                );
+            } else {
+                connection.getConnection(function(err, conn){
+                    if(err){
+                        respond(def, callback, err, null);
+                    } else {
+                        conn.query(statement, values, function(err, rows){
+                            respond(def, callback, err, rows);
+                            conn.release();
+                        });
+                    }
+                });
+            }
+
         } else {
             connection.query(
                 statement, values, _.partial(respond, def, callback)
@@ -273,13 +282,13 @@ var createMySQLWrap = function (connection) {
         if(connection.getConnection){
             var conn = self.transactionConn;
 
-            conn.rollback(_.partial(
-                respond, def, callback || function () {}
-            ));
+            conn.rollback(function(){
+                conn.release();
+                self.transactionConn = null;
+                respond(def, callback || function () {});
+            });
 
-            conn.release();
 
-            self.transactionConn = null;
         } else {
             connection.rollback(_.partial(
                 respond, def, callback || function () {}
@@ -293,13 +302,12 @@ var createMySQLWrap = function (connection) {
         if(connection.getConnection){
             var conn = self.transactionConn;
 
-            conn.commit(_.partial(
-                respond, def, callback || function () {}
-            ));
+            conn.commit(function(){
+                conn.release();
+                self.transactionConn = null;
+                respond(def, callback || function () {})
+            });
 
-            conn.release();
-
-            self.transactionConn = null;
         } else {
             connection.commit(_.partial(
                 respond, def, callback || function () {}
