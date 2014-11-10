@@ -86,7 +86,7 @@ var createMySQLWrap = function (connection) {
 
         if(connection.getConnection){
 
-            if (!this.transactionConn){
+            if (this.transactionConn){
                 this.transactionConn.query(
                     statement, values, function(err, rows){
                         respond(def, callback, err, rows);
