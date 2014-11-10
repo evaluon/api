@@ -18,7 +18,7 @@ module.exports = function(app, sql){
         },
 
         findAll: function(values){
-            return sql.select('test', values);
+            return sql.select('group_test', values);
         },
 
         create: function(object){
