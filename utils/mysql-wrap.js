@@ -78,7 +78,7 @@ var createMySQLWrap = function (connection) {
     };
 
     self.query = function (sqlOrObject, valuesOrCallback, callbackOrNothing) {
-        
+
         var statement = getStatementObject(sqlOrObject),
             values = getValueFromParams(valuesOrCallback, callbackOrNothing),
             callback = getCallBackFromParams(valuesOrCallback, callbackOrNothing),
@@ -90,10 +90,10 @@ var createMySQLWrap = function (connection) {
                 if(err){
                     respond(def, callback, err, null);
                 } else {
-                    conn.query(
-                        statement, values, _.partial(respond, def, callback)
-                    );
-                    conn.release();
+                    conn.query(statement, values, function(err, rows){
+                        respond(def, callback, err, rows);
+                        conn.end();
+                    });
                 }
             });
         } else {
