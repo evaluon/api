@@ -18,7 +18,10 @@ module.exports = function(app, sql){
         },
 
         findAll: function(values){
-            return sql.select('group_test', values);
+            return sql.query(
+                'SELECT t.* FROM test t, group_test gt ' +
+                'WHERE t.id = gt.id'
+            );
         },
 
         create: function(object){
