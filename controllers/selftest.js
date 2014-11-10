@@ -1,6 +1,6 @@
 module.exports = function(app){
 
-    var SelfTest = app.dao.selftest,
+    var SelfTest = app.dao.selfTest,
         responseView = require('../views/jsonSuccessResponse');
 
     return {
