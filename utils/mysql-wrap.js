@@ -92,7 +92,7 @@ var createMySQLWrap = function (connection) {
                 } else {
                     conn.query(statement, values, function(err, rows){
                         respond(def, callback, err, rows);
-                        conn.end();
+                        conn.release();
                     });
                 }
             });
