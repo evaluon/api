@@ -15,7 +15,7 @@ module.exports = function(app){
         },
 
         findAll: function(req, res, next){
-            Dao.findAll(req.params.id).then(function(tests){
+            Dao.findAll(req.params.id, req.user.id).then(function(tests){
                 responseView(tests, res);
             }).catch(next);
         },

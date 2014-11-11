@@ -36,7 +36,7 @@ module.exports = function(app, sql){
             })
         },
 
-        findAll: function(group_id){
+        findAll: function(group_id, evaluee_id){
             return sql.query(
                 "SELECT " +
                 "	t.* " +

@@ -15,10 +15,12 @@ module.exports = function(app){
 
         },
 
-        findAll: function(group_id){
+        findAll: function(group_id, evaluee_id){
 
-            return checkFields([':id'], { ':id': group_id }).then(function(){
-                return GroupTest.findAll(group_id);
+            return checkFields(
+                [':id','user'], { user: evaluee_id, ':id': group_id }
+            ).then(function(){
+                return GroupTest.findAll(group_id, evaluee_id);
             });
 
         },
