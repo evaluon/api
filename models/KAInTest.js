@@ -26,8 +26,11 @@ module.exports = function(app, sql){
         },
 
         findKAinTest_evaluee: function(evaluee_id, test_id){
-            return sql.selectOne(
-                'opened_test', { evaluee_id: evaluee_id, test_id: test_id }
+            return sql.query(
+                "SELECT 1 AS flag FROM opened_test WHERE evaluee_id = ? AND " +
+                "test_id = ? UNION SELECT 1 AS flag FROM self_test WHERE " +
+                "id = ? AND evaluee_id = ?"
+                , [ evaluee_id , test_id, test_id, evaluee_id ]
             ).then(function(ot){
                 if(!ot) throw {
                     message: 'test_unopened',
