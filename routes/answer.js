@@ -11,7 +11,7 @@ module.exports = function(app){
     },
     {
         method: 'put',
-        url: '/question/:id/:answer',
+        url: '/question/:id/answer/:answer',
         action: answer.addToQuestion,
         cors: true
     }
