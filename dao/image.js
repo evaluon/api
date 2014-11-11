@@ -12,7 +12,7 @@ module.exports = function(app){
         addQuestionImage: function(question_id, image){
             return checkFields(
                 [':id', 'location', 'description'],
-                _.extends({ ':id': question_id }, image)
+                _.extend({ ':id': question_id }, image)
             ).then(function(){
                 return Image.create(image);
             }).then(function(image_id){
