@@ -15,6 +15,16 @@ module.exports = function(app){
                 return Answer.create(answers);
             });
 
+        },
+
+        addToQuestion: function(question, answer){
+
+            return checkFields(
+                [':id', ':answer'], { ':id': question, ':answer': answer }
+            ).then(function(){
+                return Answer.addToQuestion(question, answers);
+            });
+
         }
 
     }

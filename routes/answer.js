@@ -8,6 +8,12 @@ module.exports = function(app){
         url: '/answer',
         action: answer.create,
         cors: true
+    },
+    {
+        method: 'put',
+        url: '/question/:id/:answer',
+        action: answer.addToQuestion,
+        cors: true
     }
     ]
 

@@ -28,7 +28,11 @@ module.exports = function(app, sql){
             return sql.selectOne('answer', criteria);
         },
 
-        
+        addToQuestion: function(question, answer){
+            return sql.insert(
+                'answer_options', { question_id: question, answer_id: answer }
+            )
+        }
 
     };
 

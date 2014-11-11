@@ -13,6 +13,14 @@ module.exports = function(app){
                 responseView(answers, res);
             }).catch(next);
 
+        },
+
+        addToQuestion: function(req, res, next){
+
+            Dao.addToQuestion(req.params.id, req.params.answer).then(function(){
+                responseView(false, res);
+            }).catch(next);
+
         }
 
     }
