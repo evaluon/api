@@ -12,7 +12,7 @@ module.exports = function(app){
     {
         method: 'put',
         url: '/question/:id/image',
-        action: question.create,
+        action: question.addImage,
         cors: true
     }
     ]
