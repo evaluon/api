@@ -5,7 +5,7 @@ module.exports = function(app){
 
     return {
 
-        makeResponse: function(evaluee, test, question, answer){
+        makeResponse: function(evaluee, test, question, answer, text){
 
             return checkFields(
                 ['evaluee', 'test', 'question', 'answer'],
@@ -17,7 +17,9 @@ module.exports = function(app){
                 }
             ).then(function(){
                 // TODO: Add constraint for OPEN but not stop_date filled test
-                return Response.makeResponse(evaluee, test, question, answer);
+                return Response.makeResponse(
+                    evaluee, test, question, answer, text
+                );
             });
 
         }

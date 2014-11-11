@@ -13,7 +13,8 @@ module.exports = function(app){
                 req.user.id,
                 req.body.test_id,
                 req.body.question_id,
-                req.body.answer_id
+                req.body.answer_id,
+                req.body.text || ""
             ).then(function(){
                 responseView(false, res);
             }).catch(next);

@@ -4,7 +4,7 @@ module.exports = function(app, sql){
 
     return {
 
-        makeResponse: function(evaluee, test, question, answer){
+        makeResponse: function(evaluee, test, question, answer, text){
 
             var row = {
                 evaluee_id: evaluee,
@@ -13,9 +13,23 @@ module.exports = function(app, sql){
                 answer_id: answer
             };
 
-            log.debug(row);
+            return sql.insert('response', row).then(function(res){
 
-            return sql.insert('response', row);
+                return sql.selectOne(
+                    'question', { id: question }
+                ).then(function(q){
+                    if(q.open) {
+                        return sql.insert(
+                            'text_answer',
+                            { response_id: res.insertId, answer_text: text }
+                        )
+                    }
+                    return true;
+                });
+
+            });
+
+
         }
 
     }
