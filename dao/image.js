@@ -23,7 +23,7 @@ module.exports = function(app){
         addAnswerImage: function(answer_id, image){
             return checkFields(
                 [':id', 'location', 'description'],
-                _.extends({ ':id': question_id }, image)
+                _.extend({ ':id': question_id }, image)
             ).then(function(){
                 return Image.create(image);
             }).then(function(answer_id){
@@ -34,7 +34,7 @@ module.exports = function(app){
         addImage: function(image){
             return checkFields(
                 [':id', 'location', 'description'],
-                _.extends({ ':id': institution_id }, image)
+                _.extend({ ':id': institution_id }, image)
             ).then(function(){
                 return Image.create(image);
             });
