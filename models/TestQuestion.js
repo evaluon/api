@@ -37,11 +37,15 @@ module.exports = function(app, sql){
                                 "WHERE a.id = qa.answer_id AND qa.question_id = ?",
                                 [question.id]
                             ).then(function(answers){
-                                return _.extend(
-                                    { answers: answers }, question
+                                question.answers = answers;
+                                return question;
+                            }).then(function(){
+                                return sql.selectOne(
+                                    'image', { id: question.image_id }
                                 );
-                            }).then(function(q){
-                                return q;
+                            }).then(function(image){
+                                question.image = image;
+                                return _.omit(question, ['image_id']);
                             });
                         })(questions[question])
                     );
