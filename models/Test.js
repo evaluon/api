@@ -13,7 +13,7 @@ module.exports = function(app, sql){
 
         find_evaluator: function(id){
             return self.find_evaluee(id).then(function(test){
-                return _.extend({ hotp: hotp(salt, test.id) }, test);
+                return _.extend({ hotp: hotp(salt, id) }, test);
             });
         },
 
