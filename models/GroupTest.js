@@ -43,7 +43,7 @@ module.exports = function(app, sql){
                 "FROM " +
                 "	test t, group_test gt " +
                 "WHERE group_id = ? AND " +
-                "	t.id = gt.test_id AND "
+                "	t.id = gt.test_id AND " +
                 "	t.id NOT IN (" +
                 "       SELECT test_id AS id " +
                 "       FROM opened_test " +
