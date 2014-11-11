@@ -13,7 +13,7 @@ module.exports = function(app, sql){
 
         closeTest: function(user, test){
             return sql.selectOne(
-                'open_test', { evaluee_id: user, test_id: test }
+                'opened_test', { evaluee_id: user, test_id: test }
             ).then(function(test){
                 return sql.update(
                     'opened_test', { close_date: new Date }, test
