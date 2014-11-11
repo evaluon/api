@@ -22,7 +22,7 @@ module.exports = function(app){
             return checkFields(
                 [':id', ':answer'], { ':id': question, ':answer': answer }
             ).then(function(){
-                return Answer.addToQuestion(question, answers);
+                return Answer.addToQuestion(question, answer);
             });
 
         }
