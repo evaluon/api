@@ -9,14 +9,14 @@ module.exports = function(app){
         openTest: function(req, res, next){
             Dao.openTest(
                 req.user.id, req.params.id, req.body.hotp
-            ).then(function(d){
-                responseView(d, res);
+            ).then(function(){
+                responseView(false, res);
             }).catch(next);
         },
 
         closeTest: function(req, res, next){
-            Dao.closeTest(req.user.id, req.params.id).then(function(d){
-                responseView(d, res);
+            Dao.closeTest(req.user.id, req.params.id).then(function(){
+                responseView(false, res);
             }).catch(next);
         }
 
