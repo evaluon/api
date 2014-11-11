@@ -48,7 +48,7 @@ module.exports = function(app, sql){
                 "       SELECT test_id AS id " +
                 "       FROM opened_test " +
                 "       WHERE evaluee_id = ? " +
-                "   )" +
+                "   )"
                 , [group_id, evaluee_id]
             );
         },
