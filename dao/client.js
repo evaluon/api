@@ -12,14 +12,16 @@ module.exports = function(app){
         },
 
         createClient: function(client){
-            return Client.create(
-                _.extend(
+            return checkFields(['id', 'name'], client).then(function(){
+                client = _.extend(
                     {
-                        secret: crypto.randomBytes(32).toString('base64')
+                        secret: crypto.randomBytes(32).toString('base64'),
+                        role_id: 'admin'
                     },
                     _.omit(client, ['secret'])
                 )
-            );
+                return Client.create(client);
+            });
         },
 
         updateClient: function(id, options){
@@ -28,7 +30,7 @@ module.exports = function(app){
                 if(client){
                     return Client.update(id, options);
                 } else {
-                    throw ({"message": "Client not found"});
+                    throw ({"message": "client_not_found"});
                 }
             });
 

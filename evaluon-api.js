@@ -33,9 +33,7 @@ function recreate(){
 
     return Client.createClient({
         id: 'administrator',
-        name: 'Unit Administrator',
-        secret: require('crypto').randomBytes(32).toString('base64'),
-        role_id: 'admin'
+        name: 'Unit Administrator'
     }).then(function(client){
         results.client = client;
         return Token.createToken();
@@ -59,7 +57,7 @@ function recreate(){
         );
 
     }).catch(function(error){
-        log.debug(error);
+        log.error(error);
     });
 
 }
