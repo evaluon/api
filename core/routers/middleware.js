@@ -9,7 +9,7 @@ module.exports = function(app, express){
         res.json(200, {});
     });
     router.use(cors.match);
-
+    
     // Mailer Middleware: add nodemailer to req
     router.use(function(req, res, next){
         req.mail = app.utils.nodemailer;

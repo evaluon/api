@@ -10,7 +10,7 @@ module.exports = function(app, sql){
             return sql.selectOne(
                 'evaluee', { id: options.user_id }
             ).then(function(u){
-                if(u) if(u) throw {
+                if(u) throw {
                     message: "Current user is evaluee",
                     statusCode: 403
                 };
