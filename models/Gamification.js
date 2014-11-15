@@ -3,11 +3,6 @@ module.exports = function(app, sql){
     var math = app.utils.math,
         log = app.utils.log;
 
-    // LoL-alike levels for gamification
-    var levels = [
-    'bronze', 'silver', 'gold', 'master', 'platinum', 'diamond', 'master'
-    ];
-
     return {
 
         indicators: function(user){
@@ -36,9 +31,18 @@ module.exports = function(app, sql){
                     fullLevel: math.log(rightQuestions, 15),
                     level: math.floor(math.log(rightQuestions, 15)),
                     levelName: (function(){
+
+                        // LoL-alike levels for gamification
+                        var levels = [
+                        'bronze', 'silver', 'gold', 'master',
+                        'platinum', 'diamond', 'master'
+                        ];
+
                         var level = this.level,
                             ubound = levels.length - 1;
+                            
                         return levels[level >= ubound ? ubound : level];
+
                     })()
                 };
 
