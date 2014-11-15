@@ -1,6 +1,7 @@
 module.exports = function(app, sql){
 
-    var math = app.utils.math;
+    var math = app.utils.math,
+        log = app.utils.log;
 
     // LoL-alike levels for gamification
     var levels = [
@@ -19,7 +20,7 @@ module.exports = function(app, sql){
                     statusCode: 403
                 }
                 return sql.one(
-                    "SELECT COUNT(q.*) AS rightQuestions " +
+                    "SELECT COUNT(*) AS rightQuestions " +
                     "FROM " +
                     "   question q, response r, answer a " +
                     "WHERE " +
@@ -30,16 +31,20 @@ module.exports = function(app, sql){
             }).then(function(data){
                 var rightQuestions = data.rightQuestions;
 
-                return {
+                var response = {
                     questions: rightQuestions,
                     fullLevel: math.log(rightQuestions, 15),
                     level: math.floor(math.log(rightQuestions, 15)),
-                    levelName: function(){
+                    levelName: (function(){
                         var level = this.level,
                         uBound = levels.length - 1;
                         return levels[level >= ubound ? ubound : level];
-                    }
+                    })()
                 };
+
+                log.debug(response);
+
+                return response;
 
             });
 
