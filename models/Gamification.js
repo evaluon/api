@@ -37,7 +37,7 @@ module.exports = function(app, sql){
                     level: math.floor(math.log(rightQuestions, 15)),
                     levelName: (function(){
                         var level = this.level,
-                        uBound = levels.length - 1;
+                            ubound = levels.length - 1;
                         return levels[level >= ubound ? ubound : level];
                     })()
                 };
