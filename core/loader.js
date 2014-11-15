@@ -3,6 +3,7 @@ var fs = require('fs'),
     _ = require('underscore'),
     crypto = require('crypto'),
     q = require('q'),
+    math = require('mathjs'),
 
     log = require("../utils/log"),
     cors = require("../utils/cors"),
@@ -29,6 +30,7 @@ var utils = {
     crypto: crypto,
     checkFields: checkFields,
     hotp: hotp,
+    math: math,
 
     oauth2orize: oauth2orize,
     passport: passport,
