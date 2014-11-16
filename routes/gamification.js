@@ -5,7 +5,7 @@ module.exports = function(app){
     return [
     {
         method: 'get',
-        url: '/gamification',
+        url: '/indicator',
         action: gamification.indicators,
         cors: true
     }
