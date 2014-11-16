@@ -31,7 +31,7 @@ module.exports = function(app, sql){
             }).then(function(data){
 
                 var rightQuestions = data.rightQuestions,
-                    fullLevel = math.log(rightQuestions, 15),
+                    fullLevel = math.log(rightQuestions, 8),
                     level = math.floor(fullLevel);
 
                 var response = {
