@@ -36,6 +36,7 @@ module.exports = function(app, sql){
 
                 var response = {
                     questions: rightQuestions,
+                    remainingQuestions: math.pow(8, level + 1) - rightQuestions,
                     fullLevel: fullLevel,
                     level: level,
                     levelName: (function(){
