@@ -5,7 +5,7 @@ module.exports = function(app, sql){
 
     // LoL-alike levels for gamification
     var levels = [
-    'bronze', 'silver', 'gold', 'master', 'platinum', 'diamond', 'master'
+    'bronze', 'silver', 'gold', 'platinum', 'diamond', 'master'
     ];
 
     return {
