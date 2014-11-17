@@ -48,6 +48,10 @@ module.exports = function(app, sql){
             })
         },
 
+        evalueeList: function(){
+            return sql.select('evaluees');
+        },
+
         evalueeGroups: function(user){
             return sql.selectOne('evaluee', { id: user.id }).then(function(e){
                 if(!e) throw {

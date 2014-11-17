@@ -24,6 +24,12 @@ module.exports = function(app){
             }).catch(next);
         },
 
+        evalueeList: function(req, res, next){
+            Dao.evalueeList().then(function(evaluees){
+                responseView(evaluees, res);
+            }).catch(next);
+        }
+
         evalueeGroups: function(req, res, next){
             Dao.evalueeGroups(req.user).then(function(groups){
                 responseView(groups, res);

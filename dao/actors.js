@@ -45,6 +45,10 @@ module.exports = function(app){
             });
         },
 
+        evalueeList: function(){
+            return Actors.evalueeList();
+        },
+
         evalueeGroups: function(user){
             return checkFields(['user'], { user: user }).then(function(){
                 return Actors.evalueeGroups(user);

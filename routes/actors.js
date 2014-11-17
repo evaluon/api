@@ -17,6 +17,12 @@ module.exports = function(app){
         cors: true
     },
     {
+        method: 'get',
+        url: '/evaluee',
+        action: actors.evalueeList,
+        cors: true
+    },
+    {
         method: 'post',
         url: '/evaluee',
         action: actors.setEvaluee,
