@@ -39,7 +39,7 @@ module.exports = function(app){
             } else {
                 throw {
                     message: "invalid_permissions",
-                    statusCode: 401
+                    statusCode: 403
                 }
             }
 
