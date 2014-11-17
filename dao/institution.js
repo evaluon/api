@@ -20,7 +20,7 @@ module.exports = function(app){
             return checkFields(
                 [
                 'id', 'name', 'address', 'mail', 'phone_number',
-                'image.location', 'image.description',
+                'image.location', 'image.description'
                 ],
                 {
                     id: options.id,

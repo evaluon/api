@@ -16,6 +16,7 @@
   "dependencies": {
     "body-parser": "~1.4.3",
     "express": "~4.6.1",
+    "formidable": "^1.0.15",
     "handlebars": "~2.0.0",
     "hashids": "^1.0.1",
     "jsonfile": "~2.0.0",
