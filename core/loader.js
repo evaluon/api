@@ -10,10 +10,12 @@ var fs = require('fs'),
     hotp = require("../utils/hotp"),
     nodemailer = require('../utils/nodemailer'),
     checkFields = require("../utils/checkFields"),
+    formidable = require('../utils/formidable'),
+    azure = require('../utils/azure-upload'),
 
     express = require('express'),
     passport = require('passport'),
-    oauth2orize = require('oauth2orize');
+    oauth2orize = require('oauth2orize'),
 
     jsonfile = require('jsonfile'),
     request = require('request-promise');
@@ -31,6 +33,8 @@ var utils = {
     checkFields: checkFields,
     hotp: hotp,
     math: math,
+    formidable: formidable,
+    azure: azure,
 
     oauth2orize: oauth2orize,
     passport: passport,

@@ -14,7 +14,9 @@
     "stop": "forever stop evaluon-api.js"
   },
   "dependencies": {
+    "azure-storage": "^0.4.0",
     "body-parser": "~1.4.3",
+    "chance": "^0.6.1",
     "express": "~4.6.1",
     "formidable": "^1.0.15",
     "handlebars": "~2.0.0",

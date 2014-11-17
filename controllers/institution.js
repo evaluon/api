@@ -1,7 +1,10 @@
 module.exports = function(app){
 
-    var log = app.utils.log,
+    var _ = app.utils._,
+        log = app.utils.log,
         Dao = app.dao.institution,
+        formidable = app.utils.formidable,
+        azure = app.utils.azure,
         responseView = require('../views/jsonSuccessResponse');
 
     return {
@@ -22,10 +25,35 @@ module.exports = function(app){
 
         createInstitution: function(req, res, next){
             if(req.user.role_id == 'admin'){
-                return Dao.createInstitution(req.body)
-                .then(function(institution){
+
+                var body = {};
+
+                formidable(req).then(function(data){
+                    body = data.fields;
+                    var image = data.files.file;
+                    return azure(
+                        app.config.azure, 'evaluon',
+                        image.path, _.last(image.name.split('.'))
+                    );
+                }).then(function(data){
+                    log.warn(body);
+                    var location = data.result.blob;
+                    return Dao.createInstitution({
+                        id: body.id,
+                        name: body.name,
+                        address: body.address,
+                        mail: body.mail,
+                        phone_number: body.phone_number,
+                        image: {
+                            location: location,
+                            description: body.description
+                        }
+                    });
+                }).then(function(institution){
                     responseView(institution, res);
                 }).catch(next);
+
+
             }
         },
 
