@@ -37,7 +37,10 @@ module.exports = function(app){
                     responseView(user, res);
                 }).catch(next);
             } else {
-                throw new Error("Forbidden");
+                throw {
+                    message: "invalid_permissions",
+                    statusCode: 401
+                }
             }
 
         },
