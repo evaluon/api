@@ -2,13 +2,24 @@ module.exports = function(app){
 
     var responseView = require('../views/jsonSuccessResponse'),
         Dao = app.dao.user,
+        DaoActors = app.dao.actors,
         log = app.utils.log,
         _ = app.utils._;
 
     return {
 
         retrieveUser: function(req, res, next){
-            responseView(req.user, res);
+            var user = _.omit(req.user, 'password');
+            if(user.role_id == 'admin'){
+                user.role = 8;
+                responseView(user, res);
+            } else {
+                DaoActors.actorRole(user).then(function(role){
+                    user.role = role;
+                    responseView(user, res);
+                });
+            }
+
         },
 
         createUser: function(req, res, next){
@@ -16,7 +27,7 @@ module.exports = function(app){
 
                 var user = _.extend(
                     {
-                        role_id: 'user',
+                        role_id: req.body.role_id || 'user',
                         register_date: new Date()
                     },
                     req.body

@@ -2,6 +2,10 @@ module.exports = function(app, sql){
 
     self = {
 
+        isInstitution: function(user){
+            return sql.selectOne('institution', { evaluator_id: user.id });
+        }
+
         isEvaluator: function(user){
             return sql.selectOne('evaluator', { id: user.id });
         },

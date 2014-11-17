@@ -7,6 +7,22 @@ module.exports = function(app){
 
     return {
 
+        actorRole: function(user){
+            return Actor.isEvaluator(user).then(function(isEvaluator){
+                if(isEvaluator){
+                    return Actor.isInstitution(user).then(function(institution){
+                        if(institution){
+                            return 4;
+                        } else {
+                            return 2;
+                        }
+                    });
+                } else {
+                    return 1;
+                }
+            })
+        },
+
         setEvaluator: function(user, options){
             var fields = _.extend({ id: user.id }, options);
             return checkFields(['id', 'area'], fields).then(function(){

@@ -21,9 +21,12 @@ module.exports = function(app){
         },
 
         createInstitution: function(req, res, next){
-            return Dao.createInstitution(req.body).then(function(institution){
-                responseView(institution, res);
-            }).catch(next);
+            if(req.user.role_id == 'admin'){
+                return Dao.createInstitution(req.body)
+                .then(function(institution){
+                    responseView(institution, res);
+                }).catch(next);
+            }
         },
 
         updateInstitution: function(req, res, next){
