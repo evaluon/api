@@ -8,7 +8,7 @@ module.exports = function(app){
     return {
 
         actorRole: function(user){
-            return Actor.isEvaluator(user).then(function(isEvaluator){
+            return Actors.isEvaluator(user).then(function(isEvaluator){
                 if(isEvaluator){
                     return Actor.isInstitution(user).then(function(institution){
                         if(institution){
