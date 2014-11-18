@@ -1,5 +1,7 @@
 module.exports = function(app, sql){
 
+    var q = app.utils.q;
+
     function processGroup(group){
 
         var response = { id: group.id };
