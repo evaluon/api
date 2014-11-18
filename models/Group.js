@@ -33,7 +33,7 @@ module.exports = function(app, sql){
                 '   NOW() BETWEEN start_date AND stop_date'
                 , [id]
             ).then(function(gP){
-                if(!gP) throw { message: "No active periods" };
+                if(!gP) throw { message: "no_active_period", statusCode: 404 };
                 return gP;
             });
         },
