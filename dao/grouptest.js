@@ -1,7 +1,8 @@
 module.exports = function(app){
 
     var checkFields = app.utils.checkFields,
-        GroupTest = app.db.GroupTest;
+        GroupTest = app.db.GroupTest,
+        Actors = app.db.Actors;
 
     return {
 
@@ -10,6 +11,12 @@ module.exports = function(app){
             return checkFields(
                 [':id', 'user'], { ':id': group_id, user: evaluee_id}
             ).then(function(){
+                return Actors.isEvaluee(evaluee_id);
+            }).then(function(evaluee){
+                if(!evaluee) throw {
+                    statusCode: 403,
+                    message: "insuficient_privileges"
+                }
                 return GroupTest.findActive(group_id, evaluee_id);
             });
 
