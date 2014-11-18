@@ -57,11 +57,11 @@ module.exports = function(app, sql){
                         qs.push(
                             (function(group){
                                 var response = { id: group.id };
-                                return sql.select(
+                                return sql.selectOne(
                                     'user', { id: group.evaluator_id }
                                 ).then(function(user){
                                     response.user = user;
-                                    return sql.select(
+                                    return sql.selectOne(
                                         'institution',
                                         { id: group.institution_id }
                                     );
