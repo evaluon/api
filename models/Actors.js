@@ -1,5 +1,7 @@
 module.exports = function(app, sql){
 
+    var q = app.utils.q;
+
     var self = {
 
         isInstitution: function(user){
@@ -44,7 +46,37 @@ module.exports = function(app, sql){
                     message: "User is not an evaluator",
                     statusCode: 403
                 }
-                return sql.select('group', { evaluator_id: user.id });
+                return sql.select(
+                    'group', { evaluator_id: user.id }
+                ).then(function(groups){
+
+                    var qs = [];
+
+                    for(group in groups){
+
+                        qs.push(
+                            (function(group){
+                                var response = { id: group.id };
+                                return sql.select(
+                                    'user', { id: group.evaluator_id }
+                                ).then(function(user){
+                                    response.user = user;
+                                    return sql.select(
+                                        'institution',
+                                        { id: group.institution_id }
+                                    );
+                                }).then(function(institution){
+                                    response.institution = institution;
+                                    return response;
+                                })
+                            })(groups[group])
+                        );
+
+                    }
+
+                    return q.all(qs);
+
+                });
             });
         },
 
