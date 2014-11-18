@@ -10,7 +10,7 @@ module.exports = function(app, sql){
                 "SELECT id FROM active_period WHERE gid = ?", [group_id]
             ).then(function(period){
                 if(!period) throw {
-                    message: "No active period",
+                    message: "no_active_period",
                     statusCode: 404,
                     cause: "Period"
                 }
@@ -33,7 +33,13 @@ module.exports = function(app, sql){
                     "   start_date ASC"
                     , [period.id, group_id, evaluee_id]
                 );
-            })
+            }).then(function(test){
+                if(!test) throw {
+                    message: 'no_active_test',
+                    statusCode: 404
+                };
+                return test;
+            });
         },
 
         findAll: function(group_id, evaluee_id){
