@@ -1,6 +1,6 @@
 module.exports = function(app, sql){
 
-    self = {
+    var self = {
 
         isInstitution: function(user){
             return sql.selectOne('institution', { evaluator_id: user.id });
@@ -20,6 +20,22 @@ module.exports = function(app, sql){
                 };
                 return sql.insert('evaluator', options);
             });
+        },
+
+        evaluatorList: function(user){
+            return self.isInstitution(user).then(function(institution){
+                if(!institution) throw {
+                    statusCode: 403,
+                    message: "invalid_permissions"
+                };
+                return sql.query(
+                    "SELECT u.*, e.* " +
+                    "FROM user u, evaluator e, group g " +
+                    "WHERE g.institution_id = ? AND " +
+                    "   e.id = g.evaluator_id AND " +
+                    "   u.id = e.id", [institution.id]
+                );
+            })
         },
 
         evaluatorGroups: function(user){

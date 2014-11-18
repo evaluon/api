@@ -18,6 +18,12 @@ module.exports = function(app){
             }).catch(next);
         },
 
+        evaluatorList: function(req, res, next){
+            Dao.evaluatorList(req.user.id).then(function(evaluators){
+                responseView(evaluators, res);
+            }).catch(next);
+        }
+
         setEvaluee: function(req, res, next){
             Dao.setEvaluee(req.user, req.body).then(function(){
                 responseView(false, res);

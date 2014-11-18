@@ -30,6 +30,10 @@ module.exports = function(app){
             });
         },
 
+        evaluatorList: function(user){
+            return Actors.evaluatorList(user);
+        }
+
         evaluatorGroups: function(user){
             return checkFields(['user'], { user: user }).then(function(){
                 return Actors.evaluatorGroups(user);
