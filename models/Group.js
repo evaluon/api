@@ -1,13 +1,42 @@
 module.exports = function(app, sql){
 
+    function processGroup(group){
+
+        var response = { id: group.id };
+
+        return sql.selectOne(
+            'user', { id: group.evaluator_id }
+        ).then(function(user){
+            response.user = user;
+            return sql.selectOne(
+                'institution',
+                { id: group.institution_id }
+            );
+        }).then(function(institution){
+            response.institution = institution;
+            return response;
+        });
+
+    }
+
+    function processGroups(groups){
+
+        var qs = [];
+        for(group in groups){
+            qs.push(processGroup(groups[group]));
+        }
+        return q.all(qs);
+
+    }
+
     var self = {
 
         find: function(values){
-            return sql.selectOne('group', values);
+            return sql.selectOne('group', values).then(processGroup);
         },
 
         findAll: function(values){
-            return sql.select('group', values);
+            return sql.select('group', values).then(processGroups);
         },
 
         create: function(object){
