@@ -1,73 +1,53 @@
 module.exports = function(app){
 
     var log = app.utils.log,
-    _ = app.utils._,
-    Group = app.db.Group,
-    Actors = app.db.Actors;
+        _ = app.utils._,
+        Group = app.db.Group,
+        Actors = app.db.Actors;
 
     var self = {
 
         findGroups: function(institution_id){
-            if(institution_id) {
+            return checkFields(
+                [':id'], { ':id': institution_id }
+            ).then(function(){
                 return Group.findAll({ institution_id: institution_id });
-            } else {
-                throw {
-                    message: "Specify an institution id",
-                    missingFields: [":id"]
-                }
-            }
+            });
         },
 
         findGroup: function(institution_id, group_id){
-            if(institution_id && group_id){
-                return Group.find({
-                    institution_id: institution_id,
-                    id: group_id
-                });
-            } else {
-                throw {
-                    message: "Tell me which group you are talking about, and "
-                    + "where"
-                    , missingFields: [":inst_id", ":id"]
-                }
-            }
+            var fields = { ':id': group_id, institution_id: institution_id };
+            return checkFields(
+                [':id', 'institution_id'], fields
+            ).then(function(){
+                return Group.find(fields);
+            });
         },
 
         createGroup: function(options){
-            if(options.institution_id && options.evaluator_id){
+            return checkFields(
+                ['institution_id', 'evaluator_id'], options
+            ).then(function(){
                 return Group.create(options);
-            } else {
-                throw {
-                    message: "Specify which institution and evaluator manages " +
-                    "this group",
-                    missingFields: ["institution_id", "evaluator_id"]
-                }
-            }
+            });
         },
 
         updateGroup: function(options){
-            if(options.id){
+            return checkFields(['id'], { id: options.id }).then(function(){
                 return Group.create(options.id, options);
-            } else {
-                throw {
-                    message: "Specify which group is going to be upated",
-                    missingFields: ["id"]
-                }
-            }
+            });
         },
 
         groupPeriods: function(id){
-            if(!id) throw {
-                message: "Group id missing", missingFields: [":id"]
-            }
-            return Group.groupPeriods(id);
+            return checkFields([':id'], { ':id': id }).then(function(){
+                return Group.groupPeriods(id);
+            });
         },
 
         setPeriod: function(id){
-            if(!id) throw {
-                message: "Group id missing", missingFields: [":id"]
-            }
-            return Group.setPeriod(id);
+            return checkFields([':id'], { ':id': id }).then(function(){
+                return Group.setPeriod(id);
+            });
         }
 
     }

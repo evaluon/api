@@ -27,7 +27,7 @@ module.exports = function(app){
         },
 
         updateGroup: function(req, res, next){
-            Dao.updateGroup(req.params.id, req.body).then(function(group){
+            Dao.updateGroup(req.body).then(function(group){
                 responseView(group, res);
             }).catch(next);
         },
