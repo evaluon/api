@@ -36,7 +36,8 @@ module.exports = function(app, sql){
             }).then(function(test){
                 if(!test) throw {
                     message: 'no_active_test',
-                    statusCode: 404
+                    statusCode: 404,
+                    cause: 'GroupTest'
                 };
                 return test;
             });
