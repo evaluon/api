@@ -12,6 +12,12 @@ module.exports = function(app){
     },
     {
         method: 'get',
+        url: '/evaluator',
+        action: actors.evaluatorList,
+        cors: true
+    },
+    {
+        method: 'get',
         url: '/evaluator/group',
         action: actors.evaluatorGroups,
         cors: true

@@ -24,7 +24,6 @@ module.exports = function(app, sql){
 
         evaluatorList: function(user){
             return self.isInstitution(user).then(function(institution){
-                log.warn(institution);
                 if(!institution) throw {
                     statusCode: 403,
                     message: "invalid_permissions"
@@ -36,7 +35,7 @@ module.exports = function(app, sql){
                     "   e.id = g.evaluator_id AND " +
                     "   u.id = e.id", [institution.id]
                 );
-            })
+            });
         },
 
         evaluatorGroups: function(user){
