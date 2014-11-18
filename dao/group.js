@@ -1,7 +1,8 @@
 module.exports = function(app){
 
-    var log = app.utils.log,
-        _ = app.utils._,
+    var _ = app.utils._,
+        log = app.utils.log,
+        checkFields = app.utils.checkFields,
         Group = app.db.Group,
         Actors = app.db.Actors;
 
