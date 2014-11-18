@@ -5,7 +5,7 @@ module.exports = function(app){
     return [
     {
         method: 'get',
-        url: '/disability',
+        url: '/evaluee/description',
         action: disabilities.findAll,
         cors: true
     }
