@@ -3,6 +3,7 @@ module.exports = function(app){
     var responseView = require('../views/jsonSuccessResponse'),
         Dao = app.dao.user,
         DaoActors = app.dao.actors,
+        DaoInstitution = app.dao.institution,
         log = app.utils.log,
         _ = app.utils._;
 
@@ -16,6 +17,17 @@ module.exports = function(app){
             } else {
                 DaoActors.actorRole(user).then(function(role){
                     user.role = role;
+                    if(role == 4){
+                        return DaoInstitution.findInstitution(
+                            { evaluator_id: user.id }
+                        ).then(function(institution){
+                            user.institution_id = institution.id;
+                            return user;
+                        });
+                    } else {
+                        return user;
+                    }
+                }).then(function(user){
                     responseView(user, res);
                 });
             }

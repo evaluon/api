@@ -16,6 +16,10 @@ module.exports = function(app){
             return Institution.find({ id: id });
         },
 
+        findInstitution: function(values){
+            return Institution.find(values);
+        },
+
         createInstitution: function(options){
             return checkFields(
                 [
