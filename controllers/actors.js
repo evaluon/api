@@ -19,10 +19,10 @@ module.exports = function(app){
         },
 
         evaluatorList: function(req, res, next){
-            Dao.evaluatorList(req.user.id).then(function(evaluators){
+            Dao.evaluatorList(req.user).then(function(evaluators){
                 responseView(evaluators, res);
             }).catch(next);
-        }
+        },
 
         setEvaluee: function(req, res, next){
             Dao.setEvaluee(req.user, req.body).then(function(){

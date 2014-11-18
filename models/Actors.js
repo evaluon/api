@@ -24,13 +24,14 @@ module.exports = function(app, sql){
 
         evaluatorList: function(user){
             return self.isInstitution(user).then(function(institution){
+                log.warn(institution);
                 if(!institution) throw {
                     statusCode: 403,
                     message: "invalid_permissions"
                 };
                 return sql.query(
                     "SELECT u.*, e.* " +
-                    "FROM user u, evaluator e, group g " +
+                    "FROM user u, evaluator e, `group` g " +
                     "WHERE g.institution_id = ? AND " +
                     "   e.id = g.evaluator_id AND " +
                     "   u.id = e.id", [institution.id]
