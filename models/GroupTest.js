@@ -28,7 +28,7 @@ module.exports = function(app, sql){
                     "       FROM opened_test " +
                     "       WHERE evaluee_id = ? " +
                     "   ) AND " +
-                    "	NOW() BETWEEN start_date AND stop_date" +
+                    "	NOW() BETWEEN start_date AND stop_date " +
                     "ORDER BY " +
                     "   start_date ASC"
                     , [period.id, group_id, evaluee_id]
