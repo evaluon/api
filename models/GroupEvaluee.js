@@ -10,15 +10,12 @@ module.exports = function(app, sql){
             return sql.query(
 
                 'SELECT ' +
-                '   u.id, u.first_name, u.middle_name, u.last_name, u.mail, ' +
-                '   e.disabled ' +
+                '   e.* ' +
                 'FROM ' +
-                '   group_evaluees g, evaluee e, user u ' +
+                '   group_evaluees g, evaluees e ' +
                 'WHERE ' +
                 '   g.group_id = ? AND ' +
-                '   g.evaluee_id = e.id AND ' +
-                '   e.id = u.id'
-
+                '   g.evaluee_id = e.id'
                 , [ group_id ]
             );
         },
