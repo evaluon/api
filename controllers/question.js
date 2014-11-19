@@ -11,14 +11,8 @@ module.exports = function(app){
             Dao.create(req.user.id, req.body).then(function(question){
                 responseView(question, res);
             }).catch(next);
-        },
-
-        addImage: function(req, res, next){
-            Image.addQuestionImage(req.params.id, req.body).then(function(){
-                responseView(false, res);
-            }).catch(next);
         }
-
+        
     };
 
 }

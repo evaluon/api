@@ -1,6 +1,7 @@
 module.exports = function(app){
 
-    var question = app.controllers.question;
+    var question = app.controllers.question,
+        image = app.controllers.image;
 
     return [
     {
@@ -12,7 +13,7 @@ module.exports = function(app){
     {
         method: 'put',
         url: '/question/:id/image',
-        action: question.addImage,
+        action: image.createQuestionImage,
         cors: true
     }
     ]
