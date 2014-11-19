@@ -26,7 +26,7 @@ module.exports = function(app, sql){
 
         find: function(object){
             return sql.selectOne('test', object);
-        }
+        },
 
         create: function(object){
             return sql.insert(
