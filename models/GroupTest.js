@@ -44,20 +44,37 @@ module.exports = function(app, sql){
         },
 
         findAll: function(group_id, evaluee_id){
-            return sql.query(
-                "SELECT " +
-                "	t.* " +
-                "FROM " +
-                "	test t, group_test gt " +
-                "WHERE group_id = ? AND " +
-                "	t.id = gt.test_id AND " +
-                "	t.id NOT IN (" +
-                "       SELECT test_id AS id " +
-                "       FROM opened_test " +
-                "       WHERE evaluee_id = ? " +
-                "   )"
-                , [group_id, evaluee_id]
-            );
+            return sql.selectOne(
+                'evaluee', { id: evaluee_id }
+            ).then(function(ev){
+                if(ev) {
+                    return sql.query(
+                        "SELECT " +
+                        "	t.* " +
+                        "FROM " +
+                        "	test t, group_test gt " +
+                        "WHERE group_id = ? AND " +
+                        "	t.id = gt.test_id AND " +
+                        "	t.id NOT IN (" +
+                        "       SELECT test_id AS id " +
+                        "       FROM opened_test " +
+                        "       WHERE evaluee_id = ? " +
+                        "   )"
+                        , [group_id, evaluee_id]
+                    );
+                } else {
+                    return sql.query(
+                        "SELECT " +
+                        "	t.* " +
+                        "FROM " +
+                        "	test t, group_test gt " +
+                        "WHERE group_id = ? AND " +
+                        "	t.id = gt.test_id AND "
+                        , [group_id]
+                    );
+                }
+            })
+
         },
 
         create: function(object){
