@@ -62,7 +62,7 @@ module.exports = function(app, sql){
 
         create: function(object){
             return sql.select(
-                'active_period', { gid: object.period_id }
+                'active_period', { gid: object.group_id }
             ).then(function(period){
                 return sql.insert(
                     'group_test', _.extend({ period_id: period.id }, object)
