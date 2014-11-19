@@ -96,8 +96,8 @@ module.exports = function(app, sql){
             })
         },
 
-        evalueeList: function(){
-            return sql.select('evaluees');
+        evalueeList: function(criteria){
+            return sql.select('evaluees', criteria || {});
         },
 
         evalueeGroups: function(user){

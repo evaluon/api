@@ -2,6 +2,10 @@ module.exports = function(app, sql){
 
     return {
 
+        list: function(test){
+            return sql.select('opened_test', { test_id: test });
+        },
+
         openTest: function(user, test){
             return sql.insert(
                 'opened_test',
