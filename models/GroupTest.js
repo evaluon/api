@@ -61,14 +61,16 @@ module.exports = function(app, sql){
         },
 
         create: function(object){
-            return sql.select(
+            log.debug(object);
+            return sql.selectOne(
                 'active_period', { gid: object.group_id }
             ).then(function(period){
+                log.warn(period);
                 return sql.insert(
                     'group_test', _.extend({ period_id: period.id }, object)
                 );
             }).then(function(result){
-                return self.findActive({ id: result.insertId });
+                return sql.selectOne('test', result.insertId);
             });
 
         }
