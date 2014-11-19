@@ -27,6 +27,29 @@ module.exports = function(app){
                 responseView(image, res);
             }).catch(next);
 
+        },
+
+        createQuestionImage: function(req, res, next){
+
+            var body = {};
+
+            formidable(req).then(function(data){
+                body = data.fields;
+                var image = data.files.file;
+                return azure(
+                    app.config.azure, 'evaluon',
+                    image.path, _.last(image.name.split('.'))
+                );
+            }).then(function(data){
+                var location = data.result.blob;
+                return Dao.questionImage({ id: body.question }, {
+                    location: location,
+                    description: body.description
+                });
+            }).then(function(image){
+                responseView(image, res);
+            }).catch(next);
+
         }
     }
 
