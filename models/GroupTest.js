@@ -61,21 +61,12 @@ module.exports = function(app, sql){
         },
 
         create: function(object){
-            return sql.query(
-                'SELECT p.* ' +
-                'FROM ' +
-                '   period p, institution i, group g ' +
-                'WHERE g.id = ? AND ' +
-                '   p.institution_id = g.institution_id AND ' +
-                '   stop_date >= ? ' +
-                'GROUP BY start_date ASC'
-                , [object.group_id, new Date()]
+            return sql.select(
+                'active_period', { gid: object.period_id }
             ).then(function(period){
-
                 return sql.insert(
                     'group_test', _.extend({ period_id: period.id }, object)
                 );
-
             }).then(function(result){
                 return self.findActive({ id: result.insertId });
             });
