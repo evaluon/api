@@ -44,9 +44,11 @@ module.exports = function(app, sql){
         },
 
         findAll: function(group_id, evaluee_id){
+
             return sql.selectOne(
                 'evaluee', { id: evaluee_id }
             ).then(function(ev){
+
                 if(ev) {
                     return sql.query(
                         "SELECT " +
@@ -69,7 +71,7 @@ module.exports = function(app, sql){
                         "FROM " +
                         "	test t, group_test gt " +
                         "WHERE group_id = ? AND " +
-                        "	t.id = gt.test_id AND "
+                        "	t.id = gt.test_id"
                         , [group_id]
                     );
                 }
