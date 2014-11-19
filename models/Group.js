@@ -42,8 +42,8 @@ module.exports = function(app, sql){
         },
 
         create: function(object){
-            return sql.insert('group', object).then(function(){
-                return self.find({id: object.id});
+            return sql.insert('group', object).then(function(res){
+                return self.find({id: res.insertId});
             });
         },
 
