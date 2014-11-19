@@ -35,12 +35,8 @@ module.exports = function(app){
         create: function(object){
 
             return checkFields(
-                [ 'test_id', 'group_id', 'period_id'],
-                {
-                    test_id: object.test_id,
-                    group_id: object.group_id,
-                    period_id: object.period_id
-                }
+                [ 'test_id', 'group_id'],
+                { test_id: object.test_id, group_id: object.group_id }
             ).then(function(){
                 return GroupTest.create(object);
             });
