@@ -29,6 +29,7 @@ module.exports = function(app){
             return checkFields(
                 ['institution_id', 'evaluator_id'], options
             ).then(function(){
+                log.debug(options);
                 return Group.create(options);
             });
         },

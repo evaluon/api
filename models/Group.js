@@ -1,6 +1,7 @@
 module.exports = function(app, sql){
 
-    var q = app.utils.q;
+    var q = app.utils.q,
+        log = app.utils.log;
 
     function processGroup(group){
 
