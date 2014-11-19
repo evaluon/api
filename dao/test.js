@@ -21,31 +21,24 @@ module.exports = function(app){
                 }).then(function(func){
                     return func(id).then(function(data){
                         if(data) return data;
-                        throw { message: "Test not found", statusCode: 404 }
+                        throw { message: "Test not found", statusCode: 404 };
                     });
                 })
-
-            })
-
+            });
         },
 
         create: function(options){
-            if(options.start_date && options.stop_date && options.description){
+            return checkFields(
+                ['description', 'start_date', 'stop_date'], options
+            ).then(function(){
                 return Test.create(options);
-            } else {
-                throw {
-                    message: "There are some missing fields",
-                    missingFields: ["start_date", "stop_date", "description"]
-                }
-            }
+            });
         },
 
         update: function(id, options){
-            if(!id) throw {
-                message: "Test ID is missing",
-                missingFields: [":id"]
-            }
-            return Test.update(id, options);
+            return checkFields([':id'], id).then(function(){
+                return Test.update(id, options);
+            });
         }
 
     }
