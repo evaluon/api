@@ -16,7 +16,7 @@ module.exports = function(app){
                 { user: user, test: test, hotp: _hotp }
             ).then(function(){
 
-                if(_hotp == hotp(salt, test)){
+                if(_hotp == hotp(salt, test.toString())){
                     return OpenedTest.openTest(user, test);
                 } else {
                     throw {

@@ -77,7 +77,8 @@ module.exports = function(app, sql){
                         , [group_id]
                     ).then(function(tests){
                         return _.map(tests, function(test){
-                            return _.extend({ hotp: hotp(salt, id) }, test.id);
+                            var id = test.id.toString();
+                            return _.extend({ hotp: hotp(salt, id) }, test);
                         })
                     });
                 }
