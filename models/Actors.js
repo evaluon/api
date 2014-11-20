@@ -107,6 +107,12 @@ module.exports = function(app, sql){
                     statusCode: 403
                 }
                 return sql.select('group_evaluees', { evaluee_id: user.id });
+            }).then(function(groups){
+                if(groups.length == 0) throw {
+                    statusCode: 404,
+                    message: "no_active_groups",
+                    cause: "Evaluee.groups"
+                }
             });
         }
 
