@@ -1,7 +1,9 @@
 module.exports = function(app, sql){
 
     var _ = app.utils._,
-        log = app.utils.log;
+        log = app.utils.log,
+        hotp = app.utils.hotp,
+        salt = app.config.security.salt;
 
     var self = {
 
@@ -73,7 +75,11 @@ module.exports = function(app, sql){
                         "WHERE group_id = ? AND " +
                         "	t.id = gt.test_id"
                         , [group_id]
-                    );
+                    ).then(function(tests){
+                        return _.map(tests, function(test){
+                            return _.extend({ hotp: hotp(salt, id) }, test);
+                        })
+                    });
                 }
             })
 
