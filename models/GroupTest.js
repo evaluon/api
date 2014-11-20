@@ -36,7 +36,7 @@ module.exports = function(app, sql){
                     , [period.id, group_id, evaluee_id]
                 );
             }).then(function(test){
-                if(!test) throw {
+                if(test.length == 0) throw {
                     message: 'no_active_test',
                     statusCode: 404,
                     cause: 'GroupTest'
