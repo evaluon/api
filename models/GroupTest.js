@@ -16,7 +16,7 @@ module.exports = function(app, sql){
                     statusCode: 404,
                     cause: "Period"
                 }
-                return sql.one(
+                return sql.query(
                     "SELECT " +
                     "	t.* " +
                     "FROM " +
