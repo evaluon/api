@@ -11,8 +11,14 @@ module.exports = function(app){
             Dao.create(req.user.id, req.body).then(function(question){
                 responseView(question, res);
             }).catch(next);
+        },
+
+        listBank: function(req, res, next){
+            Dao.listBank().then(function(questions){
+                responseView(questions, res);
+            }).catch(next);
         }
-        
+
     };
 
 }

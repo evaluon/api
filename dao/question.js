@@ -42,6 +42,10 @@ module.exports = function(app){
             return checkFields([':id'], { ':id': id }).then(function(){
                 return Question.update(id, question);
             });
+        },
+
+        listBank: function(){
+            return Question.findBy({ public: true });
         }
 
     }

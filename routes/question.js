@@ -5,6 +5,12 @@ module.exports = function(app){
 
     return [
     {
+        method: 'get',
+        url: '/question',
+        action: question.listBank,
+        cors: true
+    },
+    {
         method: 'post',
         url: '/question',
         action: question.create,
