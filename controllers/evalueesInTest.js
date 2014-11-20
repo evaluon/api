@@ -8,7 +8,7 @@ module.exports = function(app){
 
         evalueesInTest: function(req, res, next){
             Dao.evalueesInTest(
-                req.params.group, req.params.test
+                req.query.group, req.query.test
             ).then(function(evaluees){
                 responseView(evaluees, res);
             }).catch(next);

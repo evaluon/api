@@ -5,7 +5,7 @@ module.exports = function(app){
     return [
     {
         method: 'get',
-        url: '/test/:test/:group',
+        url: '/evaluee/test',
         action: evalueesInTest.evalueesInTest,
         cors: true
     }

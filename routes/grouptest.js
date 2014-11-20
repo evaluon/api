@@ -5,14 +5,14 @@ module.exports = function(app){
     return [
     {
         method: 'get',
-        url: '/test/group/:id/active',
-        action: GroupTest.findActive,
+        url: '/test/group/:id',
+        action: GroupTest.findAll,
         cors: true
     },
     {
         method: 'get',
-        url: '/test/group/:id',
-        action: GroupTest.findAll,
+        url: '/test/group/:id/active',
+        action: GroupTest.findActive,
         cors: true
     },
     {
