@@ -63,7 +63,8 @@ module.exports = function(app, sql){
                         "       SELECT test_id AS id " +
                         "       FROM opened_test " +
                         "       WHERE evaluee_id = ? " +
-                        "   )"
+                        "   ) " +
+                        "ORDER BY start_date DESC"
                         , [group_id, evaluee_id]
                     );
                 } else {
@@ -73,7 +74,8 @@ module.exports = function(app, sql){
                         "FROM " +
                         "	test t, group_test gt " +
                         "WHERE group_id = ? AND " +
-                        "	t.id = gt.test_id"
+                        "	t.id = gt.test_id " +
+                        "ORDER BY start_date DESC"
                         , [group_id]
                     ).then(function(tests){
                         return _.map(tests, function(test){
