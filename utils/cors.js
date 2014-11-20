@@ -9,7 +9,10 @@ module.exports = (function() {
         res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
         res.header(
             'Access-Control-Allow-Headers',
-            'Authorization, Content-Type, X-Requested-With, Cache-Control'
+            [
+            'Authorization', 'Accept', 'Content-Type', 'X-Requested-With',
+            'Cache-Control'
+            ].join(', ')
         );
     }
 
@@ -28,7 +31,7 @@ module.exports = (function() {
                 var rt = corsEnabled[route];
                 if(
                     pattern.fromString(rt.url.toLowerCase())
-                        .matches(req.path.toLowerCase()) 
+                        .matches(req.path.toLowerCase())
                     && req.method == rt.method.toUpperCase()
                 ){
                     allowCrossDomain(res);
