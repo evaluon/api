@@ -113,6 +113,7 @@ module.exports = function(app, sql){
                     message: "no_active_groups",
                     cause: "Evaluee.groups"
                 }
+                return groups;
             });
         }
 
