@@ -18,7 +18,7 @@ module.exports = function(app, sql){
                 }
                 return sql.query(
                     "SELECT " +
-                    "	t.* " +
+                    "	NOW(), t.* " +
                     "FROM " +
                     "	test t, group_test gt, response r " +
                     "WHERE period_id = ? AND group_id = ? AND " +
