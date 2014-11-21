@@ -3,16 +3,14 @@
         "host": "db.boolinc.co",
         "user": "hackaton",
         "password": "Somosb00l.",
-        "database": "evaluon",
-        "timezone": "utc-5"
+        "database": "evaluon"
     },
 
     "evaluon_local": {
         "host": "localhost",
         "user": "root",
         "password": "Somosb00l.",
-        "database": "evaluon",
-        "timezone": "utc-5"
+        "database": "evaluon"
     },
 
     "evaluon_ud": {
@@ -20,10 +18,9 @@
         "user": "remote",
         "port": 143,
         "password": "Somosb00l.",
-        "database": "evaluon",
-        "timezone": "utc-5"
+        "database": "evaluon"
     },
 
-    "preferred": "evaluon-local"
+    "preferred": "evaluon_local"
 
 }
