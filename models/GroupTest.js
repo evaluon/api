@@ -20,9 +20,8 @@ module.exports = function(app, sql){
                     "SELECT " +
                     "	NOW(), t.* " +
                     "FROM " +
-                    "	test t, group_test gt, response r " +
+                    "	test t, group_test gt " +
                     "WHERE period_id = ? AND group_id = ? AND " +
-                    "	t.id = r.test_id AND" +
                     "	t.id = gt.test_id AND" +
                     "	t.stop_date IS NOT NULL AND " +
                     "	t.id NOT IN (" +
