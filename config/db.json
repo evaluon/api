@@ -15,7 +15,7 @@
 
     "evaluon_ud": {
         "host": "db.boolinc.co",
-        "user": "remote",
+        "user": "hackaton",
         "port": 143,
         "password": "Somosb00l.",
         "database": "evaluon"
