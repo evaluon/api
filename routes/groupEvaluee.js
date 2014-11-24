@@ -14,6 +14,12 @@ module.exports = function(app){
         url: '/group/:id/evaluee',
         action: group.addEvaluees,
         cors: true
+    },
+    {
+        method: 'delete',
+        url: '/group/:id/evaluee',
+        action: group.deleteEvaluee,
+        cors: true
     }
     ]
 

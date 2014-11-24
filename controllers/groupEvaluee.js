@@ -10,9 +10,7 @@ module.exports = function(app){
 
         groupEvaluees: function(req, res, next){
 
-            log.debug("Fetching group evaluees for group %d", req.params.id);
             Dao.groupEvaluees(req.params.id).then(function(evaluees){
-                log.debug("Fetched\n", evaluees);
                 responseView(evaluees, res);
             }).catch(next);
 
@@ -21,6 +19,14 @@ module.exports = function(app){
         addEvaluees: function(req, res, next){
 
             Dao.addEvaluees(req.body.users, req.params.id).then(function(){
+                responseView(false, res);
+            }).catch(next);
+
+        },
+
+        deleteEvaluee: function(req, res, next){
+
+            Dao.deleteEvaluee(req.query.user, req.params.id).then(function(){
                 responseView(false, res);
             }).catch(next);
 

@@ -15,7 +15,8 @@ module.exports = function(app, sql){
                 '   group_evaluees g, evaluees e ' +
                 'WHERE ' +
                 '   g.group_id = ? AND ' +
-                '   g.evaluee_id = e.id'
+                '   g.evaluee_id = e.id AND ' +
+                '   g.disabled IS NULL'
                 , [ group_id ]
             );
         },
@@ -58,7 +59,14 @@ module.exports = function(app, sql){
                 }
             });
 
+        },
 
+        deleteEvaluee: function(evaluee, group){
+
+            return sql.update(
+                'group_evaluees', { disabled: true },
+                { evaluee_id: evaluee, group_id: group }
+            );
 
         }
 
