@@ -6,7 +6,6 @@ module.exports = function(app, sql){
 
         findAll: function(){
             return sql.select('knowledge_area').then(function(ka){
-                log.debug(ka);
                 return ka;
             });
         },

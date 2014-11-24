@@ -9,17 +9,23 @@ module.exports = function(app){
 
         create: function(user, question){
 
-            return checkFields(
-                [
-                'knowledge_area_id', 'open',
-                'public', 'description_text',
-                'institution_id', 'user_id',
-                'difficulty'
-                ],
-                _.extend({ user_id: user }, question)
-            ).then(function(){
+            if(!question.open){
+                return checkFields(
+                    [
+                    'knowledge_area_id', 'open',
+                    'public', 'description_text',
+                    'institution_id', 'user_id',
+                    'difficulty'
+                    ],
+                    _.extend({ user_id: user }, question)
+                ).then(function(){
+                    return Question.create(user, question);
+                });
+            } else {
                 return Question.create(user, question);
-            });
+            }
+
+
 
         },
 

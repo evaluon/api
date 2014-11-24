@@ -21,7 +21,6 @@ module.exports = function(app){
         },
 
         createGroup: function(req, res, next){
-            log.debug(req.body);
             Dao.createGroup(req.body).then(function(){
                 responseView(false, res);
             }).catch(next);

@@ -58,6 +58,7 @@ module.exports = function(app, sql){
         },
 
         add: function(user, test, question){
+
             return sql.selectOne('evaluator', { id: user }).then(function(u){
                 if(!u) throw {
                     message: "User is not an evaluee",
@@ -65,6 +66,8 @@ module.exports = function(app, sql){
                 }
                 return sql.selectOne('question', { id: question });
             }).then(function(q){
+                log.warn(question, q);
+
                 if(!q.public) {
                     return sql.selectOne(
                         'group',
@@ -75,6 +78,8 @@ module.exports = function(app, sql){
                             statusCode: 404
                         }
                     });
+                } else {
+                    return true;
                 }
             }).then(function(){
                 return sql.insert(
