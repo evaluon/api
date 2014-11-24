@@ -88,7 +88,7 @@ module.exports = function(app, sql){
         },
 
         create: function(object){
-            log.debug(object);
+            
             return sql.selectOne(
                 'active_period', { gid: object.group_id }
             ).then(function(period){
