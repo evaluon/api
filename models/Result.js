@@ -1,7 +1,8 @@
 module.exports = function(app, sql){
 
     var q = app.utils.q,
-        _ = app.utils._;
+        _ = app.utils._,
+        log = app.utils.log;
 
     return {
 
@@ -14,18 +15,19 @@ module.exports = function(app, sql){
                 var qs = [];
 
                 for(result in results){
-                    result = results[result];
-                    qs.push(
-                        sql.selectOne(
-                            'test', { id: result.test_id }
-                        ).then(function(test){
-                            return {
-                                id: test.id,
-                                description: test.description,
-                                note: result.note
-                            };
-                        })
-                    )
+                    (function(result){
+                        qs.push(
+                            sql.selectOne(
+                                'test', { id: result.test_id }
+                            ).then(function(test){
+                                return {
+                                    id: test.id,
+                                    description: test.description,
+                                    note: result.note
+                                };
+                            })
+                        );
+                    })(results[result]);
                 }
 
                 return q.all(qs);
