@@ -1,9 +1,10 @@
 module.exports = function(app){
 
     var log = app.utils.log,
-    _ = app.utils._,
-    Period = app.db.Period,
-    Institution = app.db.Institution;
+        _ = app.utils._,
+        checkFields = app.utils.checkFields,
+        Period = app.db.Period,
+        Institution = app.db.Institution;
 
     return {
 
@@ -12,24 +13,12 @@ module.exports = function(app){
         },
 
         createPeriod: function(options){
-            if(options.institution_id){
 
-                if(options.start_date != null && options.stop_date != null){
-                    return Period.create(options);
-                } else {
-                    throw {
-                        message: "You must add start and end dates " +
-                        "for new period",
-                        missingFields: ["start_date", "stop_date"]
-                    };
-                }
-
-            } else {
-                throw {
-                    message: "Institution id is missing",
-                    missingFields: ["institution_id"]
-                };
-            }
+            return checkFields(
+                ["start_date", "stop_date", "institution_id"], options
+            ).then(function(){
+                return Period.create(options);
+            });
 
         }
 

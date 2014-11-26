@@ -10,10 +10,11 @@ module.exports = function(err, data, res){
 
     if(err){
         obj.error = _.omit(err, 'statusCode');
+        obj.error.message = err.message || 'internal_server_error';
     } else {
         if(data) obj.data = _.isArray(data) ? data : _.omit(data, 'statusCode');
     }
-    
+
     res.json(statusCode, obj);
 
 };

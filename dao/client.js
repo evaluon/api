@@ -30,7 +30,9 @@ module.exports = function(app){
                 if(client){
                     return Client.update(id, options);
                 } else {
-                    throw ({"message": "client_not_found"});
+                    throw {
+                        message: "client_not_found", statusCode: 404 
+                    };
                 }
             });
 

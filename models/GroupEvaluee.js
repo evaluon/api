@@ -41,7 +41,7 @@ module.exports = function(app, sql){
                 );
                 if(filtered.length > 0){
                     throw {
-                        message: "Some users are not evaluees",
+                        message: "not_evaluees",
                         userList: filtered,
                         statusCode: 403
                     }

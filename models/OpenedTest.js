@@ -19,6 +19,16 @@ module.exports = function(app, sql){
                 { close_date: new Date },
                 { evaluee_id: user, test_id: test }
             );
+        },
+
+        feedback: function(user, test, feedback){
+
+            return sql.update(
+                'opened_test',
+                { feedback: feedback },
+                { evaluee_id: user, test_id: test }
+            );
+
         }
 
     }

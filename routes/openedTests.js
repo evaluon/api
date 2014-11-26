@@ -14,7 +14,13 @@ module.exports = function(app){
         url: '/test/:id/close',
         action: openedTests.closeTest,
         cors: true
-    }
+    },/*
+    {
+        method: 'post',
+        url: '/test/:id/feedback',
+        action: openedTests.feedbackTest,
+        cors: true
+    }*/
     ]
 
 }

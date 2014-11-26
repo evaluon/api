@@ -21,7 +21,7 @@ module.exports = function(app){
                 }).then(function(func){
                     return func(id).then(function(data){
                         if(data) return data;
-                        throw { message: "Test not found", statusCode: 404 };
+                        throw { message: "test_not_found", statusCode: 404 };
                     });
                 })
             });

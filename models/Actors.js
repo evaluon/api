@@ -17,7 +17,7 @@ module.exports = function(app, sql){
                 'evaluee', { id: options.user_id }
             ).then(function(u){
                 if(u) throw {
-                    message: "Current user is evaluee",
+                    message: "is_evaluee",
                     statusCode: 403
                 };
                 return sql.insert('evaluator', options);
@@ -43,7 +43,7 @@ module.exports = function(app, sql){
         evaluatorGroups: function(user){
             return sql.selectOne('evaluator', { id: user.id }).then(function(e){
                 if(!e) throw {
-                    message: "User is not an evaluator",
+                    message: "not_evaluator",
                     statusCode: 403
                 }
                 return sql.select(
@@ -96,7 +96,7 @@ module.exports = function(app, sql){
                 'evaluator', { id: options.user_id }
             ).then(function(u){
                 if(u) throw {
-                    message: "Current user is evaluator",
+                    message: "is_evaluator",
                     statusCode: 403
                 };
                 return sql.insert('evaluee', options);
@@ -110,7 +110,7 @@ module.exports = function(app, sql){
         evalueeGroups: function(user){
             return sql.selectOne('evaluee', { id: user.id }).then(function(e){
                 if(!e) throw {
-                    message: "User is not an evaluee",
+                    message: "not_evaluee",
                     statusCode: 403
                 }
                 return sql.select('group_evaluees', { evaluee_id: user.id });

@@ -61,7 +61,7 @@ module.exports = function(app, sql){
 
             return sql.selectOne('evaluator', { id: user }).then(function(u){
                 if(!u) throw {
-                    message: "User is not an evaluee",
+                    message: "not_an_evaluee",
                     statusCode: 403
                 }
                 return sql.selectOne('question', { id: question });

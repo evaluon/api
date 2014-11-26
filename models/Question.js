@@ -5,7 +5,7 @@ module.exports = function(app, sql){
         create: function(user, question){
             return sql.selectOne('evaluator', { id: user }).then(function(u){
                 if(!u) throw {
-                    message: "User is not an evaluator",
+                    message: "not_an_evaluator",
                     statusCode: 403
                 };
                 return sql.selectOne(
@@ -17,8 +17,7 @@ module.exports = function(app, sql){
                 );
             }).then(function(group){
                 if(!group) throw {
-                    message: "User can't create questions in name of " +
-                    "specified institution",
+                    message: "unabled_institution",
                     statusCode: 403
                 }
                 return sql.insert('question', question)

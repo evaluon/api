@@ -12,8 +12,7 @@ module.exports = function(app, sql){
 
             return sql.selectOne('evaluee', { id: evaluee }).then(function(e){
                 if(!e) throw {
-                    message: "User is not an evaluee",
-                    statusCode: 403
+                    message: "not_an_evaluee", statusCode: 403
                 }
             }).then(function(){
                 return sql.insert('test', test);
@@ -33,8 +32,8 @@ module.exports = function(app, sql){
                         KA = res[KA];
                         qs.push(
                             sql.select(
-                                'question',
-                                { knowledge_area_id: KA.id, public: true }
+                                'self_questions',
+                                { evaluee_id: evaluee, knowledge_area_id: KA }
                             )
                         )
                     };
@@ -73,7 +72,7 @@ module.exports = function(app, sql){
 
             return sql.selectOne('evaluee', { id: evaluee }).then(function(e){
                 if(!e) throw {
-                    message: "User is not an evaluee",
+                    message: "not_an_evaluee",
                     statusCode: 403
                 }
             }).then(function(){
@@ -91,7 +90,7 @@ module.exports = function(app, sql){
                 );
             }).then(function(test){
                 if(!test) throw {
-                    message: "Test not available",
+                    message: "test_unavailable",
                     statusCode: 404
                 }
                 return test;

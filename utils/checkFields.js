@@ -22,8 +22,7 @@ function checkAField(required, object, index){
     if(missingFields.length > 0){
 
         throw {
-            message: (index != null? "On index" + index : "") +
-            "There are some missing fields",
+            message: "missing_fields",
             missingFields: missingFields,
             statusCode: 400
         };
