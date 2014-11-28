@@ -34,11 +34,11 @@ module.exports = function(app, sql){
             return sql.selectOne('question', { id: id });
         },
 
-        update: function(question){
+        update: function(id, question){
             return sql.update(
-                'question', question, { id: question.id }
+                'question', question, { id: id }
             ).then(function(res){
-                return self.find(question.id);
+                return self.find(id);
             });
         }
 

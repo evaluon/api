@@ -13,7 +13,7 @@ module.exports = function(app, sql){
 
         create: function(image){
             return sql.insert('image', image).then(function(res){
-                return res.insertId;
+                return self.retrieve(res.insertId);
             });
         },
 

@@ -11,8 +11,6 @@ module.exports = function(app){
 
         createImage: function(req, res, next){
 
-            var body = {};
-
             formidable(req).then(function(data){
                 body = data.fields;
                 var image = data.files.file;
@@ -34,10 +32,9 @@ module.exports = function(app){
 
         createQuestionImage: function(req, res, next){
 
-            var body = {};
-
             formidable(req).then(function(data){
                 body = data.fields;
+                log.warn(data.fields);
                 var image = data.files.file;
                 return azure(
                     app.config.azure, 'evaluon',
