@@ -22,7 +22,6 @@ module.exports = function(app){
             ).then(function(){
                 return Image.create(image);
             }).then(function(_image){
-                log.debug("Adding %j to %s", _image, question);
                 return Question.update(question, { image_id: _image.id });
             });
         }

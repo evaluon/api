@@ -14,7 +14,6 @@ function checkAField(required, object, index){
                 || object[rField] != ""
             )
         )) {
-            log.debug(rField);
             missingFields.push(rField);
         }
 

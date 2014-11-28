@@ -34,7 +34,6 @@ module.exports = function(app){
 
             formidable(req).then(function(data){
                 body = data.fields;
-                log.warn(data.fields);
                 var image = data.files.file;
                 return azure(
                     app.config.azure, 'evaluon',

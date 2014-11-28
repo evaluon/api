@@ -40,9 +40,7 @@ module.exports = function(app, sql){
 
                     return q.all(qs);
                 }).then(function(questions){
-                    log.debug(questions);
                     allQuestions = _.flatten(questions);
-                    log.warn(allQuestions);
                     return sql.beginTransaction();
                 }).then(function(){
                     qs = [];

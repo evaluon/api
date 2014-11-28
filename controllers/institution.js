@@ -36,7 +36,6 @@ module.exports = function(app){
                         image.path, _.last(image.name.split('.'))
                     );
                 }).then(function(data){
-                    log.warn(body);
                     var location = data.result.blob;
                     return Dao.createInstitution({
                         id: body.id,

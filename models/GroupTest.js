@@ -88,11 +88,10 @@ module.exports = function(app, sql){
         },
 
         create: function(object){
-            
+
             return sql.selectOne(
                 'active_period', { gid: object.group_id }
             ).then(function(period){
-                log.warn(period);
                 return sql.insert(
                     'group_test', _.extend({ period_id: period.id }, object)
                 );
