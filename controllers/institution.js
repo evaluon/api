@@ -18,9 +18,17 @@ module.exports = function(app){
         },
 
         retrieveInstitutions: function(req, res, next){
-            return Dao.retrieveInstitutions().then(function(institutions){
-                responseView(institutions, res);
-            }).catch(next);
+            if(req.query.evaluee){
+                return Dao.activeInstitutions(
+                    req.query.evaluee
+                ).then(function(institutions){
+                    responseView(institutions, res);
+                }).catch(next);
+            } else {
+                return Dao.retrieveInstitutions().then(function(institutions){
+                    responseView(institutions, res);
+                }).catch(next);
+            }
         },
 
         createInstitution: function(req, res, next){

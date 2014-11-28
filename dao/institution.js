@@ -12,6 +12,10 @@ module.exports = function(app){
             return Institution.findAll();
         },
 
+        activeInstitutions: function(evaluee){
+            return Institution.active(evaluee);
+        },
+
         retrieveInstitution: function(id){
             return Institution.find({ id: id });
         },

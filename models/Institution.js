@@ -6,6 +6,40 @@ module.exports = function(app, sql){
 
     var self = {
 
+        activeInstitutions: function(evaluee){
+            return sql.query(
+                "SELECT i.* " +
+                "FROM " + (
+                    "institution i, group g, group_evaluees ge "
+                ) +
+                "WHERE " + (
+                    "ge.evaluee_id = ? AND " +
+                    "g.id = ge.group_id AND " +
+                    "i.id = g.institution_id"
+                ), [ evaluee ]
+            ).then(function(institutions){
+                var qs = [];
+
+                for(institution in institutions){
+
+                    qs.push(
+                        (function(institution) {
+                            return sql.selectOne(
+                                'image', {id: institution.image_id}
+                            ).then(function(image){
+                                return _.extend(
+                                    { image: image },
+                                    _.omit(institution, 'image_id')
+                                )
+                            })
+                        })(institutions[institution])
+                    );
+                }
+
+                return Q.all(qs);
+            });
+        }
+
         find: function(values){
             return sql.selectOne(
                 'institution', values
