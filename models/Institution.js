@@ -8,9 +8,9 @@ module.exports = function(app, sql){
 
         active: function(evaluee){
             return sql.query(
-                "SELECT i.* " +
+                "SELECT DISTINCT i.* " +
                 "FROM " + (
-                    "institution i, group g, group_evaluees ge "
+                    "institution i, `group` g, group_evaluees ge "
                 ) +
                 "WHERE " + (
                     "ge.evaluee_id = ? AND " +
