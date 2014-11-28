@@ -5,7 +5,7 @@ module.exports = function(app){
     return [
     {
         method: 'get',
-        url: '/test/results',
+        url: '/test/:id/results',
         action: testResults.retrieveResults,
         cors: true
     }

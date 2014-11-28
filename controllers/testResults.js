@@ -8,7 +8,7 @@ module.exports = function(app){
         retrieveResults: function(req, res, next){
 
             Dao.retrieveResults(
-                req.query.test, req.query.evaluee
+                req.params.id, req.query.evaluee
             ).then(function(test){
                 responseView(test, res);
             }).catch(next);
