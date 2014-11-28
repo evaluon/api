@@ -11,7 +11,7 @@ module.exports = function(app){
             return checkFields(
                 ['test', 'evaluee'], { test: test, evaluee: evaluee }
             ).then(function(){
-                TestResult.retrieveResults(test, evaluee);
+                return TestResult.retrieveResults(test, evaluee);
             });
 
         }
