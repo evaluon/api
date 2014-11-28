@@ -21,6 +21,14 @@ module.exports = function(app){
                 responseView(false, res);
             }).catch(next);
 
+        },
+
+        score: function(req, res, next){
+
+            Dao.score(req.params.id, req.body.mark).then(function(){
+                responseView(false, res);
+            }).catch(next);
+
         }
 
     }

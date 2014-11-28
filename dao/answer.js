@@ -25,6 +25,16 @@ module.exports = function(app){
                 return Answer.addToQuestion(question, answer);
             });
 
+        },
+
+        score: function(answer, mark){
+
+            return checkFields(
+                ['answer', 'mark'], { answer: answer, mark: mark }
+            ).then(function(){
+                return Answer.score(answer, mark);
+            });
+
         }
 
     }

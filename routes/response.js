@@ -8,13 +8,7 @@ module.exports = function(app){
         url: '/response',
         action: response.makeResponse,
         cors: true
-    },/*
-    {
-        method: 'put',
-        url: '/response/:id',
-        action: response.updateResponse,
-        cors: true
-    }*/
+    }
     ]
 
 }
