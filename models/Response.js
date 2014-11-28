@@ -21,7 +21,11 @@ module.exports = function(app, sql){
                     if(q.open) {
                         return sql.insert(
                             'text_answer',
-                            { response_id: res.insertId, answer_text: text }
+                            {
+                                response_id: res.insertId,
+                                answer_text: text,
+                                right: null
+                            }
                         )
                     }
                     return true;
