@@ -1,6 +1,7 @@
 module.exports = function(app){
 
-    var checkFields = app.utils.checkFields,
+    var _ = app.utils._,
+        checkFields = app.utils.checkFields,
         Question = app.db.Question,
         Image = app.db.Image;
 
