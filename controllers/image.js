@@ -45,7 +45,7 @@ module.exports = function(app){
                 );
             }).then(function(data){
                 var location = data.result.blob;
-                return Dao.questionImage({ id: body.question }, {
+                return Dao.questionImage(body.question, {
                     location: location,
                     description: body.description
                 });
