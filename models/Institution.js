@@ -6,7 +6,7 @@ module.exports = function(app, sql){
 
     var self = {
 
-        activeInstitutions: function(evaluee){
+        active: function(evaluee){
             return sql.query(
                 "SELECT i.* " +
                 "FROM " + (
