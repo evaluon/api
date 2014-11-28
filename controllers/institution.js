@@ -3,6 +3,7 @@ module.exports = function(app){
     var _ = app.utils._,
         log = app.utils.log,
         Dao = app.dao.institution,
+        ActorsDao = app.dao.actors,
         formidable = app.utils.formidable,
         azure = app.utils.azure,
         responseView = require('../views/jsonSuccessResponse');
@@ -18,17 +19,22 @@ module.exports = function(app){
         },
 
         retrieveInstitutions: function(req, res, next){
-            if(req.query.evaluee){
-                return Dao.activeInstitutions(
-                    req.query.evaluee
-                ).then(function(institutions){
-                    responseView(institutions, res);
-                }).catch(next);
-            } else {
-                return Dao.retrieveInstitutions().then(function(institutions){
-                    responseView(institutions, res);
-                }).catch(next);
-            }
+
+            ActorsDao.isEvaluee(req.user.id).then(function(isEvaluee){
+                if(isEvaluee){
+                    return Dao.activeInstitutions(
+                        req.user.id
+                    ).then(function(institutions){
+                        responseView(institutions, res);
+                    }).catch(next);
+                } else {
+                    return Dao.retrieveInstitutions(
+                    ).then(function(institutions){
+                        responseView(institutions, res);
+                    }).catch(next);
+                }
+            });
+
         },
 
         createInstitution: function(req, res, next){

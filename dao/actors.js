@@ -7,6 +7,12 @@ module.exports = function(app){
 
     return {
 
+        isEvaluee: function(user){
+            return Actors.isEvaluee(user).then(function(is){
+                return !!is;
+            });
+        },
+
         actorRole: function(user){
             return Actors.isEvaluator(user).then(function(isEvaluator){
                 if(isEvaluator){

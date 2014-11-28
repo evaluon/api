@@ -38,7 +38,7 @@ module.exports = function(app, sql){
 
                 return Q.all(qs);
             });
-        }
+        },
 
         find: function(values){
             return sql.selectOne(
