@@ -34,10 +34,6 @@ module.exports = function(app, sql){
             });
 
 
-        },
-
-        score: function(answer, mark){
-            return sql.update('text_answer', { right: mark }, { id: answer });
         }
 
 

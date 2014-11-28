@@ -32,6 +32,10 @@ module.exports = function(app, sql){
             return sql.insert(
                 'answer_options', { question_id: question, answer_id: answer }
             )
+        },
+
+        score: function(answer, mark){
+            return sql.update('text_answer', { right: mark }, { id: answer });
         }
 
     };
