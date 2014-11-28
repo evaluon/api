@@ -22,9 +22,9 @@ module.exports = function(app, sql){
         },
 
         update: function(id, image){
-            return sql.update('image', { id: id }, image).then(function(){
+            return sql.update('image', image, { id: id }).then(function(){
                 return self.retrieve(id);
-            })
+            });
         }
 
     }

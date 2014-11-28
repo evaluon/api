@@ -21,7 +21,9 @@ module.exports = function(app){
             ).then(function(){
                 return Image.create(image);
             }).then(function(image){
-                return Question.update(image, { image_id: image.id });
+                return Question.update(
+                    _.extend({ id: question }, { image_id: image.id })
+                );
             });
         }
 
