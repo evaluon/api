@@ -38,6 +38,18 @@ module.exports = function(app){
                 return OpenedTest.closeTest(user, test);
             })
 
+        },
+
+        feedback: function(options){
+
+            return checkFields(
+                ['user', 'test', 'feedback'], options
+            ).then(function(){
+                return OpenedTest.feedback(
+                    options.user, optons.test, options.feedback
+                );
+            });
+
         }
 
 

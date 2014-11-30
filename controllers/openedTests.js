@@ -18,6 +18,12 @@ module.exports = function(app){
             Dao.closeTest(req.user.id, req.params.id).then(function(){
                 responseView(false, res);
             }).catch(next);
+        },
+
+        feedback: function(req, res, next){
+            Dao.feedback(req.body).then(function(){
+                responseView(false, res);
+            }).catch(next);
         }
 
     }
