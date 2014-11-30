@@ -14,6 +14,12 @@ module.exports = function(app){
         url: '/period',
         action: period.createPeriod,
         cors: true
+    },
+    {
+        method: 'put',
+        url: '/period',
+        action: period.updatePeriod,
+        cors: true
     }
     ]
 

@@ -20,6 +20,16 @@ module.exports = function(app){
                 return Period.create(options);
             });
 
+        },
+
+        updatePeriod: function(options){
+
+            return checkFields(
+                ["id", "start_date", "stop_date", "institution_id"], options
+            ).then(function(){
+                return Period.create(options.id, _.omit(options, 'id'));
+            });
+
         }
 
     };

@@ -16,6 +16,12 @@ module.exports = function(app){
             Dao.createPeriod(req.body).then(function(period){
                 responseView(period, res);
             }).catch(next);
+        },
+
+        updatePeriod: function(req, res, next){
+            Dao.update(req.body).then(function(period){
+                responseView(period, res);
+            }).catch(next);
         }
 
     };
