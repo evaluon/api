@@ -1,6 +1,7 @@
 module.exports = function(app){
 
-    var log = app.utils.log,
+    var _ = app.utils._,
+        log = app.utils.log,
         Dao = app.dao.openedTests,
         responseView = require('../views/jsonSuccessResponse');
 
@@ -21,7 +22,9 @@ module.exports = function(app){
         },
 
         feedback: function(req, res, next){
-            Dao.feedback(req.body).then(function(){
+            Dao.feedback(
+                _.extend({ test: req.params.id }, req.body)
+            ).then(function(){
                 responseView(false, res);
             }).catch(next);
         }
