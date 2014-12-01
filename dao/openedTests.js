@@ -46,7 +46,7 @@ module.exports = function(app){
                 ['user', 'test', 'feedback'], options
             ).then(function(){
                 return OpenedTest.feedback(
-                    options.user, optons.test, options.feedback
+                    options.user, options.test, options.feedback
                 );
             });
 
