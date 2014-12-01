@@ -13,15 +13,7 @@ module.exports = function(app){
         **/
         actualPeriod: function(req, res, next){
             Dao.results_actualPeriod(req.user.id).then(function(results){
-                var response = {
-                    average: (_.reduce(
-                        function(a, result){
-                            return a + result.average;
-                        }, results, 0
-                    ) / results.length),
-                    results: results
-                }
-                responseView(response, res);
+                responseView(results, res);
             }).catch(next);
         },
 
