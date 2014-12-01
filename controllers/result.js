@@ -1,6 +1,7 @@
 module.exports = function(app){
 
-    var log = app.utils.log,
+    var _ = app.utils._,
+        log = app.utils.log,
         Dao = app.dao.result,
         responseView = require('../views/jsonSuccessResponse');
 
@@ -12,7 +13,15 @@ module.exports = function(app){
         **/
         actualPeriod: function(req, res, next){
             Dao.results_actualPeriod(req.user.id).then(function(results){
-                responseView(results, res);
+                var response = {
+                    average: (_.reduce(
+                        function(a, result){
+                            return a + result.average;
+                        }, results, 0
+                    ) / results.length),
+                    results: results
+                }
+                responseView(response, res);
             }).catch(next);
         },
 
