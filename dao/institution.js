@@ -9,7 +9,7 @@ module.exports = function(app){
     self = {
 
         retrieveInstitutions: function(){
-            return Institution.findAll();
+            return Institution.findAll({ approved: true });
         },
 
         activeInstitutions: function(evaluee){
@@ -22,6 +22,13 @@ module.exports = function(app){
 
         findInstitution: function(values){
             return Institution.find(values);
+        },
+
+        retrieveUnapproved: function(){
+            return Institution.findAll({
+                approved: false,
+                denial_reason: null
+            });
         },
 
         createInstitution: function(options){

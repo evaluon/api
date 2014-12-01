@@ -5,7 +5,9 @@ module.exports = function(app, sql){
     var self = {
 
         isInstitution: function(user){
-            return sql.selectOne('institution', { evaluator_id: user.id });
+            return sql.selectOne(
+                'institution', { evaluator_id: user.id, approved: true }
+            );
         },
 
         isEvaluator: function(user){

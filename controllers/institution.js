@@ -20,20 +20,25 @@ module.exports = function(app){
 
         retrieveInstitutions: function(req, res, next){
 
-            ActorsDao.isEvaluee(req.user.id).then(function(isEvaluee){
-                if(isEvaluee){
-                    return Dao.activeInstitutions(
-                        req.user.id
-                    ).then(function(institutions){
-                        responseView(institutions, res);
-                    }).catch(next);
-                } else {
-                    return Dao.retrieveInstitutions(
-                    ).then(function(institutions){
-                        responseView(institutions, res);
-                    }).catch(next);
-                }
-            });
+            if(req.query.unapproved && req.user.role_id == 'admin'){
+
+                Dao.retrieveUnapproved().then(function(institutions){
+                    responseView(institutions, res);
+                }).catch(next);
+
+            } else {
+
+                ActorsDao.isEvaluee(req.user.id).then(function(isEvaluee){
+                    if(isEvaluee){
+                        return Dao.activeInstitutions(req.user.id);
+                    } else {
+                        return Dao.retrieveInstitutions();
+                    }
+                }).then(function(institutions){
+                    responseView(institutions, res);
+                }).catch(next);
+
+            }
 
         },
 
