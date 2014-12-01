@@ -24,7 +24,7 @@ module.exports = function(app){
     },
     {
         method: 'put',
-        url: '/institution',
+        url: '/institution/:id',
         action: institution.updateInstitution,
         cors: true
     }

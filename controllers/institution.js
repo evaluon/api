@@ -77,7 +77,7 @@ module.exports = function(app){
 
         updateInstitution: function(req, res, next){
             return Dao.updateInstitution(
-                req.body.id,
+                req.params.id,
                 req.body
             ).then(function(institution){
                 responseView(institution, res);
