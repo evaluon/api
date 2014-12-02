@@ -55,6 +55,33 @@ module.exports = function(app, sql){
             });
         },
 
+        unapproved: function(){
+            return sql.query(
+                "SELECT * FROM institution " +
+                "WHERE approved = 0 AND denial_reason IS NULL"
+            ).then(function(institutions){
+                var qs = [];
+
+                for(institution in institutions){
+
+                    qs.push(
+                        (function(institution) {
+                            return sql.selectOne(
+                                'image', {id: institution.image_id}
+                            ).then(function(image){
+                                return _.extend(
+                                    { image: image },
+                                    _.omit(institution, 'image_id')
+                                )
+                            })
+                        })(institutions[institution])
+                    );
+                }
+
+                return Q.all(qs);
+            });
+        },
+
         findAll: function(values){
             return sql.select(
                 'institution', values

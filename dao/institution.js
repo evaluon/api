@@ -25,10 +25,7 @@ module.exports = function(app){
         },
 
         retrieveUnapproved: function(){
-            return Institution.findAll({
-                approved: false,
-                denial_reason: null
-            });
+            return Institution.unapproved();
         },
 
         createInstitution: function(options){
