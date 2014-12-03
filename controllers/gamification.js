@@ -1,7 +1,9 @@
 module.exports = function(app){
 
-    var log = app.utils.log,
+    var _ = app.utils._,
+        log = app.utils.log,
         Dao = app.dao.gamification,
+        DaoResults = app.dao.result,
         responseView = require('../views/jsonSuccessResponse');
 
     return {
@@ -9,20 +11,25 @@ module.exports = function(app){
         indicators: function(req, res, next){
             Dao.indicators(req.user.id).then(function(indicators){
 
-                Dao.results_actualPeriod(req.user.id).then(function(results){
+                return DaoResults.results_actualPeriod(
+                    req.user.id
+                ).then(function(results){
 
-                    var response = {
-                        average: (_.reduce(
-                            function(a, result){
-                                return a + result.average;
-                            }, results, 0
-                        ) / results.length),
-                        gamification: indicators
-                    }
-                    responseView(response, res);
+                    return _.extend(
+                        { 
+                            average: (_.reduce(results,
+                                function(a, result){
+                                    return a + result.average;
+                                }, 0
+                            ) / results.length)
+                        },
+                        indicators
+                    );
 
                 });
 
+            }).then(function(response){
+                responseView(response, res);
             }).catch(next);
         }
 

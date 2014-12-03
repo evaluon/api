@@ -29,6 +29,11 @@ module.exports = function(app){
 
         updateUser: function(oUser, user){
             return User.update(oUser.id, user);
+        },
+
+        resetPassword: function(mail){
+            return this.findByMail(mail).then(function(user){
+            });
         }
 
     };
