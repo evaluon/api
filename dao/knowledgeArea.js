@@ -11,7 +11,7 @@ module.exports = function(app){
             return checkFields(
                 ['id', 'image_id', 'description'], knowledge_area
             ).then(function(){
-                return KnowledgeArea.create(knowledge_area);
+                return KnowledgeArea.create(user, knowledge_area);
             });
         },
 
