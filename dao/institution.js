@@ -46,10 +46,10 @@ module.exports = function(app){
                 }
             ).then(function(){
                 return Image.create(options.image);
-            }).then(function(image_id){
+            }).then(function(image){
                 return Institution.create(
                     _.extend(
-                        { image_id: image_id },
+                        { image_id: image.id },
                         _.omit(options, 'image')
                     )
                 );

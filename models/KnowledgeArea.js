@@ -17,7 +17,9 @@ module.exports = function(app, sql){
         },
 
         create: function(user, knowledge_area){
-            return sql.selectOne('evaluator', user).then(function(evaluator){
+            return sql.selectOne(
+                'evaluator', { id: user}
+            ).then(function(evaluator){
                 if(!evaluator) throw {
                     message: "not_an_evaluator",
                     statusCode: 403
@@ -31,14 +33,12 @@ module.exports = function(app, sql){
             });
         },
 
-        update: function(knowledge_area, new_knowledge_area){
+        update: function(id, data){
 
             return sql.update(
-                'knowledge_area',
-                { id: knowledge_area },
-                { id: new_knowledge_area }
+                'knowledge_area', { id: id }, data
             ).then(function(){
-                return self.find(new_knowledge_area);
+                return self.find(data.id);
             });
         }
 

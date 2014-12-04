@@ -46,8 +46,10 @@ module.exports = function(app){
             if(req.user.role_id == 'admin'){
 
                 var body = {};
+                log.warn("Entrando a verificar archivos");
 
                 formidable(req).then(function(data){
+                    log.debug("Si, got the image, and it's", data.files.file);
                     body = data.fields;
                     var image = data.files.file;
                     return azure(
@@ -70,7 +72,6 @@ module.exports = function(app){
                 }).then(function(institution){
                     responseView(institution, res);
                 }).catch(next);
-
 
             }
         },
