@@ -16,7 +16,7 @@ module.exports = function(app){
                 if(!evaluee) throw {
                     statusCode: 403,
                     message: "not_an_evaluee"
-                }
+                };
                 return GroupTest.findActive(group_id, evaluee_id);
             });
 
@@ -35,12 +35,31 @@ module.exports = function(app){
         create: function(user, object){
 
             return checkFields(
-                [ 'test_id', 'group_id'],
-                { test_id: object.test_id, group_id: object.group_id }
+                [ 'test_id', 'group_id'], object
             ).then(function(){
-                return Actors.isEvaluee(user);
-            }).then(function(evaluee){
-                if(!evaluee) throw {
+                return Actors.isEvaluator(user).then(function(evaluator){
+                    if(!evaluator){
+                        return false;
+                    }
+                    return Actors.evaluatorGroups(user);
+                }).then(function(groups){
+                    if(!groups || groups.lenght == 0){
+                        return false;
+                    } else if(
+                        !_.contains(
+                            _.map(groups, function(g){ return g.id; }),
+                            object.group_id
+                        )
+                    ) {
+                        return ;
+                    } else {
+                        return true;
+                    }
+                }).then(function(permissions){
+                    return permissions || Actors.isInstitution(user);
+                });
+            }).then(function(permissions){
+                if(!permissions) throw {
                     statusCode: 403,
                     message: "insuficient_privileges"
                 }
