@@ -15,7 +15,7 @@ module.exports = function(app){
             }).then(function(evaluee){
                 if(!evaluee) throw {
                     statusCode: 403,
-                    message: "insuficient_privileges"
+                    message: "not_an_evaluee"
                 }
                 return GroupTest.findActive(group_id, evaluee_id);
             });
@@ -32,12 +32,18 @@ module.exports = function(app){
 
         },
 
-        create: function(object){
+        create: function(user, object){
 
             return checkFields(
                 [ 'test_id', 'group_id'],
                 { test_id: object.test_id, group_id: object.group_id }
             ).then(function(){
+                return Actors.isEvaluee(user);
+            }).then(function(evaluee){
+                if(!evaluee) throw {
+                    statusCode: 403,
+                    message: "insuficient_privileges"
+                }
                 return GroupTest.create(object);
             });
 

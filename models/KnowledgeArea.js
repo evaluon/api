@@ -5,9 +5,11 @@ module.exports = function(app, sql){
     var self = {
 
         findApproved: function(){
-            return sql.select('approved_knowledge_areas').then(function(ka){
-                return ka;
-            });
+            return sql.select('approved_knowledge_areas');
+        },
+
+        findUnapproved: function(){
+            return sql.select('unapproved_knowledge_areas');
         },
 
         find: function(knowledge_area){
