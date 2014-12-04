@@ -9,7 +9,7 @@ module.exports = function(app){
 
         create: function(knowledge_area){
             return checkFields(
-                ['id'], { 'id': knowledge_area }
+                ['id', 'image_id', 'description'], knowledge_area
             ).then(function(){
                 return KnowledgeArea.create(knowledge_area);
             });

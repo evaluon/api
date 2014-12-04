@@ -7,7 +7,7 @@ module.exports = function(app){
     return {
 
         create: function(req, res, next){
-            Dao.create(req.body.id).then(function(knowledge_area){
+            Dao.create(req.body).then(function(knowledge_area){
                 responseView(knowledge_area, res);
             }).catch(next);
         },
