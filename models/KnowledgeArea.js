@@ -4,8 +4,8 @@ module.exports = function(app, sql){
 
     var self = {
 
-        findAll: function(){
-            return sql.select('knowledge_area').then(function(ka){
+        findApproved: function(){
+            return sql.select('approved_knowledge_areas').then(function(ka){
                 return ka;
             });
         },
@@ -30,7 +30,7 @@ module.exports = function(app, sql){
         },
 
         update: function(knowledge_area, new_knowledge_area){
-            
+
             return sql.update(
                 'knowledge_area',
                 { id: knowledge_area },

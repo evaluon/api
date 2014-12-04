@@ -23,8 +23,8 @@ module.exports = function(app){
             });
         },
 
-        findAll: function(){
-            return KnowledgeArea.findAll();
+        findApproved: function(){
+            return KnowledgeArea.findApproved();
         },
 
         update: function(knowledge_area, new_knowledge_area){

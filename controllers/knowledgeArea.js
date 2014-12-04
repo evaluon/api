@@ -12,8 +12,8 @@ module.exports = function(app){
             }).catch(next);
         },
 
-        findAll: function(req, res, next){
-            Dao.findAll().then(function(kAreas){
+        findApproved: function(req, res, next){
+            Dao.findApproved().then(function(kAreas){
                 responseView(kAreas, res);
             }).catch(next);
         },

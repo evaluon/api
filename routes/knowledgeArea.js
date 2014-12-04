@@ -6,7 +6,7 @@ module.exports = function(app){
     {
         method: 'get',
         url: '/knowledgearea',
-        action: KnowledgeArea.findAll,
+        action: KnowledgeArea.findApproved,
         cors: true
     },
     {
