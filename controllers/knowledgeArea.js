@@ -9,8 +9,8 @@ module.exports = function(app){
         findAll: function(req, res, next){
 
             var switcher = (req.query.unapproved ?
-                Dao.findApproved :
-                Dao.findUnapproved
+                Dao.findUnapproved :
+                Dao.findApproved
             );
             switcher().then(function(knowledgeAreas){
                 responseView(knowledgeAreas, res);
