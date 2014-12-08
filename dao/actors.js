@@ -55,8 +55,10 @@ module.exports = function(app){
             });
         },
 
-        evalueeList: function(){
-            return Actors.evalueeList();
+        evalueeList: function(institution){
+            return Actors.evalueeList(
+                institution ? { institution_id: institution } : {}
+            );
         },
 
         evalueeGroups: function(user){

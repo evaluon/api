@@ -28,7 +28,7 @@ module.exports = function(app){
         },
 
         findUnapproved: function(){
-            return KnowledgeArea.findUnaUnapproved();
+            return KnowledgeArea.findUnapproved();
         },
 
         update: function(id, data){

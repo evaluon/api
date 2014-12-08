@@ -31,7 +31,7 @@ module.exports = function(app){
         },
 
         evalueeList: function(req, res, next){
-            Dao.evalueeList().then(function(evaluees){
+            Dao.evalueeList(req.query.institution_id).then(function(evaluees){
                 responseView(evaluees, res);
             }).catch(next);
         },
