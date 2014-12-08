@@ -27,11 +27,13 @@ module.exports = function(app){
             return KnowledgeArea.findApproved();
         },
 
-        update: function(knowledge_area, new_knowledge_area){
-            return checkFields(
-                [':id', 'id'], { ':id': knowledge_area, id: new_knowledge_area }
-            ).then(function(){
-                return KnowledgeArea.update(knowledge_area, new_knowledge_area);
+        findUnapproved: function(){
+            return KnowledgeArea.findUnaUnapproved();
+        },
+
+        update: function(id, data){
+            return checkFields([':id'], { ':id': id }).then(function(){
+                return KnowledgeArea.update(id, data);
             });
         }
 

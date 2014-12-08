@@ -6,15 +6,20 @@ module.exports = function(app){
 
     return {
 
-        create: function(req, res, next){
-            Dao.create(req.user.id, req.body).then(function(knowledge_area){
-                responseView(knowledge_area, res);
+        findAll: function(req, res, next){
+
+            var switcher = (req.query.unapproved ?
+                Dao.findApproved :
+                Dao.findUnapproved
+            );
+            switcher().then(function(knowledgeAreas){
+                responseView(knowledgeAreas, res);
             }).catch(next);
         },
 
-        findApproved: function(req, res, next){
-            Dao.findApproved().then(function(kAreas){
-                responseView(kAreas, res);
+        create: function(req, res, next){
+            Dao.create(req.user.id, req.body).then(function(knowledgeArea){
+                responseView(knowledgeArea, res);
             }).catch(next);
         },
 
@@ -24,9 +29,15 @@ module.exports = function(app){
             }).catch(next);
         },
 
-        update: function(req, res, next){
-            Dao.update(req.params.id, req.body.id).then(function(answer){
-                responseView(answer, res);
+        approve: function(req, res, next){
+            Dao.update(req.params.id, { approved: 1 }).then(function(){
+                responseView(false, res);
+            }).catch(next);
+        },
+
+        unapprove: function(req, res, next){
+            Dao.update(req.params.id, req.body).then(function(){
+                responseView(false, res);
             }).catch(next);
         }
 

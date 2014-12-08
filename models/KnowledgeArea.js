@@ -34,12 +34,9 @@ module.exports = function(app, sql){
         },
 
         update: function(id, data){
-
             return sql.update(
                 'knowledge_area', { id: id }, data
-            ).then(function(){
-                return self.find(data.id);
-            });
+            );
         }
 
     };

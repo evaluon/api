@@ -6,7 +6,7 @@ module.exports = function(app){
     {
         method: 'get',
         url: '/knowledgearea',
-        action: KnowledgeArea.findApproved,
+        action: KnowledgeArea.findAll,
         cors: true
     },
     {
@@ -24,7 +24,13 @@ module.exports = function(app){
     {
         method: 'put',
         url: '/knowledgearea/:id',
-        action: KnowledgeArea.update,
+        action: KnowledgeArea.approve,
+        cors: true
+    },
+    {
+        method: 'delete',
+        url: '/knowledgearea/:id',
+        action: KnowledgeArea.unapprove,
         cors: true
     }
     ]
