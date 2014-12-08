@@ -1,11 +1,17 @@
 module.exports = function(app){
 
-    var responseView = require('../views/jsonSuccessResponse'),
-        Dao = app.dao.user,
-        DaoActors = app.dao.actors,
-        DaoInstitution = app.dao.institution,
-        log = app.utils.log,
-        _ = app.utils._;
+    var _ = app.utils._,
+    log = app.utils.log,
+
+    util = app.utils.util,
+    fs = require('fs'),
+    handlebars = require('handlebars'),
+
+    Dao = app.dao.user,
+    DaoActors = app.dao.actors,
+    DaoInstitution = app.dao.institution,
+
+    responseView = require('../views/jsonSuccessResponse');
 
     return {
 
@@ -64,9 +70,57 @@ module.exports = function(app){
         },
 
         deleteUser: function(req, res, next){
-            Dao.updateUser(req.body).then(function(user){
+            Dao.deleteUser(req.body).then(function(user){
                 responseView(user, res);
             }).catch(next);
+        },
+
+        recoverPassword: function(req, res, next){
+
+            if(req.user.role_id == 'admin'){
+
+                client = req.user;
+                mail = req.body.mail;
+
+                data = {
+                    subject: "Recuperación de contraseña",
+                    recipient: {
+                        name: "",
+                        mail: "",
+                        token: ""
+                    }
+                }
+
+                Dao.recoverPassword(req.body.mail).then(function(user){
+
+                    data.recipient = {
+                        name: [user.first_name, user.last_name].join(' '),
+                        mail: mail,
+                        password: user.password
+                    };
+
+                    var path = __dirname + '/../views/html/passrec.html';
+
+                    var html = fs.readFileSync(path, 'utf8');
+                    var template = handlebars.compile(html);
+
+                    var mailOptions = {
+                        to: util.format(
+                            "%s <%s>",
+                            data.recipient.name, data.recipient.mail
+                        ),
+                        subject: data.subject,
+                        html: template(data)
+                    };
+
+                    return req.mail.send(mailOptions);
+
+                }).then(function(response){
+                    responseView(response, res);
+                }).catch(next);
+
+            }
+
         }
 
     };

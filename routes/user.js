@@ -26,7 +26,7 @@ module.exports = function(app){
         {
             url: '/user',
             method: 'delete',
-            action: user.deleteUser,
+            action: user.recoverPassword,
             cors: true
         }
 

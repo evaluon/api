@@ -2,6 +2,7 @@ module.exports = function(app){
 
     var checkFields = app.utils.checkFields,
         log = app.utils.log,
+        crypto = app.utils.crypto,
         User = app.db.User;
 
     return {
@@ -33,6 +34,9 @@ module.exports = function(app){
 
         resetPassword: function(mail){
             return this.findByMail(mail).then(function(user){
+                return User.update(user.id, {
+                    password: crypto.randomBytes(8).toString('base64')
+                });
             });
         }
 

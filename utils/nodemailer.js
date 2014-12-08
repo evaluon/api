@@ -1,6 +1,7 @@
 module.exports = (function() {
 
-    var nodemailer = require('nodemailer');
+    var q = require('q'),
+    nodemailer = require('nodemailer');
 
     var transporter = null;
 
@@ -11,8 +12,20 @@ module.exports = (function() {
         },
 
         send: function(options, cb){
-            if(transporter) transporter.sendMail(options, cb);
+            var d = q.defer();
+
+            if(transporter) {
+                transporter.sendMail(options, function(err, info){
+                    if(err) {
+                        d.reject(err);
+                    } else {
+                        d.resolve(info);
+                    }
+                });
+            }
             else throw {message: "Missing transporter for mail function"};
+
+            return d.promise;
         }
 
     };
