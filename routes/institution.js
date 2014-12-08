@@ -17,12 +17,6 @@ module.exports = function(app){
         cors: true
     },
     {
-        method: 'get',
-        url: '/institution/:id/group',
-        action: institution.retrieveInstitutionGroups,
-        cors: true
-    },
-    {
         method: 'post',
         url: '/institution',
         action: institution.createInstitution,
