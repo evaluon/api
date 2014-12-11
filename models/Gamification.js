@@ -30,14 +30,19 @@ module.exports = function(app, sql){
                 );
             }).then(function(data){
 
-                var rightQuestions = data.rightQuestions,
+                var rightQuestions = data.rightQuestions;
+
+                if(rightQuestions > 0){
                     fullLevel = math.log(rightQuestions, 8),
                     level = math.floor(fullLevel);
+                } else {
+                    fullLevel = level = 0;
+                }
 
                 var response = {
-                    questions: rightQuestions || 0,
+                    questions: rightQuestions,
                     remainingQuestions: math.pow(8, level + 1) - rightQuestions,
-                    fullLevel: fullLevel || 0,
+                    fullLevel: fullLevel,
                     level: level,
                     levelName: (function(){
                         var ubound = levels.length - 1;
