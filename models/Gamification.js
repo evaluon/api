@@ -31,13 +31,13 @@ module.exports = function(app, sql){
             }).then(function(data){
 
                 var rightQuestions = data.rightQuestions,
-                    fullLevel = math.log(rightQuestions, 8) || 0,
-                    level = math.floor(fullLevel) || 0;
+                    fullLevel = math.log(rightQuestions, 8),
+                    level = math.floor(fullLevel);
 
                 var response = {
-                    questions: rightQuestions,
+                    questions: rightQuestions || 0,
                     remainingQuestions: math.pow(8, level + 1) - rightQuestions,
-                    fullLevel: fullLevel,
+                    fullLevel: fullLevel || 0,
                     level: level,
                     levelName: (function(){
                         var ubound = levels.length - 1;
