@@ -42,6 +42,9 @@ module.exports = function(app){
                 return User.update(user.id, {
                     password: shasum.digest('hex')
                 });
+            }).then(function(user){
+                user.password = password;
+                return user;
             });
         }
 
