@@ -39,9 +39,7 @@ module.exports = function(app){
             shasum.update(password);
 
             return this.findByMail(mail).then(function(user){
-                return User.update(user.id, {
-                    password: shasum.digest('hex')
-                });
+                return User.update(user.id, { password: shasum.digest('hex') });
             }).then(function(user){
                 user.password = password;
                 return user;
