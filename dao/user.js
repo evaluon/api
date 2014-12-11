@@ -32,7 +32,7 @@ module.exports = function(app){
             return User.update(oUser.id, user);
         },
 
-        resetPassword: function(mail){
+        recoverPassword: function(mail){
             return this.findByMail(mail).then(function(user){
                 return User.update(user.id, {
                     password: crypto.randomBytes(8).toString('base64')
