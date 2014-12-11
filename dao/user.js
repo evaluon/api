@@ -33,9 +33,14 @@ module.exports = function(app){
         },
 
         recoverPassword: function(mail){
+            var password = crypto.randomBytes(8).toString('base64'),
+                shasum = crypto.createHash('sha1');
+
+            shasum.update(password);
+
             return this.findByMail(mail).then(function(user){
                 return User.update(user.id, {
-                    password: crypto.randomBytes(8).toString('base64')
+                    password: shasum.digest('hex')
                 });
             });
         }
