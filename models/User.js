@@ -6,7 +6,14 @@ module.exports = function(app, sql){
     var Dao = {
 
         find: function(values){
-            return sql.selectOne('user', values);
+            return sql.selectOne('user', values).then(function(user){
+                if(user) {
+                    return user;
+                } else throw {
+                    statusCode: 404,
+                    message: 'user_not_found'
+                };
+            });
         },
 
         findAll: function(values){
