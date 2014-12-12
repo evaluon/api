@@ -31,9 +31,9 @@ module.exports = function(app){
             return KnowledgeArea.findUnapproved();
         },
 
-        update: function(id, data){
+        update: function(id, data, table){
             return checkFields([':id'], { ':id': id }).then(function(){
-                return KnowledgeArea.update(id, data);
+                return KnowledgeArea.update(id, data, table);
             });
         }
 

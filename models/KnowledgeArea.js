@@ -34,9 +34,9 @@ module.exports = function(app, sql){
             });
         },
 
-        update: function(id, data){
+        update: function(id, data, table){
             return sql.update(
-                'knowledge_area', { id: id }, data
+                table || 'knowledge_area', { id: id }, data
             );
         }
 
