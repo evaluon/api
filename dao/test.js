@@ -36,7 +36,7 @@ module.exports = function(app){
         },
 
         update: function(id, options){
-            return checkFields([':id'], { id: id }).then(function(){
+            return checkFields([':id'], { ':id': id }).then(function(){
                 return Test.update(id, options);
             });
         }
