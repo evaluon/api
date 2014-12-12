@@ -37,32 +37,12 @@ module.exports = function(app){
             return checkFields(
                 [ 'test_id', 'group_id'], object
             ).then(function(){
-                return Actors.isEvaluator(user).then(function(evaluator){
-                    if(!evaluator){
-                        return false;
-                    }
-                    return Actors.evaluatorGroups(user);
-                }).then(function(groups){
-                    if(!groups || groups.lenght == 0){
-                        return false;
-                    } else if(
-                        !_.contains(
-                            _.map(groups, function(g){ return g.id; }),
-                            object.group_id
-                        )
-                    ) {
-                        return ;
-                    } else {
-                        return true;
-                    }
-                }).then(function(permissions){
-                    return permissions || Actors.isInstitution(user);
-                });
+                return Actors.isEvaluator(user);
             }).then(function(permissions){
                 if(!permissions) throw {
                     statusCode: 403,
                     message: "insuficient_privileges"
-                }
+                };
                 return GroupTest.create(object);
             });
 
