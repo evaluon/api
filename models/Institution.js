@@ -1,8 +1,8 @@
 module.exports = function(app, sql){
 
     var log = app.utils.log,
-    _ = app.utils._,
-    Q = app.utils.q;
+        _ = app.utils._,
+        Q = app.utils.q;
 
     var self = {
 

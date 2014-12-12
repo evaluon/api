@@ -1,19 +1,76 @@
 module.exports = function(app, sql){
 
-    var log = app.utils.log;
+    var log = app.utils.log,
+        _ = app.utils._,
+        Q = app.utils.q;
 
     var self = {
 
         findApproved: function(){
-            return sql.select('approved_knowledge_areas');
+            return sql.select(
+                'approved_knowledge_areas'
+            ).then(function(areas){
+                var qs = [];
+
+                for(area in areas){
+
+                    qs.push(
+                        (function(area) {
+                            return sql.selectOne(
+                                'image', { id: area.image_id }
+                            ).then(function(image){
+                                return _.extend(
+                                    { image: image },
+                                    _.omit(area, 'image_id')
+                                )
+                            })
+                        })(areas[area])
+                    );
+                }
+
+                return Q.all(qs);
+            });
         },
 
         findUnapproved: function(){
-            return sql.select('unapproved_knowledge_areas');
+            return sql.select(
+                'unapproved_knowledge_areas'
+            ).then(function(areas){
+                var qs = [];
+
+                for(area in areas){
+
+                    qs.push(
+                        (function(area) {
+                            return sql.selectOne(
+                                'image', { id: area.image_id }
+                            ).then(function(image){
+                                return _.extend(
+                                    { image: image },
+                                    _.omit(area, 'image_id')
+                                )
+                            })
+                        })(areas[area])
+                    );
+                }
+
+                return Q.all(qs);
+            });
         },
 
         find: function(knowledge_area){
-            return sql.selectOne('knowledge_area', { id: knowledge_area });
+            return sql.selectOne(
+                'knowledge_area', { id: knowledge_area }
+            ).then(function(area){
+                return sql.selectOne(
+                    'image', { id: area.image_id }
+                ).then(function(image){
+                    return _.extend(
+                        { image: image },
+                        _.omit(area, 'image_id')
+                    )
+                });
+            });
         },
 
         create: function(user, knowledge_area){

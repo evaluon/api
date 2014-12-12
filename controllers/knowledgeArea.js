@@ -2,7 +2,9 @@ module.exports = function(app){
 
     var log = app.utils.log,
         Dao = app.dao.knowledgeArea,
-        responseView = require('../views/jsonSuccessResponse');
+        DaoImage = app.dao.image,
+        responseView = require('../views/jsonSuccessResponse'),
+        azure_url = app.utils.azure_url;
 
     return {
 
@@ -18,7 +20,22 @@ module.exports = function(app){
         },
 
         create: function(req, res, next){
-            Dao.create(req.user.id, req.body).then(function(knowledgeArea){
+            azure_url(
+                app.config.azure, 'evaluon',
+                app.util.format(
+                    'http://placehold.it/180/00427A/FFFFFF&text=%s',
+                    _.first(req.body.id.split(''), 3)
+                )
+            ).then(function(data){
+                var image = {
+                    location: data.result.blob,
+                    description: req.body.description
+                };
+                return DaoImage.create(image);
+            }).then(function(image){
+                req.body.image_id = image.id;
+                return Dao.create(req.user.id, req.body);
+            }).then(function(knowledgeArea){
                 responseView(false, res);
             }).catch(next);
         },
