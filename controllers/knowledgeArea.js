@@ -12,10 +12,12 @@ module.exports = function(app){
 
         findAll: function(req, res, next){
 
-            var switcher = (req.query.unapproved ?
-                Dao.findUnapproved :
-                Dao.findApproved
-            );
+            if(req.query.unapproved != null && req.query.unapproved == true){
+                var switcher = Dao.findUnapproved;
+            } else {
+                var switcher = Dao.findApproved;
+            }
+
             switcher().then(function(knowledgeAreas){
                 responseView(knowledgeAreas, res);
             }).catch(next);
