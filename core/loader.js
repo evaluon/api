@@ -12,6 +12,7 @@ var fs = require('fs'),
     checkFields = require("../utils/checkFields"),
     formidable = require('../utils/formidable'),
     azure = require('../utils/azure-upload'),
+    azure_url = require('../utils/azure-url-upload'),
 
     express = require('express'),
     passport = require('passport'),
@@ -35,6 +36,7 @@ var utils = {
     math: math,
     formidable: formidable,
     azure: azure,
+    azure_url: azure_url,
 
     oauth2orize: oauth2orize,
     passport: passport,
