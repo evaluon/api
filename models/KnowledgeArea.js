@@ -36,12 +36,12 @@ module.exports = function(app, sql){
 
         updateTicket: function(id, data){
             return sql.update(
-                'knowledge_area_ticket', { knowledge_area: id }, data
+                'knowledge_area_ticket', data, { knowledge_area: id }
             );
         },
 
         update: function(id, data){
-            return sql.update('knowledge_area', { id: id }, data);
+            return sql.update('knowledge_area', data, { id: id });
         }
 
     };
