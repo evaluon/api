@@ -19,7 +19,7 @@ module.exports = function(app){
 
         create: function(req, res, next){
             Dao.create(req.user.id, req.body).then(function(knowledgeArea){
-                responseView(knowledgeArea, res);
+                responseView(false, res);
             }).catch(next);
         },
 

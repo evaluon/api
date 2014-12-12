@@ -18,13 +18,14 @@ module.exports = function(app, sql){
 
         create: function(user, knowledge_area){
             return sql.selectOne(
-                'evaluator', { id: user}
+                'evaluator', { id: user }
             ).then(function(evaluator){
-                if(!evaluator) throw {
+                if(evaluator) {
+                    return sql.insert('knowledge_area', knowledge_area);
+                } else throw {
                     message: "not_an_evaluator",
                     statusCode: 403
                 };
-                return sql.insert('knowledge_area', knowledge_area);
             }).then(function(){
                 return sql.insert(
                     'knowledge_area_ticket',
