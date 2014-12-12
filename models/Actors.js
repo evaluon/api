@@ -118,7 +118,7 @@ module.exports = function(app, sql){
                 return sql.query(
                     "SELECT g.* " +
                     "FROM " + (
-                        "group g, evaluee_group eg "
+                        "group g, group_evaluees eg "
                     ) +
                     "WHERE " + (
                         "eg.evaluee_id = ? AND " +
