@@ -35,7 +35,7 @@ module.exports = function(app){
             return checkFields([':id'], { ':id': id }).then(function(){
                 return KnowledgeArea.updateTicket(id, data);
             });
-        };
+        },
 
         update: function(id, data){
             return checkFields([':id'], { ':id': id }).then(function(){
