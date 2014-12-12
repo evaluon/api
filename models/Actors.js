@@ -115,9 +115,17 @@ module.exports = function(app, sql){
                     message: "not_evaluee",
                     statusCode: 403
                 }
-                return sql.select(
-                    'group_evaluees',
-                    { evaluee_id: user.id, institution_id: institution }
+                return sql.query(
+                    "SELECT * " +
+                    "FROM " + (
+                        "group g, evaluee_group eg "
+                    ) +
+                    "WHERE " + (
+                        "eg.evaluee_id = ? AND " +
+                        "eg.group_id = g.id AND " +
+                        "g.institution_id = ?"
+                    )
+                    [user.id, institution ]
                 );
             })
         }
