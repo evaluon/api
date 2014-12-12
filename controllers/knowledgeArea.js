@@ -30,17 +30,13 @@ module.exports = function(app){
         },
 
         approve: function(req, res, next){
-            Dao.update(
-                req.params.id, { approved: 1 }, 'knowledge_area_ticket'
-            ).then(function(){
+            Dao.updateTicket(req.params.id, { approved: 1 }).then(function(){
                 responseView(false, res);
             }).catch(next);
         },
 
         unapprove: function(req, res, next){
-            Dao.update(
-                req.params.id, req.body, 'knowledge_area_ticket'
-            ).then(function(){
+            Dao.updateTicket(req.params.id, req.body).then(function(){
                 responseView(false, res);
             }).catch(next);
         }

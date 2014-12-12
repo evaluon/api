@@ -34,10 +34,14 @@ module.exports = function(app, sql){
             });
         },
 
-        update: function(id, data, table){
+        updateTicket: function(id, data){
             return sql.update(
-                table || 'knowledge_area', { id: id }, data
+                'knowledge_area_ticket', { knowledge_area_id: id }, data
             );
+        },
+
+        update: function(id, data){
+            return sql.update('knowledge_area', { id: id }, data);
         }
 
     };
