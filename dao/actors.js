@@ -41,11 +41,8 @@ module.exports = function(app){
         },
 
         evaluatorGroups: function(user, institution){
-            return checkFields(
-                ['user', 'institution'],
-                { user: user, institution: institution }
-            ).then(function(){
-                return Actors.evaluatorGroups(user, institution);
+            return checkFields(['user'], { user: user }).then(function(){
+                return Actors.evaluatorGroups(user);
             });
         },
 
@@ -64,9 +61,12 @@ module.exports = function(app){
             );
         },
 
-        evalueeGroups: function(user){
-            return checkFields(['user'], { user: user }).then(function(){
-                return Actors.evalueeGroups(user);
+        evalueeGroups: function(user, institution){
+            return checkFields(
+                ['user', 'institution'],
+                { user: user, institution: institution }
+            ).then(function(){
+                return Actors.evalueeGroups(user, institution);
             });
         }
 

@@ -42,15 +42,14 @@ module.exports = function(app, sql){
             });
         },
 
-        evaluatorGroups: function(user, institution){
+        evaluatorGroups: function(user){
             return sql.selectOne('evaluator', { id: user.id }).then(function(e){
                 if(!e) throw {
                     message: "not_evaluator",
                     statusCode: 403
                 }
                 return sql.select(
-                    'group',
-                    { evaluator_id: user.id, institution_id: institution }
+                    'group', { evaluator_id: user.id }
                 ).then(function(groups){
 
                     var qs = [];
@@ -110,13 +109,16 @@ module.exports = function(app, sql){
             return sql.select('evaluees', criteria || {});
         },
 
-        evalueeGroups: function(user){
+        evalueeGroups: function(user, institution){
             return sql.selectOne('evaluee', { id: user.id }).then(function(e){
                 if(!e) throw {
                     message: "not_evaluee",
                     statusCode: 403
                 }
-                return sql.select('group_evaluees', { evaluee_id: user.id });
+                return sql.select(
+                    'group_evaluees',
+                    { evaluee_id: user.id, institution_id: institution }
+                );
             })
         }
 

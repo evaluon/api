@@ -13,9 +13,7 @@ module.exports = function(app){
         },
 
         evaluatorGroups: function(req, res, next){
-            Dao.evaluatorGroups(
-                req.user, req.query.institution
-            ).then(function(groups){
+            Dao.evaluatorGroups(req.user).then(function(groups){
                 responseView(groups, res);
             }).catch(next);
         },
@@ -39,7 +37,9 @@ module.exports = function(app){
         },
 
         evalueeGroups: function(req, res, next){
-            Dao.evalueeGroups(req.user).then(function(groups){
+            Dao.evalueeGroups(
+                req.user, req.query.institution
+            ).then(function(groups){
                 responseView(groups, res);
             }).catch(next)
         }
