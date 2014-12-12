@@ -33,7 +33,7 @@ module.exports = function(app, sql){
                     message: "invalid_permissions"
                 };
                 return sql.query(
-                    "SELECT u.*, e.* " +
+                    "SELECT DISTINCT u.*, e.* " +
                     "FROM user u, evaluator e, `group` g " +
                     "WHERE g.institution_id = ? AND " +
                     "   e.id = g.evaluator_id AND " +
