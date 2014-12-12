@@ -2,6 +2,35 @@ module.exports = function(app, sql){
 
     var q = app.utils.q;
 
+    function processGroup(group){
+
+        var response = { id: group.id };
+
+        return sql.selectOne(
+            'user', { id: group.evaluator_id }
+        ).then(function(user){
+            response.user = user;
+            return sql.selectOne(
+                'institution',
+                { id: group.institution_id }
+            );
+        }).then(function(institution){
+            response.institution = institution;
+            return response;
+        });
+
+    }
+
+    function processGroups(groups){
+
+        var qs = [];
+        for(group in groups){
+            qs.push(processGroup(groups[group]));
+        }
+        return q.all(qs);
+
+    }
+
     var self = {
 
         isInstitution: function(user){
@@ -126,7 +155,7 @@ module.exports = function(app, sql){
                         "g.institution_id = ?"
                     ),
                     [user.id, institution ]
-                );
+                ).then(processGroups);
             })
         }
 
