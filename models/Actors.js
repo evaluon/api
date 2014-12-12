@@ -124,7 +124,7 @@ module.exports = function(app, sql){
                         "eg.evaluee_id = ? AND " +
                         "eg.group_id = g.id AND " +
                         "g.institution_id = ?"
-                    )
+                    ),
                     [user.id, institution ]
                 );
             })
