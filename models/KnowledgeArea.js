@@ -36,7 +36,7 @@ module.exports = function(app, sql){
 
         updateTicket: function(id, data){
             return sql.update(
-                'knowledge_area_ticket', { knowledge_area_id: id }, data
+                'knowledge_area_ticket', { knowledge_area: id }, data
             );
         },
 
