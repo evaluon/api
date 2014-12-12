@@ -40,9 +40,12 @@ module.exports = function(app){
             return Actors.evaluatorList(user);
         },
 
-        evaluatorGroups: function(user){
-            return checkFields(['user'], { user: user }).then(function(){
-                return Actors.evaluatorGroups(user);
+        evaluatorGroups: function(user, institution){
+            return checkFields(
+                ['user', 'institution'],
+                { user: user, institution: institution }
+            ).then(function(){
+                return Actors.evaluatorGroups(user, institution);
             });
         },
 

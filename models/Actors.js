@@ -42,14 +42,15 @@ module.exports = function(app, sql){
             });
         },
 
-        evaluatorGroups: function(user){
+        evaluatorGroups: function(user, institution){
             return sql.selectOne('evaluator', { id: user.id }).then(function(e){
                 if(!e) throw {
                     message: "not_evaluator",
                     statusCode: 403
                 }
                 return sql.select(
-                    'group', { evaluator_id: user.id }
+                    'group',
+                    { evaluator_id: user.id, institution_id: institution }
                 ).then(function(groups){
 
                     var qs = [];
