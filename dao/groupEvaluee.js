@@ -18,7 +18,7 @@ module.exports = function(app){
         addEvaluees: function(users, group){
 
             return checkFields(
-                ['users', group ], { users: users, group: group }
+                ['users', 'group' ], { users: users, group: group }
             ).then(function(){
                 return GroupEvaluee.addEvaluees(users, group);
             });
