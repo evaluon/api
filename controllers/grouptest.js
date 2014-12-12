@@ -21,8 +21,8 @@ module.exports = function(app){
         },
 
         create: function(req, res, next){
-            Dao.create(req.body).then(function(test){
-                responseView(test, res);
+            Dao.create(req.user, req.body).then(function(test){
+                responseView(false, res);
             }).catch(next);
         }
 

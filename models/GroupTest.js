@@ -100,7 +100,7 @@ module.exports = function(app, sql){
                     'group_test', _.extend({ period_id: period.id }, object)
                 );
             }).then(function(result){
-                return sql.selectOne('test', result.insertId);
+                return sql.selectOne('test', { test_id: result.insertId });
             });
 
         }
