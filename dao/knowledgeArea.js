@@ -31,6 +31,12 @@ module.exports = function(app){
             return KnowledgeArea.findUnapproved();
         },
 
+        removeTicket: function(id){
+            return checkFields([':id'], { ':id': id }).then(function(){
+                return KnowledgeArea.removeTicket(id);
+            });
+        },
+
         updateTicket: function(id, data){
             return checkFields([':id'], { ':id': id }).then(function(){
                 return KnowledgeArea.updateTicket(id, data);

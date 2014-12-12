@@ -97,6 +97,10 @@ module.exports = function(app, sql){
             );
         },
 
+        removeTicket: function(id, data){
+            return sql.delete('knowledge_area_ticket', { knowledge_area: id });
+        },
+
         update: function(id, data){
             return sql.update('knowledge_area', data, { id: id });
         }

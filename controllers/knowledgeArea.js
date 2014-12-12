@@ -55,7 +55,7 @@ module.exports = function(app){
         },
 
         unapprove: function(req, res, next){
-            Dao.updateTicket(req.params.id, req.body).then(function(){
+            Dao.removeTicket(req.params.id, req.body).then(function(){
                 responseView(false, res);
             }).catch(next);
         }
