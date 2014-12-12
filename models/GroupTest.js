@@ -92,6 +92,10 @@ module.exports = function(app, sql){
             return sql.selectOne(
                 'active_period', { gid: object.group_id }
             ).then(function(period){
+                if(!period) throw {
+                    statusCode: 404,
+                    message: "no_active_period"
+                };
                 return sql.insert(
                     'group_test', _.extend({ period_id: period.id }, object)
                 );
