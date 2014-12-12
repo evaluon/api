@@ -116,7 +116,7 @@ module.exports = function(app, sql){
                     statusCode: 403
                 }
                 return sql.query(
-                    "SELECT * " +
+                    "SELECT g.* " +
                     "FROM " + (
                         "group g, evaluee_group eg "
                     ) +
