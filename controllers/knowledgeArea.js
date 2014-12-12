@@ -1,6 +1,8 @@
 module.exports = function(app){
 
-    var log = app.utils.log,
+    var _ = app.utils._,
+        util = app.utils.util,
+        log = app.utils.log,
         Dao = app.dao.knowledgeArea,
         DaoImage = app.dao.image,
         responseView = require('../views/jsonSuccessResponse'),
@@ -22,7 +24,7 @@ module.exports = function(app){
         create: function(req, res, next){
             azure_url(
                 app.config.azure, 'evaluon',
-                app.util.format(
+                util.format(
                     'http://placehold.it/180/00427A/FFFFFF&text=%s',
                     _.first(req.body.id.split(''), 3)
                 )
