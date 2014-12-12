@@ -8,6 +8,33 @@ module.exports = function(app, sql){
     'bronze', 'silver', 'gold', 'platinum', 'diamond', 'master'
     ];
 
+    var levelDescriptions = [
+    // Bronze
+    "Es el primer estatus por llegar a los  8 puntos, es muy fácil de llegar " +
+    "allí, sigue respondiendo preguntas de diferentes asignaturas y llega a " +
+    "Plata.",
+    // Silver
+    "Solo un poco de tiempo para llegar hasta aquí con  64 puntos, pero " +
+    "desafía tu conocimiento y sigue practicando.",
+    // Gold
+    "Ahora tienes 512  puntos  cada vez te vas convirtiendo en un sabe lo " +
+    "todo, que esperas quieres ser el mejor? y ganar puntos extras con tus " +
+    "evaluadores? sigue en marcha.",
+    // Platinum
+    "Debes tener entre 512 y 4096 puntos no es tarea facil pero confiamos en " +
+    "ti, así que no te rindas, el banco de preguntas son infinitas para " +
+    "lograr este puntaje.",
+    // Diamond
+    "Lograr 4096 y 32.768 puntos ya eres un berraco poder llegar hasta aquí, " +
+    "muy buen trabajo eres un honorable estudiante que podrás generar un gran" +
+    "impacto entre sus compañeros y evaluadores, te has ganado el " +
+    "reconocimiento que mereces. ",
+    // Ultimate
+    "Animate para tener 32.768 y 262.144 puntos, o más, quieres ser el gurú " +
+    "de tu institución llega a este nivel y logra el desafío más honorable " +
+    "de nuestro pais. "
+    ]
+
     return {
 
         indicators: function(user){
@@ -47,7 +74,13 @@ module.exports = function(app, sql){
                     levelName: (function(){
                         var ubound = levels.length - 1;
                         return levels[level >= ubound ? ubound : level];
-                    })()
+                    })(),
+                    description: (function(){
+                        var ubound = levelDescriptions.length - 1;
+                        return levelDescriptions[
+                        level >= ubound ? ubound : level
+                        ];
+                    })
                 };
 
                 return response;
