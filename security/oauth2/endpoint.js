@@ -41,7 +41,7 @@ module.exports = function(app){
             ).then(function(client){
                 return client || UserToken.retrieveUser(accessToken);
             }).then(function(user){
-                if(user.enabled){
+                if(user.enabled == 1){
                     done(null, user || false);
                 } else throw {
                     message: "blocked_user"
