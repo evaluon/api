@@ -38,7 +38,7 @@ module.exports = function(app){
 
         delete: function(id){
             return User.destroy(id);
-        }
+        },
 
         recoverPassword: function(mail){
             var password = crypto.randomBytes(8).toString('base64'),
