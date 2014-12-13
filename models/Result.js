@@ -16,15 +16,24 @@ module.exports = function(app, sql){
 
                 for(result in results){
                     (function(result){
+
+                        var response = {
+                            note: result.note
+                        };
+
                         qs.push(
                             sql.selectOne(
                                 'test', { id: result.test_id }
                             ).then(function(test){
-                                return {
-                                    id: test.id,
-                                    description: test.description,
-                                    note: result.note
-                                };
+                                response.id = test.id;
+                                response.description = test.description;
+                                return sql.selectOne(
+                                    'opened_test',
+                                    { evaluee_id: evaluee_id, test_id: test.id }
+                                );
+                            }).then(function(openTest){
+                                response.feedback = openTest.feedback;
+                                return response;
                             })
                         );
                     })(results[result]);
