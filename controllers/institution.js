@@ -64,6 +64,7 @@ module.exports = function(app){
                         address: body.address,
                         mail: body.mail,
                         phone_number: body.phone_number,
+                        evaluator_id: body.evaluator_id,
                         image: {
                             location: location,
                             description: body.description
