@@ -87,8 +87,8 @@ module.exports = function(app){
                 statusCode: 403,
                 message: "invalid_permissions"
             }
-            Dao.delete(req.params.id).then(function(user){
-                responseView(user, res);
+            Dao.delete(req.params.id).then(function(){
+                responseView(false, res);
             }).catch(next);
         },
 
