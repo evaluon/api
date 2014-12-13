@@ -34,6 +34,12 @@ module.exports = function(app){
             method: 'delete',
             action: user.recoverPassword,
             cors: true
+        },
+        {
+            url: '/user/:id',
+            method: 'delete',
+            action: user.deleteUser,
+            cors: true
         }
 
     ];
