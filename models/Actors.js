@@ -150,6 +150,7 @@ module.exports = function(app, sql){
                         "`group` g, group_evaluees eg "
                     ) +
                     "WHERE " + (
+                        "eg.disabled IS NULL AND " +
                         "eg.evaluee_id = ? AND " +
                         "eg.group_id = g.id AND " +
                         "g.institution_id = ?"
@@ -157,6 +158,16 @@ module.exports = function(app, sql){
                     [user.id, institution ]
                 ).then(processGroups);
             })
+        },
+
+        blockEvaluee: function(evaluee, group){
+
+            return sql.update(
+                'group_evaluees',
+                { disabled: 1 },
+                { evaluee_id: evaluee, group_id: group }
+            );
+
         }
 
     }
