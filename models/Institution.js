@@ -1,8 +1,8 @@
 module.exports = function(app, sql){
 
     var log = app.utils.log,
-        _ = app.utils._,
-        Q = app.utils.q;
+    _ = app.utils._,
+    Q = app.utils.q;
 
     var self = {
 
@@ -95,10 +95,40 @@ module.exports = function(app, sql){
                             return sql.selectOne(
                                 'image', {id: institution.image_id}
                             ).then(function(image){
-                                return _.extend(
-                                    { image: image },
-                                    _.omit(institution, 'image_id')
-                                )
+                                institution.image = image;
+                                if(institution.evaluator_id != null){
+                                    return sql.one(
+                                        "SELECT " + (
+                                            "u.id, first_name, middle_name, " +
+                                            "last_name, birth_date, mail, " +
+                                            "phone_number, register_date, " +
+                                            "area "
+                                        ) +
+                                        "FROM " + (
+                                            "user u, evaluator e "
+                                        ) +
+                                        "WHERE " + (
+                                            "u.id = e.id AND " +
+                                            "e.id = ?"
+                                        ), [institution.evaluator_id]
+                                    );
+                                } else {
+                                    return null;
+                                }
+                            }).then(function(evaluator){
+                                if(evaluator) {
+                                    institution.administrator = evaluator;
+                                }
+                                return _.omit(
+                                    institution,
+                                    [
+                                    'image_id',
+                                    'password',
+                                    'evaluator_id',
+                                    'denial_reason'
+                                    ]
+                                );
+
                             })
                         })(institutions[institution])
                     );
