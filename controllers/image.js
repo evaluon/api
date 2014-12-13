@@ -32,6 +32,8 @@ module.exports = function(app){
 
         createQuestionImage: function(req, res, next){
 
+            log.warn(req.params);
+
             formidable(req).then(function(data){
                 body = data.fields;
                 var image = data.files.file;
@@ -41,7 +43,7 @@ module.exports = function(app){
                 );
             }).then(function(data){
                 var location = data.result.blob;
-                return Dao.questionImage(body.question, {
+                return Dao.questionImage(req.params.id, {
                     location: location,
                     description: body.description
                 });
