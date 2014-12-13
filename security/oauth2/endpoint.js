@@ -41,7 +41,11 @@ module.exports = function(app){
             ).then(function(client){
                 return client || UserToken.retrieveUser(accessToken);
             }).then(function(user){
-                done(null, user || false);
+                if(user.enabled){
+                    done(null, user || false);
+                } else throw {
+                    message: "blocked_user"
+                };
             }).catch(done);
 
         }
