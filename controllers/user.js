@@ -83,7 +83,11 @@ module.exports = function(app){
         },
 
         deleteUser: function(req, res, next){
-            Dao.deleteUser(req.body).then(function(user){
+            if(!req.user.role_id == 'admin') throw {
+                statusCode: 403,
+                message: "invalid_permissions"
+            }
+            Dao.delete(req.params.id).then(function(user){
                 responseView(user, res);
             }).catch(next);
         },
