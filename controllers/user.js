@@ -15,6 +15,16 @@ module.exports = function(app){
 
     return {
 
+        adminList: function(req, res, next){
+            Dao.findAll({ role_id: 'admin' }).then(function(users){
+                return _.map(users, function(user){
+                    return _.omit(user, 'password');
+                });
+            }).then(function(users){
+                responseView(users, res);
+            }).catch(next);
+        },
+
         retrieveUser: function(req, res, next){
             var user = _.omit(req.user, 'password');
             if(user.role_id == 'admin'){

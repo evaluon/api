@@ -6,6 +6,12 @@ module.exports = function(app){
     return [
 
         {
+            url: '/user/admin',
+            method: 'get',
+            action: user.adminList,
+            cors: true
+        },
+        {
             url: '/user',
             method: 'get',
             action: user.retrieveUser,

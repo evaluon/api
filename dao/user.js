@@ -7,6 +7,10 @@ module.exports = function(app){
 
     return {
 
+        findAll: function(values){
+            return User.findAll(values);
+        },
+
         retrieveUser: function(user){
             return User.find(user);
         },
