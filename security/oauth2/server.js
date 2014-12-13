@@ -11,6 +11,7 @@ module.exports = function(app){
     // Create OAuth 2.0 Authorization Server
     var oauth2orize = app.utils.oauth2orize,
         passport = app.utils.passport,
+        AuthorizationError = oauth2orize.AuthorizationError,
         server = oauth2orize.createServer();
 
     // Exchange client credentials for access token.
@@ -36,9 +37,18 @@ module.exports = function(app){
                 mail: username,
                 password: password
             }).then(function(user){
-                return (user && user.enabled ?
-                    UserToken.retrieveToken(user) : false
-                );
+                if(user){
+                    if(user.enabled){
+                        return UserToken.retrieveToken(user);
+                    } else {
+                        throw new AuthorizationError(
+                            'blocked_user', 'access_denied'
+                        );
+                    }
+                } else {
+                    return false;
+                }
+
             }).then(function(token){
                 done(null, token.access_token || false, token.refresh_token);
             }).catch(done);
