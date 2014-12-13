@@ -41,7 +41,13 @@ module.exports = function(app){
                 req.user, req.query.institution
             ).then(function(groups){
                 responseView(groups, res);
-            }).catch(next)
+            }).catch(next);
+        },
+
+        blockEvaluee: function(req, res, next){
+            Dao.blockEvaluee(req.body).then(function(){
+                responseView(false, res);
+            }).catch(next);
         }
 
     }

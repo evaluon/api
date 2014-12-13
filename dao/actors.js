@@ -68,6 +68,14 @@ module.exports = function(app){
             ).then(function(){
                 return Actors.evalueeGroups(user, institution);
             });
+        },
+
+        blockEvaluee: function(filter){
+            return checkFields(
+                ['evaluee_id', 'group_id'], filter
+            ).then(function(){
+                return Actors.blockEvaluee(filter);
+            });
         }
 
     }

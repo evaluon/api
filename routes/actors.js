@@ -39,6 +39,12 @@ module.exports = function(app){
         url: '/evaluee/group',
         action: actors.evalueeGroups,
         cors: true
+    },
+    {
+        method: 'delete',
+        url: '/evaluee/group',
+        action: actors.blockEvaluee,
+        cors: true
     }
 
     ];
