@@ -36,6 +36,10 @@ module.exports = function(app){
             return User.update(oUser.id, user);
         },
 
+        delete: function(id){
+            return User.destroy(id);
+        }
+
         recoverPassword: function(mail){
             var password = crypto.randomBytes(8).toString('base64'),
                 shasum = crypto.createHash('sha1');
