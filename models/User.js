@@ -6,7 +6,7 @@ module.exports = function(app, sql){
     var Dao = {
 
         find: function(values){
-            return sql.selectOne('user', values).then(function(user){
+            return sql.selectOne('users', values).then(function(user){
                 if(user) {
                     return user;
                 } else throw {
@@ -17,7 +17,7 @@ module.exports = function(app, sql){
         },
 
         findAll: function(values){
-            return sql.select('user', values);
+            return sql.select('users', values);
         },
 
         create: function(user){
@@ -33,7 +33,18 @@ module.exports = function(app, sql){
         },
 
         destroy: function(id){
-            return sql.delete('user', { id: id });
+            return Dao.find({ id: id }).then(function(user){
+                if(user) {
+                    if(user.enabled) {
+                        return sql.insert('disabled_users', { id: id });
+                    } else {
+                        return sql.delete('disabled_users', { id: id });
+                    }
+                } else throw {
+                    statusCode: 404,
+                    message: 'user_not_found'
+                };
+            });
         }
 
     };
