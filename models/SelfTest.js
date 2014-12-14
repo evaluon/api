@@ -40,7 +40,7 @@ module.exports = function(app, sql){
                                 ) +
                                 "ORDER BY rand() " +
                                 "LIMIT 5",
-                                [ evaluee, KA ]
+                                [ evaluee, KA.id ]
                             )
                         )
                     };
