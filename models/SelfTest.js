@@ -31,9 +31,16 @@ module.exports = function(app, sql){
                     for(KA in res){
                         KA = res[KA];
                         qs.push(
-                            sql.select(
-                                'self_questions',
-                                { evaluee_id: evaluee, knowledge_area_id: KA }
+                            sql.query(
+                                "SELECT id " +
+                                "FROM self_questions " +
+                                "WHERE " + (
+                                    "evaluee_id = ? AND " +
+                                    "knowledge_area_id = ? "
+                                ) +
+                                "ORDER BY rand() " +
+                                "LIMIT 5",
+                                [ evaluee, KA ]
                             )
                         )
                     };
