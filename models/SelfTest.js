@@ -102,8 +102,8 @@ module.exports = function(app, sql){
                     , [ evaluee ]
                 );
             }).then(function(test){
-                if(!test) throw {
-                    message: "test_unavailable",
+                if(test.length == 0) throw {
+                    message: "test_not_found",
                     statusCode: 404
                 }
                 return test;
@@ -116,7 +116,7 @@ module.exports = function(app, sql){
 
             return sql.selectOne('evaluee', { id: evaluee }).then(function(e){
                 if(!e) throw {
-                    message: "User is not an evaluee",
+                    message: "not_an_evaluee",
                     statusCode: 403
                 }
             }).then(function(){
