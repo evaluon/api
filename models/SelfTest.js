@@ -81,14 +81,22 @@ module.exports = function(app, sql){
                     statusCode: 403
                 }
             }).then(function(){
-                return sql.one(
+                return sql.query(
                     "SELECT " +
                     "   t.* " +
                     "FROM " +
                     "   test t, self_test st " +
                     "WHERE " +
                     "   st.evaluee_id = ? AND " +
-                    "   t.id = st.id " +
+                    "   t.id = st.id AND " +
+                    "   ( " +
+                    "       SELECT COUNT(*) FROM test_questions" +
+                    "       WHERE test_id = t.id" +
+                    "   ) > " +
+                    "   ( " +
+                    "       SELECT COUNT(*) FROM response " +
+                    "       WHERE test_id = t.id" +
+                    "   ) " +
                     "ORDER BY " +
                     "   t.id DESC"
                     , [ evaluee ]
