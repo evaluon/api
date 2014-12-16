@@ -48,6 +48,10 @@ module.exports = function(app, sql){
                     return q.all(qs);
                 }).then(function(questions){
                     allQuestions = _.flatten(questions);
+                    if (allQuestions.length == 0) throw {
+                        statusCode: 404,
+                        message: 'no_questions_available'
+                    };
                     return sql.beginTransaction();
                 }).then(function(){
                     qs = [];
