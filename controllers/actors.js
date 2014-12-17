@@ -18,6 +18,12 @@ module.exports = function(app){
             }).catch(next);
         },
 
+        findEvaluatorGroups: function(req, res, next){
+            Dao.evaluatorGroups({ id: req.params.id }).then(function(groups){
+                responseView(groups, res);
+            }).catch(next);
+        },
+
         evaluatorList: function(req, res, next){
             Dao.evaluatorList(req.user).then(function(evaluators){
                 responseView(evaluators, res);

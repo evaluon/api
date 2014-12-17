@@ -24,6 +24,12 @@ module.exports = function(app){
     },
     {
         method: 'get',
+        url: '/evaluator/group/:id',
+        action: actors.findEvaluatorGroups,
+        cors: true
+    },
+    {
+        method: 'get',
         url: '/evaluee',
         action: actors.evalueeList,
         cors: true
