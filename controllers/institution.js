@@ -88,7 +88,7 @@ module.exports = function(app){
                     mail = req.body.mail;
 
                     data = {
-                        subject: "Recuperación de contraseña",
+                        subject: "Denegación de institución",
                         recipient: {
                             name: "",
                             mail: "",
@@ -105,7 +105,7 @@ module.exports = function(app){
                         data.recipient = {
                             name: [user.first_name, user.last_name].join(' '),
                             mail: user.mail,
-                            reason: req.body.denial_reason
+                            institution: institution
                         };
 
                         var path = __dirname + '/../views/html/denied.html';
