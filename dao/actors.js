@@ -76,6 +76,14 @@ module.exports = function(app){
             ).then(function(){
                 return Actors.blockEvaluee(filter);
             });
+        },
+
+        updateEvaluee: function(user, data){
+            return checkFields(
+                ['disability_id', 'evaluee_type', 'level_id'], fields
+            ).then(function(){
+                return Actors.updateEvaluee(user.id, fields);
+            });
         }
 
     }

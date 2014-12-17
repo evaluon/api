@@ -48,6 +48,12 @@ module.exports = function(app){
             Dao.blockEvaluee(req.body).then(function(){
                 responseView(false, res);
             }).catch(next);
+        },
+
+        updateEvaluee: function(req, res, next){
+            Dao.updateEvaluee(req.user, req.body).then(function(){
+                responseView(false, res);
+            }).catch(next);
         }
 
     }

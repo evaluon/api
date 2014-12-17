@@ -40,6 +40,11 @@ module.exports = function(app){
                             user.institution_id = institution.id;
                             return user;
                         });
+                    } else if(role == 1){
+                        return DaoActors.isEvaluee(user).then(function(evaluee){
+                            user.evaluee = evaluee;
+                            return evaluee;
+                        });
                     } else {
                         return user;
                     }
