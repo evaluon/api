@@ -46,9 +46,16 @@ module.exports = function(app, sql){
 
         findAll: function(group_id, evaluee_id){
 
-            return sql.selectOne(
-                'evaluee', { id: evaluee_id }
-            ).then(function(ev){
+            return sql.one(
+                "SELECT id FROM active_period WHERE gid = ?", [group_id]
+            ).then(function(period){
+                if(!period) throw {
+                    message: "no_active_period",
+                    statusCode: 404,
+                    cause: "Period"
+                }
+                return sql.selectOne('evaluee', { id: evaluee_id });
+            }).then(function(ev){
 
                 if(ev) {
                     return sql.query(
