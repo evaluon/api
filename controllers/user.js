@@ -41,9 +41,11 @@ module.exports = function(app){
                             return user;
                         });
                     } else if(role == 1){
-                        return DaoActors.isEvaluee(user).then(function(evaluee){
+                        return DaoActors.isEvaluee(
+                            user.id
+                        ).then(function(evaluee){
                             user.evaluee = evaluee;
-                            return evaluee;
+                            return user;
                         });
                     } else {
                         return user;

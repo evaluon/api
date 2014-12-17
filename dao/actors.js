@@ -8,9 +8,11 @@ module.exports = function(app){
     return {
 
         isEvaluee: function(user){
-            return Actors.isEvaluee(user).then(function(is){
-                return !!is;
-            });
+            return Actors.isEvaluee(user);
+        },
+
+        isEvaluator: function(user){
+            return Actors.isEvaluator(user);
         },
 
         actorRole: function(user){
