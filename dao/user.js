@@ -23,8 +23,7 @@ module.exports = function(app){
             return checkFields(
                 [
                 'id', 'first_name',
-                'last_name', 'birth_date',
-                'mail', 'password'
+                'last_name', 'mail', 'password'
                 ],
                 user
             ).then(function(){
