@@ -82,7 +82,56 @@ module.exports = function(app){
                 req.params.id,
                 req.body
             ).then(function(institution){
-                responseView(institution, res);
+                if(req.body.denial_reason){
+
+                    client = req.user;
+                    mail = req.body.mail;
+
+                    data = {
+                        subject: "Recuperación de contraseña",
+                        recipient: {
+                            name: "",
+                            mail: "",
+                            token: ""
+                        }
+                    }
+
+                    return Dao.retrieveInstitution(
+                        req.params.id
+                    ).then(function(institution){
+
+                        var user = institution.administrator;
+
+                        data.recipient = {
+                            name: [user.first_name, user.last_name].join(' '),
+                            mail: user.mail,
+                            reason: req.body.denial_reason
+                        };
+
+                        var path = __dirname + '/../views/html/denied.html';
+
+                        var html = fs.readFileSync(path, 'utf8');
+                        var template = handlebars.compile(html);
+
+                        var mailOptions = {
+                            to: util.format(
+                                "%s <%s>",
+                                data.recipient.name, data.recipient.mail
+                            ),
+                            subject: data.subject,
+                            html: template(data)
+                        };
+
+                        return req.mail.send(mailOptions);
+
+                    });
+
+
+                } else {
+                    return null;
+                }
+            ).then(function(){
+                responseView(false, res);
             }).catch(next);
         }
 
