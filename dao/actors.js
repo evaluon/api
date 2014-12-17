@@ -82,9 +82,9 @@ module.exports = function(app){
 
         updateEvaluee: function(user, data){
             return checkFields(
-                ['disability_id', 'evaluee_type', 'level_id'], fields
+                ['disability_id', 'evaluee_type', 'level_id'], data
             ).then(function(){
-                return Actors.updateEvaluee(user.id, fields);
+                return Actors.updateEvaluee(user.id, data);
             });
         }
 
