@@ -160,6 +160,10 @@ module.exports = function(app, sql){
             })
         },
 
+        updateEvaluee: function(id, data){
+            return sql.update('evaluee', data, { id: id });
+        },
+
         blockEvaluee: function(filter){
             return sql.update('group_evaluees', { disabled: 1 }, filter);
         }
