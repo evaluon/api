@@ -12,7 +12,7 @@ module.exports = function(app){
 
         findAll: function(req, res, next){
 
-            if(req.query.unapproved != null && req.query.unapproved == true){
+            if(req.query.unapproved){
                 var switcher = Dao.findUnapproved;
             } else {
                 var switcher = Dao.findApproved;
