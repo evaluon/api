@@ -130,7 +130,7 @@ module.exports = function(app){
                 } else {
                     return null;
                 }
-            ).then(function(){
+            }).then(function(){
                 responseView(false, res);
             }).catch(next);
         }
