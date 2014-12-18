@@ -33,8 +33,8 @@ module.exports = function(app, sql){
             object.start_date = new Date(
                 moment.tz(object.start_date, "America/Bogota")
             );
-            object.end_date = new Date(
-                moment.tz(object.end_date, "America/Bogota")
+            object.stop_date = new Date(
+                moment.tz(object.stop_date, "America/Bogota")
             );
             return sql.insert(
                 'test',
