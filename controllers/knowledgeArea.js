@@ -15,10 +15,9 @@ module.exports = function(app){
             log.debug(req.query.unapproved)
 
             if(req.query.unapproved == true){
-                log.debug("Unapproved")
                 var switcher = Dao.findUnapproved;
-            } else {
-                log.debug("Approved")
+            }
+            if (req.query.unapproved == null || !req.query.unapproved) {
                 var switcher = Dao.findApproved;
             }
 
