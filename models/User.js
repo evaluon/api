@@ -21,7 +21,19 @@ module.exports = function(app, sql){
         },
 
         create: function(user){
-            return sql.insert('user', user).then(function(res){
+            return sql.query(
+                "SELECT * FROM user WHERE id = ? JOIN " +
+                "SELECT * FORM user WHERE mail = ?",
+                [user.id, user.mail]
+            ).then(function(res){
+                if(res.length > 0) throw {
+                    statusCode: 403,
+                    message: 'existing_user'
+                };
+                return null;
+            }).then(function(){
+                return sql.insert('user', user)
+            }).then(function(res){
                 return Dao.find({id: user.id });
             });
         },
