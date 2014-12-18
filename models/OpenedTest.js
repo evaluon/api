@@ -7,26 +7,42 @@ module.exports = function(app, sql){
         },
 
         openTest: function(user, test){
-            return sql.insert(
-                'opened_test',
-                { evaluee_id: user, test_id: test, open_date: new Date }
-            );
+            return sql.select(
+                'opened_test', {
+                    evaluee_id: user, test_id: test
+                }
+            ).then(function(tests){
+                if(tests.length > 0) throw {
+                    statusCode: 403,
+                    message: 'already_opened_test'
+                };
+                return sql.insert(
+                    'opened_test', {
+                        evaluee_id: user, test_id: test, open_date: new Date
+                    }
+                );
+            });
+
         },
 
         closeTest: function(user, test){
             return sql.update(
-                'opened_test',
-                { close_date: new Date },
-                { evaluee_id: user, test_id: test }
+                'opened_test', {
+                    close_date: new Date
+                }, {
+                    evaluee_id: user, test_id: test
+                }
             );
         },
 
         feedback: function(user, test, feedback){
 
             return sql.update(
-                'opened_test',
-                { feedback: feedback },
-                { evaluee_id: user, test_id: test }
+                'opened_test', {
+                    feedback: feedback
+                }, {
+                    evaluee_id: user, test_id: test
+                }
             );
 
         }
