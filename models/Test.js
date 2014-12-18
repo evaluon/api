@@ -19,7 +19,6 @@ module.exports = function(app, sql){
         },
 
         findAll: function(values){
-            log.debug(moment.tz("America/Bogota").format());
             return sql.query(
                 'SELECT t.* FROM test t, group_test gt ' +
                 'WHERE t.id = gt.test_id'
@@ -31,6 +30,12 @@ module.exports = function(app, sql){
         },
 
         create: function(object){
+            object.start_date = new Date(
+                moment.tz(object.start_date, "America/Bogota")
+            );
+            object.end_date = new Date(
+                moment.tz(object.end_date, "America/Bogota")
+            );
             return sql.insert(
                 'test',
                 _.extend({ create_date: new Date() }, object)
