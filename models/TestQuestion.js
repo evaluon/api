@@ -67,7 +67,7 @@ module.exports = function(app, sql){
                 return sql.selectOne('question', { id: question });
             }).then(function(q){
                 if(!q) throw {
-                    stautsCode: 404,
+                    statusCode: 404,
                     message: "question_not_found"
                 }
 
