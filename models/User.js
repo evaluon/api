@@ -22,8 +22,8 @@ module.exports = function(app, sql){
 
         create: function(user){
             return sql.query(
-                "SELECT * FROM user WHERE id = ? JOIN " +
-                "SELECT * FORM user WHERE mail = ?",
+                "SELECT * FROM user WHERE id = ? UNION " +
+                "SELECT * FROM user WHERE mail = ?",
                 [user.id, user.mail]
             ).then(function(res){
                 if(res.length > 0) throw {
