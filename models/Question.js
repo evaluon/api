@@ -41,7 +41,7 @@ module.exports = function(app, sql){
                             if(question.public){
                                 return sql.query(
                                     "SELECT a.* FROM " + (
-                                        "answer a, answer_options o"
+                                        "answer a, answer_options o "
                                     ) +
                                     "WHERE " + (
                                         "a.id = o.answer_id AND " +
