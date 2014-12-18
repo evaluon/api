@@ -66,7 +66,10 @@ module.exports = function(app, sql){
                 }
                 return sql.selectOne('question', { id: question });
             }).then(function(q){
-                log.warn(question, q);
+                if(!q) throw {
+                    stautsCode: 404,
+                    message: "question_not_found"
+                }
 
                 if(!q.public) {
                     return sql.selectOne(
@@ -74,7 +77,7 @@ module.exports = function(app, sql){
                         { institution_id: q.institution_id, evaluator_id: user }
                     ).then(function(g){
                         if(!g) throw {
-                            message: "Question not found",
+                            message: "question_not_found",
                             statusCode: 404
                         }
                     });
