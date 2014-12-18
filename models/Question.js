@@ -54,7 +54,7 @@ module.exports = function(app, sql){
                             } else {
                                 return question;
                             }
-                        })(questions[question]);
+                        })(questions[question])
                     );
 
                 }
