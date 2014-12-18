@@ -1,5 +1,8 @@
 module.exports = function(app, sql){
 
+    var _ = app.utils._,
+        q = app.utils.q;
+
     var self = {
 
         create: function(user, question){
@@ -27,7 +30,38 @@ module.exports = function(app, sql){
         },
 
         findBy: function(criteria){
-            return sql.select('question', criteria);
+            return sql.select('question', criteria).then(function(questions){
+
+                var qs = [];
+
+                for(question in questions){
+
+                    qs.push(
+                        (function(question){
+                            if(question.public){
+                                return sql.query(
+                                    "SELECT a.* FROM " + (
+                                        "answer a, answer_options o"
+                                    ) +
+                                    "WHERE " + (
+                                        "a.id = o.answer_id AND " +
+                                        "o.question_id = ?"
+                                    ), [question.id]
+                                ).then(function(answers){
+                                    question.answers = answers;
+                                    return question;
+                                });
+                            } else {
+                                return question;
+                            }
+                        })(questions[question]);
+                    );
+
+                }
+
+                return q.all(qs);
+
+            });
         },
 
         find: function(id){
