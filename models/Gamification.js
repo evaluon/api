@@ -80,7 +80,7 @@ module.exports = function(app, sql){
                         return levelDescriptions[
                         level >= ubound ? ubound : level
                         ];
-                    })
+                    })()
                 };
 
                 return response;

@@ -3,7 +3,8 @@ module.exports = function(app, sql){
     var _ = app.utils._,
         log = app.utils.log
         hotp = app.utils.hotp,
-        salt = app.config.security.salt;
+        salt = app.config.security.salt,
+        moment = app.utils.moment;
 
     var self = {
 
@@ -18,6 +19,7 @@ module.exports = function(app, sql){
         },
 
         findAll: function(values){
+            log.debug(moment.tz("America/Bogota").format());
             return sql.query(
                 'SELECT t.* FROM test t, group_test gt ' +
                 'WHERE t.id = gt.test_id'
