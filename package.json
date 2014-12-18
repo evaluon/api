@@ -23,6 +23,7 @@
     "hashids": "^1.0.1",
     "jsonfile": "~2.0.0",
     "mathjs": "^1.0.1",
+    "moment-timezone": "~0.2.5",
     "mysql": "~2.3.2",
     "nodemailer": "~1.2.1",
     "oauth2orize": "~1.0.1",
