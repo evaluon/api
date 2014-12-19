@@ -12,14 +12,8 @@ module.exports = function(app){
 
         findAll: function(req, res, next){
 
-            log.debug(req.query.unapproved)
-
-            if(req.query.unapproved == true){
-                var switcher = Dao.findUnapproved;
-            }
-            if (req.query.unapproved == null || !req.query.unapproved) {
-                var switcher = Dao.findApproved;
-            }
+            var unapproved = JSON.parse(req.query.unapproved || 'false');
+            var switcher = unapproved ? Dao.findUnapproved : Dao.findApproved;
 
             switcher().then(function(knowledgeAreas){
                 responseView(knowledgeAreas, res);
