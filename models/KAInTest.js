@@ -72,13 +72,13 @@ module.exports = function(app, sql){
                             "FROM " + (
                                 "test_questions tq, question q "
                             ) +
-                            "WHERE" + (
-                                "q.id = tq.question_id AND" +
-                                "tq.question_id NOT IN (" + (
+                            "WHERE " + (
+                                "q.id = tq.question_id AND " +
+                                "tq.question_id NOT IN ( " + (
                                     "SELECT question_id FROM response " +
                                     "WHERE test_id = ? AND evaluee_id = ? "
                                 ) +
-                                ") AND" +
+                                ") AND " +
                                 "tq.test_id = ?"
                             ) +
                             ")"
@@ -86,6 +86,7 @@ module.exports = function(app, sql){
                     ) , [test_id, evaluee_id, test_id]
                 ).then(function(areas){
                     var qs = [];
+                    log.debug(areas);
 
                     for(area in areas){
 
