@@ -57,7 +57,7 @@ module.exports = function(app, sql){
                             ).then(function(evalueeInGroup){
                                 if(evalueeInGroup){
                                     return sql.update(
-                                        'group_evaluees', { disabled: false }, {
+                                        'group_evaluees', { disabled: null }, {
                                             evaluee_id: user,
                                             group_id: group
                                         }
