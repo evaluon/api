@@ -62,16 +62,28 @@ module.exports = function(app, sql){
                 }
 
                 return sql.query(
-                    "SELECT DISTINCT knowledge_area_id AS id " +
-                    "FROM test_questions tq, question q " +
-                    "WHERE" +
-                    "   q.id = tq.question_id AND" +
-                    "   tq.question_id NOT IN (" +
-                    "      SELECT question_id FROM response " +
-                    "      WHERE test_id = ? AND evaluee_id = ? " +
-                    "   ) AND" +
-                    "   tq.test_id = ?"
-                    , [test_id, evaluee_id, test_id]
+                    "SELECT * " +
+                    "FROM knowledge_area " +
+                    "WHERE " + (
+                        "id IN (" + (
+                            "SELECT " + (
+                                "DISTINCT knowledge_area_id AS id "
+                            ) +
+                            "FROM " + (
+                                "test_questions tq, question q "
+                            ) +
+                            "WHERE" + (
+                                "q.id = tq.question_id AND" +
+                                "tq.question_id NOT IN (" + (
+                                    "SELECT question_id FROM response " +
+                                    "WHERE test_id = ? AND evaluee_id = ? "
+                                ) +
+                                ") AND" +
+                                "tq.test_id = ?"
+                            ) +
+                            ")"
+                        )
+                    ) , [test_id, evaluee_id, test_id]
                 ).then(function(areas){
                     var qs = [];
 
