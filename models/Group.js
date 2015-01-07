@@ -83,6 +83,9 @@ module.exports = function(app, sql){
                 '   NOW() BETWEEN p.start_date AND p.stop_date '
                 , [id]
             ).then(function(period){
+                if(!period) throw {
+                    message: "no_active_period", statusCode: 404
+                };
                 return sql.insert(
                     'periods_in_group',
                     {
