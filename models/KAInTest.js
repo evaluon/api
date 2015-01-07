@@ -86,7 +86,6 @@ module.exports = function(app, sql){
                     ) , [test_id, evaluee_id, test_id]
                 ).then(function(areas){
                     var qs = [];
-                    log.debug(areas);
 
                     for(area in areas){
 
