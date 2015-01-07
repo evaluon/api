@@ -45,6 +45,12 @@ module.exports = function(app, sql){
         },
 
         update: function(id, object){
+            object.start_date = new Date(
+                moment.tz(object.start_date, "America/Bogota")
+            );
+            object.stop_date = new Date(
+                moment.tz(object.stop_date, "America/Bogota")
+            );
             return sql.update('test', object, { id: id }).then(function(res){
                 return sql.selectOne('test', { id: id });
             });
