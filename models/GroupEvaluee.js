@@ -49,10 +49,28 @@ module.exports = function(app, sql){
 
                     return Q.all(
                         _.map(users, function(user){
-                            return sql.insert(
-                                'group_evaluees',
-                                { evaluee_id: user, group_id: group_id }
-                            );
+                            return sql.selectOne(
+                                'group_evaluees', {
+                                    evaluee_id: user,
+                                    group_id: group_id
+                                }
+                            ).then(function(evalueeInGroup){
+                                if(evalueeInGroup){
+                                    return sql.update(
+                                        'group_evaluees', { disabled: false }, {
+                                            evaluee_id: evaluee,
+                                            group_id: group
+                                        }
+                                    );
+                                } else {
+                                    return sql.insert(
+                                        'group_evaluees', {
+                                            evaluee_id: user,
+                                            group_id: group_id
+                                        }
+                                    );
+                                }
+                            });
                         })
                     );
 
