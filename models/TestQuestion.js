@@ -11,7 +11,27 @@ module.exports = function(app, sql){
                 "SELECT q.* FROM question q, test_questions tq " +
                 "WHERE tq.test_id = ? AND q.id = tq.question_id",
                 [test]
-            );
+            )).then(function(questions){
+                var qs = [];
+
+                for(question in questions){
+
+                    qs.push(
+                        (function(question) {
+                            return sql.selectOne(
+                                'image', { id: question.image_id }
+                            ).then(function(image){
+                                return _.extend(
+                                { image: image },
+                                _.omit(question, 'image_id')
+                            )
+                        })
+                    })(questions[question])
+                );
+            }
+
+            return Q.all(qs);
+        });
         },
 
         findByKnowledgeArea: function(test, knowledgeArea){
