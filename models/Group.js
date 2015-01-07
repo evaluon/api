@@ -84,7 +84,7 @@ module.exports = function(app, sql){
                 , [id]
             ).then(function(period){
                 if(!period) throw {
-                    message: "no_active_period", statusCode: 404
+                    message: "institution_no_active_period", statusCode: 404
                 };
                 return sql.insert(
                     'periods_in_group',
