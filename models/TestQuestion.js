@@ -1,8 +1,8 @@
 module.exports = function(app, sql){
 
     var _ = app.utils._,
-    log = app.utils.log,
-    Q = app.utils.q;
+        log = app.utils.log,
+        Q = app.utils.q;
 
     return {
 
@@ -12,26 +12,38 @@ module.exports = function(app, sql){
                 "WHERE tq.test_id = ? AND q.id = tq.question_id",
                 [test]
             ).then(function(questions){
-                var qs = [];
+
+                qs = [];
 
                 for(question in questions){
 
                     qs.push(
                         (function(question) {
-                            return sql.selectOne(
-                                'image', { id: question.image_id }
-                            ).then(function(image){
-                                return _.extend(
-                                { image: image },
-                                _.omit(question, 'image_id')
-                            )
-                        })
-                    })(questions[question])
-                );
-            }
+                            return sql.query(
+                                "SELECT a.* " +
+                                "FROM answer a, answer_options qa " +
+                                "WHERE a.id = qa.answer_id AND " +
+                                "qa.question_id = ?",
+                                [question.id]
+                            ).then(function(answers){
+                                question.answers = answers;
+                                return question;
+                            }).then(function(){
+                                return sql.selectOne(
+                                    'image', { id: question.image_id }
+                                );
+                            }).then(function(image){
+                                question.image = image;
+                                return _.omit(question, ['image_id']);
+                            });
+                        })(questions[question])
+                    );
 
-            return Q.all(qs);
-        });
+                }
+
+                return Q.all(qs);
+
+            });
         },
 
         findByKnowledgeArea: function(test, knowledgeArea){
@@ -93,8 +105,9 @@ module.exports = function(app, sql){
 
                 if(!q.public) {
                     return sql.selectOne(
-                        'group',
-                        { institution_id: q.institution_id, evaluator_id: user }
+                        'group', { 
+                            institution_id: q.institution_id, evaluator_id: user
+                        }
                     ).then(function(g){
                         if(!g) throw {
                             message: "question_not_found",
@@ -106,8 +119,7 @@ module.exports = function(app, sql){
                 }
             }).then(function(){
                 return sql.insert(
-                    'test_questions',
-                    { test_id: test, question_id: question }
+                    'test_questions', { test_id: test, question_id: question }
                 );
             });
 
