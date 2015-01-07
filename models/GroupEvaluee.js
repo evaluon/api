@@ -59,7 +59,7 @@ module.exports = function(app, sql){
                                     return sql.update(
                                         'group_evaluees', { disabled: null }, {
                                             evaluee_id: user,
-                                            group_id: group
+                                            group_id: group_id
                                         }
                                     );
                                 } else {
