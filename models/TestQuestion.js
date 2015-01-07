@@ -11,7 +11,7 @@ module.exports = function(app, sql){
                 "SELECT q.* FROM question q, test_questions tq " +
                 "WHERE tq.test_id = ? AND q.id = tq.question_id",
                 [test]
-            )).then(function(questions){
+            ).then(function(questions){
                 var qs = [];
 
                 for(question in questions){
