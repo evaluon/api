@@ -228,6 +228,50 @@ module.exports = function(app, sql){
             });
         },
 
+        find: function(institution){
+            return sql.selectOne(
+                'institution', { id: institution }
+            ).then(function(institution){
+                return sql.selectOne(
+                    'image', {id: institution.image_id}
+                ).then(function(image){
+                    institution.image = image;
+                    if(institution.evaluator_id != null){
+                        return sql.one(
+                            "SELECT " + (
+                                "u.id, first_name, middle_name, " +
+                                "last_name, birth_date, mail, " +
+                                "phone_number, register_date, " +
+                                "area "
+                            ) +
+                            "FROM " + (
+                                "user u, evaluator e "
+                            ) +
+                            "WHERE " + (
+                                "u.id = e.id AND " +
+                                "e.id = ?"
+                            ), [institution.evaluator_id]
+                        );
+                    } else {
+                        return null;
+                    }
+                }).then(function(evaluator){
+                    if(evaluator) {
+                        institution.administrator = evaluator;
+                    }
+                    return _.omit(
+                        institution,
+                        [
+                        'image_id',
+                        'password',
+                        'evaluator_id',
+                        'denial_reason'
+                        ]
+                    );
+                });
+            });
+        },
+
         create: function(institution){
             return sql.insert('institution', institution).then(function(res){
                 return self.find({ id: institution.id });
