@@ -38,7 +38,7 @@ module.exports = function(app, sql){
 
                     qs.push(
                         (function(question){
-                            if(question.public){
+                            if(!question.open){
                                 return sql.query(
                                     "SELECT a.* FROM " + (
                                         "answer a, answer_options o "
@@ -50,6 +50,13 @@ module.exports = function(app, sql){
                                 ).then(function(answers){
                                     question.answers = answers;
                                     return question;
+                                }).then(function(){
+                                    return sql.selectOne(
+                                        'image', { id: question.image_id }
+                                    );
+                                }).then(function(image){
+                                    question.image = image;
+                                    return _.omit(question, ['image_id']);
                                 });
                             } else {
                                 return question;
@@ -62,6 +69,7 @@ module.exports = function(app, sql){
                 return q.all(qs);
 
             });
+
         },
 
         find: function(id){
