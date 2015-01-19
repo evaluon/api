@@ -34,6 +34,7 @@ module.exports = function(app){
                 DaoActors.actorRole(user).then(function(role){
                     user.role = role;
                     if(role == 4){
+                        log.debug("Role 4");
                         return DaoInstitution.findInstitution(
                             { evaluator_id: user.id }
                         ).then(function(institution){
@@ -41,6 +42,7 @@ module.exports = function(app){
                             return user;
                         });
                     } else if(role == 1){
+                        log.debug("Role 1");
                         return DaoActors.isEvaluee(
                             user.id
                         ).then(function(evaluee){
@@ -48,11 +50,12 @@ module.exports = function(app){
                             return user;
                         });
                     } else {
+                        log.debug("Role 2");
                         return user;
                     }
                 }).then(function(user){
                     responseView(user, res);
-                });
+                }).catch(next);
             }
 
         },

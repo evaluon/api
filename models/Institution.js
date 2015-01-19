@@ -1,8 +1,8 @@
 module.exports = function(app, sql){
 
-    var log = app.utils.log,
-    _ = app.utils._,
-    Q = app.utils.q;
+    var log = app.utils.log
+    ,   _ = app.utils._
+    ,   Q = app.utils.q;
 
     var self = {
 
@@ -61,57 +61,12 @@ module.exports = function(app, sql){
                                     ]
                                 );
 
-                            })
+                            });
                         })(institutions[institution])
                     );
                 }
 
                 return Q.all(qs);
-            });
-        },
-
-        find: function(values){
-            return sql.selectOne(
-                'institution', values
-            ).then(function(institution){
-                return sql.selectOne(
-                    'image', {id: institution.image_id}
-                ).then(function(image){
-                    institution.image = image;
-                    if(institution.evaluator_id != null){
-                        return sql.one(
-                            "SELECT " + (
-                                "u.id, first_name, middle_name, " +
-                                "last_name, birth_date, mail, " +
-                                "phone_number, register_date, " +
-                                "area "
-                            ) +
-                            "FROM " + (
-                                "user u, evaluator e "
-                            ) +
-                            "WHERE " + (
-                                "u.id = e.id AND " +
-                                "e.id = ?"
-                            ), [institution.evaluator_id]
-                        );
-                    } else {
-                        return null;
-                    }
-                }).then(function(evaluator){
-                    if(evaluator) {
-                        institution.administrator = evaluator;
-                    }
-                    return _.omit(
-                        institution,
-                        [
-                        'image_id',
-                        'password',
-                        'evaluator_id',
-                        'denial_reason'
-                        ]
-                    );
-
-                });
             });
         },
 
@@ -228,10 +183,15 @@ module.exports = function(app, sql){
             });
         },
 
-        find: function(institution){
+        find: function(values){
             return sql.selectOne(
-                'institution', { id: institution }
+                'institution', values
             ).then(function(institution){
+                log.debug(institution);
+                if(!institution) throw {
+                    statusCode: 404,
+                    message: 'institution_not_found'
+                };
                 return sql.selectOne(
                     'image', {id: institution.image_id}
                 ).then(function(image){
@@ -268,6 +228,7 @@ module.exports = function(app, sql){
                         'denial_reason'
                         ]
                     );
+
                 });
             });
         },
