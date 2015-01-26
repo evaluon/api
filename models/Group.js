@@ -86,12 +86,12 @@ module.exports = function(app, sql){
                 if(!period) throw {
                     message: "institution_no_active_period", statusCode: 404
                 };
-                return sql.one('periods_in_group', {
+                return sql.selectOne('periods_in_group', {
                     period_id: period.id,
                     group_id: id
                 }).then(function(period_group){
                     if(period_group) throw {
-                        message: "already_set_period", statusCode: 400
+                        message: "already_set_period", statusCode: 403
                     };
                     return sql.insert('periods_in_group', {
                         period_id: period.id,
