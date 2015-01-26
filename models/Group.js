@@ -89,14 +89,14 @@ module.exports = function(app, sql){
                 return sql.one('periods_in_group', {
                     period_id: period.id,
                     group_id: id
-                });
-            }).then(function(period){
-                if(period) throw {
-                    message: "already_set_period", statusCode: 400
-                };
-                return sql.insert('periods_in_group', {
-                    period_id: period.id,
-                    group_id: id
+                }).then(function(period_group){
+                    if(period_group) throw {
+                        message: "already_set_period", statusCode: 400
+                    };
+                    return sql.insert('periods_in_group', {
+                        period_id: period.id,
+                        group_id: id
+                    });
                 });
             });
         }
