@@ -32,6 +32,7 @@ module.exports = function(app, sql){
                                     { evaluee_id: evaluee_id, test_id: test.id }
                                 );
                             }).then(function(openTest){
+                                response.totalQuestions = 10;
                                 response.feedback = openTest.feedback;
                                 return response;
                             })
