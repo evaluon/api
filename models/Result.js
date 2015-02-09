@@ -18,6 +18,8 @@ module.exports = function(app, sql){
                     (function(result){
 
                         var response = {
+                            rightQuestions: result.rigth_questions,
+                            totalQuestions: result.total_questions,
                             note: result.note
                         };
 
