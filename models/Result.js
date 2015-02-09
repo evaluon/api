@@ -18,7 +18,7 @@ module.exports = function(app, sql){
                     (function(result){
 
                         var response = {
-                            rightQuestions: result.rigth_questions,
+                            rightQuestions: result.rigth_questions || 0,
                             totalQuestions: result.total_questions,
                             note: result.note
                         };
