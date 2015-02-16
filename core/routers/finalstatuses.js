@@ -12,6 +12,7 @@ module.exports = function(app){
 
     // Error Middleware: Matches Server Error Routes
     router.use(function(err, req, res, next){
+        log.error(err);
         var responseView = require('../../views/jsonErrorResponse');
         responseView(err, res);
     });
