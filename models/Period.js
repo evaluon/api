@@ -23,12 +23,16 @@ module.exports = function(app, sql){
         },
 
         create: function(object){
+            object.start_date = new Date(object.start_date);
+            object.stop_date = new Date(object.stop_date);
             return sql.insert('period', object).then(function(result){
                 return sql.selectOne('period', { id: result.insertId });
             });
         },
 
         update: function(id, object){
+            object.start_date = new Date(object.start_date);
+            object.stop_date = new Date(object.stop_date);
             return sql.update('period', object, { id: id });
         },
 

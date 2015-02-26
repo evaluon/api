@@ -43,8 +43,6 @@ module.exports = function(app, sql){
         },
 
         create: function(object){
-            object.start_date = new Date(object.start_date);
-            object.stop_date = new Date(object.stop_date);
             return sql.insert('group', object).then(function(res){
                 return self.find({id: res.insertId});
             });

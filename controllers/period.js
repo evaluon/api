@@ -19,7 +19,7 @@ module.exports = function(app){
         },
 
         updatePeriod: function(req, res, next){
-            Dao.update(req.body).then(function(period){
+            Dao.updatePeriod(req.body).then(function(period){
                 responseView(period, res);
             }).catch(next);
         }
