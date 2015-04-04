@@ -32,6 +32,7 @@ module.exports = function(app){
         },
 
         updateUser: function(oUser, user){
+            user.birth_date = new Date(user.birth_date);
             return User.update(oUser.id, user);
         },
 
