@@ -13,7 +13,7 @@ module.exports = function(app){
 
     responseView = require('../views/jsonSuccessResponse');
 
-    return {
+    var Ctrl = {
 
         adminList: function(req, res, next){
             Dao.findAll({ role_id: 'admin' }).then(function(users){
@@ -90,7 +90,8 @@ module.exports = function(app){
             var body = _.omit(req.body, ['role_id', 'role', 'enabled']);
             log.debug(body);
             Dao.updateUser(user, body).then(function(user){
-                responseView(user, res);
+                req.user = user;
+                Ctrl.retrieveUser(req, res, next);
             }).catch(next);
         },
 
@@ -155,5 +156,7 @@ module.exports = function(app){
         }
 
     };
+
+    return Ctrl;
 
 };
