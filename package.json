@@ -8,7 +8,7 @@
     "email": "root@boolinc.co",
     "url": "http://www.boolinc.co"
   },
-  "main": "app.js",
+  "main": "evaluon-api.js",
   "scripts": {
     "start": "forever start evaluon-api.js",
     "stop": "forever stop evaluon-api.js"

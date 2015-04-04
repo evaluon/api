@@ -87,7 +87,9 @@ module.exports = function(app){
             var user = (req.body.id && req.user.role_id == 'admin' ?
                 req.body : req.user
             );
-            Dao.updateUser(user, req.body).then(function(user){
+            var body = _.omit(req.body, ['role_id', 'role', 'enabled']);
+            log.debug(body);
+            Dao.updateUser(user, body).then(function(user){
                 responseView(user, res);
             }).catch(next);
         },
