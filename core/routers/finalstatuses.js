@@ -12,7 +12,7 @@ module.exports = function(app){
 
     // Error Middleware: Matches Server Error Routes
     router.use(function(err, req, res, next){
-        log.error("%s %j", err, err);
+        log.error("%s %j\n%s", err, err, err.stack);
         var responseView = require('../../views/jsonErrorResponse');
         responseView(err, res);
     });

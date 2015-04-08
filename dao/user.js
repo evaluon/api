@@ -1,9 +1,12 @@
 module.exports = function(app){
 
-    var checkFields = app.utils.checkFields,
-        log = app.utils.log,
-        crypto = app.utils.crypto,
-        User = app.db.User;
+    var _ = app.utils._
+    ,   checkFields = app.utils.checkFields
+    ,   log = app.utils.log
+    ,   crypto = app.utils.crypto
+    ,   User = app.db.User
+    ,   DaoActors = require('./actors')(app)
+    ,   DaoInstitution = require('./institution')(app);
 
     return {
 
@@ -12,7 +15,35 @@ module.exports = function(app){
         },
 
         retrieveUser: function(user){
-            return User.find(user);
+            return User.find(user).then(function(user){
+                user = _.omit(user, "password");
+
+                if(user.role_id == 'admin'){
+                    user.role = 8;
+                    return user;
+                } else {
+                    return DaoActors.actorRole(user).then(function(role){
+                        user.role = role;
+                        if(role == 4){
+                            return DaoInstitution.findInstitution(
+                                { evaluator_id: user.id }
+                            ).then(function(institution){
+                                user.institution_id = institution.id;
+                                return user;
+                            });
+                        } else if(role == 1){
+                            return DaoActors.isEvaluee(
+                                user.id
+                            ).then(function(evaluee){
+                                user.evaluee = evaluee;
+                                return user;
+                            });
+                        } else {
+                            return user;
+                        }
+                    });
+                }
+            });
         },
 
         findByMail: function(mail){

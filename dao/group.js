@@ -1,10 +1,12 @@
 module.exports = function(app){
 
-    var _ = app.utils._,
+    var q = app.utils.q,
+        _ = app.utils._,
         log = app.utils.log,
         checkFields = app.utils.checkFields,
         Group = app.db.Group,
-        Actors = app.db.Actors;
+        Actors = app.db.Actors,
+        UserDao = require('./user')(app);
 
     var self = {
 
@@ -13,6 +15,23 @@ module.exports = function(app){
                 [':id'], { ':id': institution_id }
             ).then(function(){
                 return Group.findAll({ institution_id: institution_id });
+            }).then(function(groups){
+                var qs = [];
+
+                for(group in groups){
+                    (function(group){
+                        qs.push(
+                            UserDao.retrieveUser({
+                                id: group.user.id
+                            }).then(function(user){
+                                group.user = user;
+                                return group;
+                            })
+                        );
+                    })(groups[group]);
+                }
+
+                return q.all(qs);
             });
         },
 
@@ -22,6 +41,13 @@ module.exports = function(app){
                 [':id', 'institution_id'], fields
             ).then(function(){
                 return Group.find(fields);
+            }).then(function(group){
+                return UserDao.retrieveUser({
+                    id: group.user.id
+                }).then(function(user){
+                    group.user = user;
+                    return user;
+                });
             });
         },
 

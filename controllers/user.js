@@ -26,38 +26,9 @@ module.exports = function(app){
         },
 
         retrieveUser: function(req, res, next){
-            var user = _.omit(req.user, 'password');
-            if(user.role_id == 'admin'){
-                user.role = 8;
+            Dao.retrieveUser({ id: req.user.id }).then(function(user){
                 responseView(user, res);
-            } else {
-                DaoActors.actorRole(user).then(function(role){
-                    user.role = role;
-                    if(role == 4){
-                        log.debug("Role 4");
-                        return DaoInstitution.findInstitution(
-                            { evaluator_id: user.id }
-                        ).then(function(institution){
-                            user.institution_id = institution.id;
-                            return user;
-                        });
-                    } else if(role == 1){
-                        log.debug("Role 1");
-                        return DaoActors.isEvaluee(
-                            user.id
-                        ).then(function(evaluee){
-                            user.evaluee = evaluee;
-                            return user;
-                        });
-                    } else {
-                        log.debug("Role 2");
-                        return user;
-                    }
-                }).then(function(user){
-                    responseView(user, res);
-                }).catch(next);
-            }
-
+            }).catch(next);
         },
 
         createUser: function(req, res, next){
