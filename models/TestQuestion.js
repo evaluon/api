@@ -80,6 +80,7 @@ module.exports = function(app, sql){
         },
 
         userFindByKnowledgeArea: function(test, knowledgeArea, userId){
+            log.debug(test, knowledgeArea, userId);
             return sql.query(
                 "SELECT q.* " +
                 "FROM " + (
@@ -92,9 +93,9 @@ module.exports = function(app, sql){
                     "tq.question_id NOT IN (" + (
                         "SELECT question_id FROM response WHERE " +
                         "test_id = tq.test_id AND " +
-                        "user_id = ?"
+                        "evaluee_id = ?"
                     ) + ")"
-                )
+                ),
                 [test, knowledgeArea, userId]
             ).then(processQuestion);
         },
@@ -106,7 +107,7 @@ module.exports = function(app, sql){
                 "   question q, test_questions tq " +
                 "WHERE" +
                 "   tq.test_id = ? AND q.id = tq.question_id " +
-                "AND q.knowledge_area_id = ?"
+                "AND q.knowledge_area_id = ?",
                 [test, knowledgeArea]
             ).then(processQuestion);
         },
