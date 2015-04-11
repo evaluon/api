@@ -85,7 +85,7 @@ module.exports = function(app, sql){
                 "FROM " + (
                     "question q, test_questions tq "
                 ) +
-                "WHERE" + (
+                "WHERE " + (
                     "tq.test_id = ? AND " +
                     "q.id = tq.question_id AND " +
                     "q.knowledge_area_id = ? AND " +
