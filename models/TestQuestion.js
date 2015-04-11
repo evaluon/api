@@ -83,7 +83,7 @@ module.exports = function(app, sql){
             return sql.query(
                 "SELECT q.* " +
                 "FROM " + (
-                    "question q, test_questions tq " +
+                    "question q, test_questions tq "
                 ) +
                 "WHERE" + (
                     "tq.test_id = ? AND " +
