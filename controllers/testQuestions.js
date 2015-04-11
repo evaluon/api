@@ -13,6 +13,7 @@ module.exports = function(app){
         },
 
         testQuestionsByKnowledgeArea: function(req, res, next){
+            log.debug(req.user, req.user.role);
             var promise = (
                 (
                     req.user.role == 1 &&

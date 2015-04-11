@@ -1,10 +1,12 @@
 module.exports = function(app){
 
-    var _ = app.utils._,
-        log = app.utils.log,
-        UserToken = app.db.UserToken,
-        Token = require('./token')(app),
-        User = app.db.User;
+    var _ = app.utils._
+    ,   log = app.utils.log
+    ,   User = app.db.User
+    ,   UserToken = app.db.UserToken
+    ,   Token = require('./token')(app)
+    ,   DaoActors = require('./actors')(app)
+    ,   DaoInstitution = require('./institution')(app);
 
     var Dao = {
 
@@ -35,6 +37,34 @@ module.exports = function(app){
                 return userToken ? (
                     User.find({ id: userToken.user_id })
                 ) : false;
+            }).then(function(user){
+                user = _.omit(user, "password");
+
+                if(user.role_id == 'admin'){
+                    user.role = 8;
+                    return user;
+                } else {
+                    return DaoActors.actorRole(user).then(function(role){
+                        user.role = role;
+                        if(role == 4){
+                            return DaoInstitution.findInstitution(
+                                { evaluator_id: user.id }
+                            ).then(function(institution){
+                                user.institution_id = institution.id;
+                                return user;
+                            });
+                        } else if(role == 1){
+                            return DaoActors.isEvaluee(
+                                user.id
+                            ).then(function(evaluee){
+                                user.evaluee = evaluee;
+                                return user;
+                            });
+                        } else {
+                            return user;
+                        }
+                    });
+                }
             });
         },
 
