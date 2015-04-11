@@ -13,9 +13,21 @@ module.exports = function(app){
         },
 
         testQuestionsByKnowledgeArea: function(req, res, next){
-            Dao.testQuestionsByKnowledgeArea(
-                req.params.id, req.params.knowledgearea
-            ).then(function(tests){
+            var promise = (
+                (
+                    req.user.role == 1 &&
+                    Dao.userTestQuestionsByKnowledgeArea(
+                        req.params.id, req.params.knowledgearea, req.user.id
+                    )
+                ) ||
+                (
+                    Dao.testQuestionsByKnowledgeArea(
+                        req.params.id, req.params.knowledgearea
+                    )
+                )
+            );
+
+            promise.then(function(tests){
                 responseView(tests, res);
             }).catch(next);
         },

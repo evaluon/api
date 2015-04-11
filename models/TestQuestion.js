@@ -4,6 +4,39 @@ module.exports = function(app, sql){
         log = app.utils.log,
         Q = app.utils.q;
 
+    function processQuestion(questions){
+
+        qs = [];
+
+        for(question in questions){
+
+            qs.push(
+                (function(question) {
+                    return sql.query(
+                        "SELECT a.* " +
+                        "FROM answer a, answer_options qa " +
+                        "WHERE a.id = qa.answer_id AND qa.question_id = ?",
+                        [question.id]
+                    ).then(function(answers){
+                        question.answers = answers;
+                        return question;
+                    }).then(function(){
+                        return sql.selectOne(
+                            'image', { id: question.image_id }
+                        );
+                    }).then(function(image){
+                        question.image = image;
+                        return _.omit(question, ['image_id']);
+                    });
+                })(questions[question])
+            );
+
+        }
+
+        return Q.all(qs);
+
+    }
+
     return {
 
         findAll: function(test){
@@ -46,6 +79,26 @@ module.exports = function(app, sql){
             });
         },
 
+        userFindByKnowledgeArea: function(test, knowledgeArea, userId){
+            return sql.query(
+                "SELECT q.* " +
+                "FROM " + (
+                    "question q, test_questions tq " +
+                ) +
+                "WHERE" + (
+                    "tq.test_id = ? AND " +
+                    "q.id = tq.question_id AND " +
+                    "q.knowledge_area_id = ? AND " +
+                    "tq.question_id NOT IN (" + (
+                        "SELECT question_id FROM response WHERE " +
+                        "test_id = tq.test_id AND " +
+                        "user_id = ?"
+                    ) + ")"
+                )
+                [test, knowledgeArea, userId]
+            ).then(processQuestion);
+        },
+
         findByKnowledgeArea: function(test, knowledgeArea){
             return sql.query(
                 "SELECT q.* " +
@@ -53,40 +106,9 @@ module.exports = function(app, sql){
                 "   question q, test_questions tq " +
                 "WHERE" +
                 "   tq.test_id = ? AND q.id = tq.question_id " +
-                "AND q.knowledge_area_id = ?",
+                "AND q.knowledge_area_id = ?"
                 [test, knowledgeArea]
-            ).then(function(questions){
-
-                qs = [];
-
-                for(question in questions){
-
-                    qs.push(
-                        (function(question) {
-                            return sql.query(
-                                "SELECT a.* " +
-                                "FROM answer a, answer_options qa " +
-                                "WHERE a.id = qa.answer_id AND qa.question_id = ?",
-                                [question.id]
-                            ).then(function(answers){
-                                question.answers = answers;
-                                return question;
-                            }).then(function(){
-                                return sql.selectOne(
-                                    'image', { id: question.image_id }
-                                );
-                            }).then(function(image){
-                                question.image = image;
-                                return _.omit(question, ['image_id']);
-                            });
-                        })(questions[question])
-                    );
-
-                }
-
-                return Q.all(qs);
-
-            });
+            ).then(processQuestion);
         },
 
         add: function(user, test, question){

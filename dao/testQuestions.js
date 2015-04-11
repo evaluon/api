@@ -13,6 +13,17 @@ module.exports = function(app){
 
         },
 
+        userTestQuestionsByKnowledgeArea: function(test, knowledgeArea, uId){
+            return checkFields(
+                [':id', ':knowledgeArea'],
+                { ':id': test, ':knowledgeArea': knowledgeArea }
+            ).then(function(){
+                return TestQuestion.userFindByKnowledgeArea(
+                    test, knowledgeArea, uId
+                );
+            })
+        },
+
         testQuestionsByKnowledgeArea: function(test, knowledgeArea){
             return checkFields(
                 [':id', ':knowledgeArea'],
