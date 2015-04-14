@@ -34,12 +34,13 @@ module.exports = function(app){
         createUser: function(req, res, next){
             if(req.user.role_id == 'admin'){
 
+                var body = _.omit(req.body, ['role', 'enabled']);
                 var user = _.extend(
                     {
-                        role_id: req.body.role_id || 'user',
+                        role_id: body.role_id || 'user',
                         register_date: new Date()
                     },
-                    req.body
+                    body
                 );
 
                 Dao.createUser(user).then(function(user){
