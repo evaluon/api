@@ -44,7 +44,8 @@ module.exports = function(app){
                 );
 
                 Dao.createUser(user).then(function(user){
-                    retrieveUser(req, res, next);
+                    req.user = user;
+                    Ctrl.retrieveUser(req, res, next);
                 }).catch(next);
             } else {
                 throw {
