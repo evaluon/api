@@ -44,7 +44,7 @@ module.exports = function(app){
                 );
 
                 Dao.createUser(user).then(function(user){
-                    responseView(user, res);
+                    retrieveUser(req, res, next);
                 }).catch(next);
             } else {
                 throw {
