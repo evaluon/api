@@ -84,6 +84,21 @@ module.exports = function(app){
                 { user: user, institution: institution }
             ).then(function(){
                 return Actors.evalueeGroups(user, institution);
+            }).then(function(groups){
+                var qs = [];
+
+                for(group in groups){
+                    (function(group){
+                        qs.push(
+                            Dao.actorRole(group.user).then(function(role){
+                                group.user.role = role;
+                                return group;
+                            })
+                        );
+                    })(groups[group]);
+                }
+
+                return q.all(qs);
             });
         },
 
