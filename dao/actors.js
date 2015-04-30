@@ -1,11 +1,11 @@
 module.exports = function(app){
 
-    var _ = app.utils._,
-        log = app.utils.log,
-        checkFields = app.utils.checkFields,
-        Actors = app.db.Actors;
+    var _ = app.utils._
+    ,   log = app.utils.log
+    ,   checkFields = app.utils.checkFields
+    ,   Actors = app.db.Actors;
 
-    return {
+    var Dao = {
 
         isEvaluee: function(user){
             return Actors.isEvaluee(user);
@@ -45,6 +45,21 @@ module.exports = function(app){
         evaluatorGroups: function(user, institution){
             return checkFields(['user'], { user: user }).then(function(){
                 return Actors.evaluatorGroups(user);
+            }).then(function(groups){
+                var qs = [];
+
+                for(group in groups){
+                    (function(group){
+                        qs.push(
+                            Dao.actorRole(group.user).then(function(role){
+                                group.user.role = role;
+                                return group;
+                            })
+                        );
+                    })(groups[group]);
+                }
+
+                return q.all(qs);
             });
         },
 
@@ -88,6 +103,8 @@ module.exports = function(app){
             });
         }
 
-    }
+    };
+
+    return Dao;
 
 }
