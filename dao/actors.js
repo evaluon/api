@@ -1,9 +1,10 @@
 module.exports = function(app){
 
-    var _ = app.utils._
-    ,   log = app.utils.log
+    var _           = app.utils._
+    ,   q           = app.utils.q
+    ,   log         = app.utils.log
     ,   checkFields = app.utils.checkFields
-    ,   Actors = app.db.Actors;
+    ,   Actors      = app.db.Actors;
 
     var Dao = {
 
