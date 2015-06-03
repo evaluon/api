@@ -17,8 +17,14 @@ module.exports = function(app){
             Dao.listBank().then(function(questions){
                 responseView(questions, res);
             }).catch(next);
+        },
+
+        update: function(req, res, next){
+            Dao.update(req.params.id, req.body).then(function(data){
+                responseView(data, res);
+            }).catch(next);
         }
 
     };
 
-}
+};

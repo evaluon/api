@@ -29,8 +29,14 @@ module.exports = function(app){
                 responseView(false, res);
             }).catch(next);
 
+        },
+
+        update: function(req, res, next){
+            Dao.update(req.params.id, req.body).then(function(data){
+                responseView(data, res);
+            }).catch(next);
         }
 
-    }
+    };
 
-}
+};

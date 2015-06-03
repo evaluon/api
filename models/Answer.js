@@ -8,7 +8,7 @@ module.exports = function(app, sql){
 
             qs = [];
 
-            for(answer in answers){
+            for(var answer in answers){
                 answer = answers[answer];
 
                 qs.push(
@@ -31,15 +31,22 @@ module.exports = function(app, sql){
         addToQuestion: function(question, answer){
             return sql.insert(
                 'answer_options', { question_id: question, answer_id: answer }
-            )
+            );
         },
 
         score: function(answer, mark){
             return sql.update('text_answer', { right: mark }, { id: answer });
+        },
+
+        update: function(id, answer){
+            return sql.update('answer', answer, { id: id}).then(function(res){
+                self.find({ id: id });
+            });
         }
+
 
     };
 
     return self;
 
-}
+};

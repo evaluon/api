@@ -35,8 +35,12 @@ module.exports = function(app){
                 return Answer.score(answer, mark);
             });
 
+        },
+
+        update: function(id, answer){
+            return Answer.update(id, answer);
         }
 
-    }
+    };
 
-}
+};
