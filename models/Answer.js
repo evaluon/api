@@ -40,7 +40,7 @@ module.exports = function(app, sql){
 
         update: function(id, answer){
             return sql.update('answer', answer, { id: id }).then(function(res){
-                self.find({ id: id });
+                return self.find({ id: id });
             });
         }
 
