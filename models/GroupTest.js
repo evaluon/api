@@ -88,7 +88,7 @@ module.exports = function(app, sql){
                                 "WHERE test_id = t.id"
                             ) + ")"
                         ) +
-                        ") > 0, 0, 1) AS editable "
+                        " > 0, 0, 1) AS editable "
                     ) +
                     "FROM " + (
                         "test t, group_test gt "
