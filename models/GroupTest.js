@@ -81,11 +81,13 @@ module.exports = function(app, sql){
                 } else {
                     return sql.query(
                         "SELECT " + (
-                            "t.* " +
-                            "IF((" + (
-                                "SELECT COUNT(evaluee_id) AS id " +
-                                "FROM opened_test " +
-                                "WHERE test_id = t.id"
+                            "t.*, " +
+                            "IF(" + (
+                                "(" + (
+                                    "SELECT COUNT(evaluee_id) AS id " +
+                                    "FROM opened_test " +
+                                    "WHERE test_id = t.id"
+                                ) + ")"
                             ) +
                             ") > 0, 0, 1) AS editable "
                         ) +
