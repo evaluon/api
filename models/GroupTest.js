@@ -1,9 +1,9 @@
 module.exports = function(app, sql){
 
     var _ = app.utils._,
-        log = app.utils.log,
-        hotp = app.utils.hotp,
-        salt = app.config.security.salt;
+    log = app.utils.log,
+    hotp = app.utils.hotp,
+    salt = app.config.security.salt;
 
     var self = {
 
@@ -15,7 +15,7 @@ module.exports = function(app, sql){
                     message: "no_active_period",
                     statusCode: 404,
                     cause: "Period"
-                }
+                };
                 return sql.query(
                     "SELECT " +
                     "	t.* " +
@@ -31,11 +31,11 @@ module.exports = function(app, sql){
                     "   ) AND " +
                     "	NOW() BETWEEN start_date AND stop_date " +
                     "ORDER BY " +
-                    "   start_date ASC"
-                    , [period.id, group_id, evaluee_id]
+                    "   start_date ASC",
+                    [period.id, group_id, evaluee_id]
                 );
             }).then(function(test){
-                if(test.length == 0) throw {
+                if(test.length === 0) throw {
                     message: 'no_active_test',
                     statusCode: 404,
                     cause: 'GroupTest'
@@ -53,44 +53,59 @@ module.exports = function(app, sql){
                     message: "no_active_period",
                     statusCode: 404,
                     cause: "Period"
-                }
+                };
                 return sql.selectOne('evaluee', { id: evaluee_id });
             }).then(function(ev){
 
                 if(ev) {
                     return sql.query(
-                        "SELECT " +
-                        "	t.* " +
-                        "FROM " +
-                        "	test t, group_test gt " +
-                        "WHERE group_id = ? AND " +
-                        "	t.id = gt.test_id AND " +
-                        "	t.id NOT IN (" +
-                        "       SELECT test_id AS id " +
-                        "       FROM opened_test " +
-                        "       WHERE evaluee_id = ? " +
-                        "   ) " +
-                        "ORDER BY start_date DESC"
-                        , [group_id, evaluee_id]
+                        "SELECT " + (
+                            "t.* "
+                        ) +
+                        "FROM " + (
+                            "test t, group_test gt "
+                        ) +
+                        "WHERE" + (
+                            "group_id = ? AND " +
+                            "t.id = gt.test_id AND " +
+                            "t.id NOT IN (" + (
+                                "SELECT test_id AS id " +
+                                "FROM opened_test " +
+                                "WHERE evaluee_id = ?"
+                            ) +
+                            ") "
+                        ) +
+                        "ORDER BY start_date DESC",
+                        [group_id, evaluee_id]
                     );
                 } else {
                     return sql.query(
-                        "SELECT " +
-                        "	t.* " +
-                        "FROM " +
-                        "	test t, group_test gt " +
-                        "WHERE group_id = ? AND " +
-                        "	t.id = gt.test_id " +
-                        "ORDER BY start_date DESC"
-                        , [group_id]
+                        "SELECT " + (
+                            "t.* " +
+                            "IF((" + (
+                                "SELECT COUNT(evaluee_id) AS id " +
+                                "FROM opened_test " +
+                                "WHERE test_id = t.id"
+                            ) +
+                            ") > 0, 0, 1) AS editable "
+                        ) +
+                        "FROM " + (
+                            "test t, group_test gt "
+                        ) +
+                        "WHERE" + (
+                            "group_id = ? AND " +
+                            "t.id = gt.test_id "
+                        ) +
+                        "ORDER BY start_date DESC",
+                        [group_id]
                     ).then(function(tests){
                         return _.map(tests, function(test){
                             var id = test.id.toString();
                             return _.extend({ hotp: hotp(salt, id) }, test);
-                        })
+                        });
                     });
                 }
-            })
+            });
 
         },
 
@@ -112,8 +127,8 @@ module.exports = function(app, sql){
 
         }
 
-    }
+    };
 
     return self;
 
-}
+};
