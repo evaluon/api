@@ -94,7 +94,7 @@ module.exports = function(app, sql){
                         "FROM " + (
                             "test t, group_test gt "
                         ) +
-                        "WHERE" + (
+                        "WHERE " + (
                             "group_id = ? AND " +
                             "t.id = gt.test_id "
                         ) +
