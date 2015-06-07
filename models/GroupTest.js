@@ -79,32 +79,34 @@ module.exports = function(app, sql){
                         [group_id, evaluee_id]
                     );
                 } else {
-                    return sql.query(
-                        "SELECT " + (
-                            "t.*, " +
-                            "IF(" + (
-                                "(" + (
-                                    "SELECT COUNT(evaluee_id) AS id " +
-                                    "FROM opened_test " +
-                                    "WHERE test_id = t.id"
-                                ) + ")"
-                            ) +
-                            ") > 0, 0, 1) AS editable "
+                    var query = "SELECT " + (
+                        "t.*, " +
+                        "IF(" + (
+                            "(" + (
+                                "SELECT COUNT(evaluee_id) AS id " +
+                                "FROM opened_test " +
+                                "WHERE test_id = t.id"
+                            ) + ")"
                         ) +
-                        "FROM " + (
-                            "test t, group_test gt "
-                        ) +
-                        "WHERE " + (
-                            "group_id = ? AND " +
-                            "t.id = gt.test_id "
-                        ) +
-                        "ORDER BY start_date DESC",
-                        [group_id]
-                    ).then(function(tests){
+                        ") > 0, 0, 1) AS editable "
+                    ) +
+                    "FROM " + (
+                        "test t, group_test gt "
+                    ) +
+                    "WHERE " + (
+                        "group_id = ? AND " +
+                        "t.id = gt.test_id "
+                    ) +
+                    "ORDER BY start_date DESC";
+
+                    return sql.query(query, [group_id]).then(function(tests){
                         return _.map(tests, function(test){
                             var id = test.id.toString();
                             return _.extend({ hotp: hotp(salt, id) }, test);
                         });
+                    }, function(err){
+                        err.query = query;
+                        throw err;
                     });
                 }
             });
