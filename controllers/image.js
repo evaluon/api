@@ -5,7 +5,12 @@ module.exports = function(app){
         Dao = app.dao.image,
         responseView = require('../views/jsonSuccessResponse'),
         formidable = app.utils.formidable,
-        azure = app.utils.azure;
+        azure = app.utils.azure,
+        util = require('util'),
+        path = require('path'),
+        copy = app.utils.copy,
+        mkdir = app.utils.mkdir,
+        uuid = app.utils.uuid;
 
     return {
 
@@ -13,13 +18,23 @@ module.exports = function(app){
 
             formidable(req).then(function(data){
                 body = data.fields;
-                var image = data.files.file;
-                return azure(
-                    app.config.azure, 'evaluon',
-                    image.path, _.last(image.name.split('.'))
-                );
-            }).then(function(data){
-                var location = data.result.blob;
+                var file = data.files.file;
+
+                var year    = new Date().getFullYear().toString(),
+                    m       = new Date().getMonth() + 1,
+                    month   = m >= 10 ? m.toString() : util.format("0%d", m);
+
+                var targetDir   = path.join("static", year, month),
+                    filename    = util.format(
+                    "%s%s", uuid(), path.extname(file.name)
+                ),
+                    target      = path.join(targetDir, filename);
+
+                return mkdir(targetDir).then(function(){
+                    log.warn("About copying. Hope you have permissions");
+                    return copy(file.path, target);
+                });
+            }).then(function(location){
                 return Dao.create({
                     location: location,
                     description: body.description
@@ -36,13 +51,24 @@ module.exports = function(app){
 
             formidable(req).then(function(data){
                 body = data.fields;
-                var image = data.files.file;
-                return azure(
-                    app.config.azure, 'evaluon',
-                    image.path, _.last(image.name.split('.'))
-                );
-            }).then(function(data){
-                var location = data.result.blob;
+                var file = data.files.file;
+
+                var year    = new Date().getFullYear().toString(),
+                    m       = new Date().getMonth() + 1,
+                    month   = m >= 10 ? m.toString() : util.format("0%d", m);
+
+                var targetDir   = path.join("static", year, month),
+                    filename    = util.format(
+                    "%s%s", uuid(), path.extname(file.name)
+                ),
+                    target      = path.join(targetDir, filename);
+
+                return mkdir(targetDir).then(function(){
+                    log.warn("About copying. Hope you have permissions");
+                    return copy(file.path, target);
+                });
+            }).then(function(location){
+                log.debug(location);
                 return Dao.questionImage(req.params.id, {
                     location: location,
                     description: body.description
@@ -52,6 +78,6 @@ module.exports = function(app){
             }).catch(next);
 
         }
-    }
+    };
 
-}
+};

@@ -1,6 +1,6 @@
 module.exports = function(app){
 
-    log = app.utils.log,
+    var log = app.utils.log,
         Dao = app.dao.period,
         responseView = require('../views/jsonSuccessResponse');
 
@@ -26,4 +26,4 @@ module.exports = function(app){
 
     };
 
-}
+};

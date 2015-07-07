@@ -15,6 +15,10 @@ var fs = require('fs'),
     azure = require('../utils/azure-upload'),
     azure_url = require('../utils/azure-url-upload'),
 
+    uuid = require('node-uuid'),
+    copy = require('../utils/copy'),
+    mkdir = require('../utils/mkdir'),
+
     express = require('express'),
     passport = require('passport'),
     oauth2orize = require('oauth2orize'),
@@ -44,7 +48,11 @@ var utils = {
     passport: passport,
 
     nodemailer: nodemailer,
-    request: request
+    request: request,
+
+    copy: copy,
+    uuid: uuid,
+    mkdir: mkdir
 
 };
 
