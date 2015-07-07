@@ -10,8 +10,8 @@
   },
   "main": "evaluon-api.js",
   "scripts": {
-    "start": "forever start evaluon-api.js",
-    "stop": "forever stop evaluon-api.js"
+    "start": "pm2 start evaluon-api.js",
+    "stop": "pm2 stop evaluon-api.js"
   },
   "dependencies": {
     "azure-storage": "^0.4.0",

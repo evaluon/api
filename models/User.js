@@ -21,6 +21,7 @@ module.exports = function(app, sql){
         },
 
         create: function(user){
+            user.birth_date = new Date(user.birth_date);
             return sql.query(
                 "SELECT * FROM user WHERE id = ? UNION " +
                 "SELECT * FROM user WHERE mail = ?",
