@@ -51,13 +51,23 @@ module.exports = function(app){
                 formidable(req).then(function(data){
                     log.debug("Si, got the image, and it's", data.files.file);
                     body = data.fields;
-                    var image = data.files.file;
-                    return azure(
-                        app.config.azure, 'evaluon',
-                        image.path, _.last(image.name.split('.'))
-                    );
-                }).then(function(data){
-                    var location = data.result.blob;
+                    var file = data.files.file;
+
+                    var year    = new Date().getFullYear().toString(),
+                        m       = new Date().getMonth() + 1,
+                        month   = m >= 10 ? m.toString() : util.format("0%d", m);
+
+                    var targetDir   = path.join("static", year, month),
+                        filename    = util.format(
+                        "%s%s", uuid(), path.extname(file.name)
+                    ),
+                        target      = path.join(targetDir, filename);
+
+                    return mkdir(targetDir).then(function(){
+                        log.warn("About copying. Hope you have permissions");
+                        return copy(file.path, target);
+                    });
+                }).then(function(location){
                     return Dao.createInstitution({
                         id: body.id,
                         name: body.name,
