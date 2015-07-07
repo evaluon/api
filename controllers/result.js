@@ -27,13 +27,10 @@ module.exports = function(app){
                 req.user.id, req.params.institution_id
             ).then(function(results){
                 responseView(results, res);
-            }).catch(next)
+            }).catch(next);
 
+        }
 
-        },
+    };
 
-
-
-    }
-
-}
+};

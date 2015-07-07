@@ -16,12 +16,11 @@ module.exports = function(app){
                 throw {
                     message: "insuficient_privileges",
                     statusCode: 401
-                }
+                };
             }
-
 
         }
 
-    }
+    };
 
-}
+};

@@ -51,7 +51,7 @@ module.exports = function(app){
                 throw {
                     message: "invalid_permissions",
                     statusCode: 403
-                }
+                };
             }
 
         },
@@ -70,7 +70,7 @@ module.exports = function(app){
 
         deleteUser: function(req, res, next){
             if(
-                !req.user.role_id == 'admin' || req.params.id == req.user.id
+                !req.user.role_id === 'admin' || req.params.id === req.user.id
             ) throw {
                 statusCode: 403,
                 message: "invalid_permissions"
@@ -94,7 +94,7 @@ module.exports = function(app){
                         mail: "",
                         token: ""
                     }
-                }
+                };
 
                 Dao.recoverPassword(req.body.mail).then(function(user){
 

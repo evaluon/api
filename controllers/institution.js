@@ -94,7 +94,7 @@ module.exports = function(app){
                             mail: "",
                             token: ""
                         }
-                    }
+                    };
 
                     return Dao.retrieveInstitution(
                         req.params.id
@@ -135,6 +135,6 @@ module.exports = function(app){
             }).catch(next);
         }
 
-    }
+    };
 
-}
+};
