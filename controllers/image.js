@@ -5,7 +5,8 @@ module.exports = function(app){
         Dao = app.dao.image,
         responseView = require('../views/jsonSuccessResponse'),
         formidable = app.utils.formidable,
-        azure = app.utils.azure;
+        azure = app.utils.azure,
+        util = require('util');
 
     return {
 
@@ -63,6 +64,7 @@ module.exports = function(app){
                     return copy(file.path, target);
                 });
             }).then(function(location){
+                log.debug(location);
                 return Dao.questionImage(req.params.id, {
                     location: location,
                     description: body.description

@@ -6,7 +6,8 @@ module.exports = function(app){
         ActorsDao = app.dao.actors,
         formidable = app.utils.formidable,
         azure = app.utils.azure,
-        responseView = require('../views/jsonSuccessResponse');
+        responseView = require('../views/jsonSuccessResponse'),
+        util = require('util');
 
     return {
 
