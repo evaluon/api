@@ -2,12 +2,13 @@ var _ = require('underscore');
 var Q = require('q');
 var log = require('./log');
 
-var MySQLWrapError = function (error) {
+var MySQLWrapError = function (error, stmt) {
 
     Error.captureStackTrace(this);
     this.statusCode = 400;
     this.message = _.last(new Error(error).message.split(':')).trim();
     this.name = 'MySQLWrapError';
+    this.sql = stmt || false;
     this.errno = error.errno;
     this.code = error.code;
     this.sqlState = error.sqlState;
@@ -46,8 +47,8 @@ var createMySQLWrap = function (connection) {
         return error instanceof Error && error.code;
     };
 
-    var respond = function (def, callback, err, res) {
-        var wrappedError = isMysqlError(err) ? new MySQLWrapError(err) : err;
+    var respond = function (def, callback, err, res, stmt) {
+        var wrappedError = isMysqlError(err) ? new MySQLWrapError(err, stmt) : err;
         callback(wrappedError, res);
         promiseRespond(def, wrappedError, res);
     };
@@ -98,7 +99,7 @@ var createMySQLWrap = function (connection) {
                         respond(def, callback, err, null);
                     } else {
                         conn.query(statement, values, function(err, rows){
-                            respond(def, callback, err, rows);
+                            respond(def, callback, err, rows, statement);
                             conn.release();
                         });
                     }

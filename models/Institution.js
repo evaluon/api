@@ -240,6 +240,7 @@ module.exports = function(app, sql){
         },
 
         update: function(id, institution){
+            log.debug(id, institution);
             return sql.update('institution', institution, { id: id });
         },
 
