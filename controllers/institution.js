@@ -8,7 +8,10 @@ module.exports = function(app){
         azure = app.utils.azure,
         responseView = require('../views/jsonSuccessResponse'),
         util = require('util'),
-        path = require('path');
+        path = require('path'),
+        copy = app.utils.copy,
+        mkdir = app.utils.mkdir,
+        uuid = app.utils.uuid;
 
     return {
 

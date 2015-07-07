@@ -7,7 +7,10 @@ module.exports = function(app){
         formidable = app.utils.formidable,
         azure = app.utils.azure,
         util = require('util'),
-        path = require('path');
+        path = require('path'),
+        copy = app.utils.copy,
+        mkdir = app.utils.mkdir,
+        uuid = app.utils.uuid;
 
     return {
 
