@@ -7,7 +7,8 @@ module.exports = function(app){
         formidable = app.utils.formidable,
         azure = app.utils.azure,
         responseView = require('../views/jsonSuccessResponse'),
-        util = require('util');
+        util = require('util'),
+        path = require('path');
 
     return {
 
