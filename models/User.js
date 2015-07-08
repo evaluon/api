@@ -40,8 +40,12 @@ module.exports = function(app, sql){
         },
 
         update: function(id, user){
-            user.birth_date = new Date(user.birth_date);
-            user.register_date = new Date(user.register_date);
+            if(user.birth_date !== undefined){
+                user.birth_date = new Date(user.birth_date);
+            }
+            if(user.register_date !== undefined){
+                user.register_date = new Date(user.register_date);
+            }
             user = _.omit(user, 'enabled');
             return sql.update('user', user, { id: id }).then(function(res){
                 return sql.selectOne('user', { id: id });
