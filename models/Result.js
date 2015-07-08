@@ -57,7 +57,7 @@ module.exports = function(app, sql){
                 var qs = [];
 
                 for(institution in institutions){
-                    (function () {
+                    (function (institution) {
                         qs.push(
                             sql.selectOne(
                                 'image', { id: institution.image_id }
