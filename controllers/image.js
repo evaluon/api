@@ -24,11 +24,11 @@ module.exports = function(app){
                     m       = new Date().getMonth() + 1,
                     month   = m >= 10 ? m.toString() : util.format("0%d", m);
 
-                var targetDir   = path.join("static", year, month),
+                var targetDir   = ["static", year, month].join('/'),
                     filename    = util.format(
                     "%s%s", uuid(), path.extname(file.name)
                 ),
-                    target      = path.join(targetDir, filename);
+                    target      = [targetDir, filename].join('/');
 
                 return mkdir(targetDir).then(function(){
                     log.warn("About copying. Hope you have permissions");
@@ -57,11 +57,11 @@ module.exports = function(app){
                     m       = new Date().getMonth() + 1,
                     month   = m >= 10 ? m.toString() : util.format("0%d", m);
 
-                var targetDir   = path.join("static", year, month),
+                var targetDir   = ["static", year, month].join('/'),
                     filename    = util.format(
                     "%s%s", uuid(), path.extname(file.name)
                 ),
-                    target      = path.join(targetDir, filename);
+                    target      = [targetDir, filename].join('/');
 
                 return mkdir(targetDir).then(function(){
                     log.warn("About copying. Hope you have permissions");

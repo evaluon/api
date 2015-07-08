@@ -5,6 +5,7 @@ var fs = require('fs'),
     q = require('q'),
     math = require('mathjs'),
     moment = require('moment-timezone'),
+    handlebars = require('handlebars'),
 
     log = require("../utils/log"),
     cors = require("../utils/cors"),
@@ -46,6 +47,7 @@ var utils = {
 
     oauth2orize: oauth2orize,
     passport: passport,
+    handlebars: handlebars,
 
     nodemailer: nodemailer,
     request: request,
