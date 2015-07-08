@@ -57,17 +57,18 @@ module.exports = function(app, sql){
                 var qs = [];
 
                 for(institution in institutions){
-                    institution = institutions[institution];
-                    qs.push(
-                        sql.selectOne(
-                            'image', { id: institution.image_id }
-                        ).then(function(image){
-                            return _.extend(
-                                { image: image },
-                                _.omit(institution, 'image_id')
-                            );
-                        })
-                    );
+                    (function () {
+                        qs.push(
+                            sql.selectOne(
+                                'image', { id: institution.image_id }
+                            ).then(function(image){
+                                return _.extend(
+                                    { image: image },
+                                    _.omit(institution, 'image_id')
+                                );
+                            })
+                        );
+                    })(institutions[institution]);
                 }
 
                 return q.all(qs);
